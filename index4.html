@@ -1,0 +1,219 @@
+<!DOCTYPE html> 
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>DX SYSTEM</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #0b0f14;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Wrapper för centrering */
+.wrapper {
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Header */
+header {
+    background: #111821;
+    padding: 20px;
+    text-align: center;
+    font-size: 28px;
+}
+
+/* Välkomsttext */
+#welcome {
+    text-align: center;
+    font-size: 22px;
+    margin-top: 15px;
+    color: #9ecfff;
+}
+
+/* Tidrad */
+.timebar {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    background: #16202a;
+    padding: 15px;
+    font-size: 18px;
+    flex-wrap: wrap;
+}
+
+/* Knappar */
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 60px 20px;
+    flex-wrap: wrap;
+}
+
+.button {
+    padding: 30px 50px;
+    font-size: 20px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    min-width: 240px;
+}
+
+.academy { background: #1e90ff; }
+.os { background: #28a745; }
+.test { background: #ff9800; }
+.ai { background: #9c27b0; }
+
+.button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* MOBIL */
+@media (max-width: 600px) {
+
+    .container {
+        gap: 20px;
+        padding: 40px 15px;
+    }
+
+    .button {
+        width: 100%;
+        max-width: 320px;
+        padding: 20px;
+        font-size: 18px;
+    }
+
+    .timebar {
+        gap: 10px;
+        font-size: 16px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    header {
+        font-size: 22px;
+    }
+
+    #welcome {
+        font-size: 18px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<header>
+DX SYSTEM DASHBOARD
+</header>
+
+<div id="welcome"></div>
+
+<div class="timebar">
+    <div id="date"></div>
+    <div id="localTime"></div>
+    <div id="utcTime"></div>
+</div>
+
+<div class="container">
+
+    <!-- ÄNDRAD -->
+    <button class="button academy" onclick="location.href='academy-start1.html'">
+        🎓 DX Academy
+    </button>
+
+    <button class="button os" onclick="location.href='https://1kuli1.github.io/dx-os/'">
+        📡 DX-OS
+    </button>
+
+    <!-- REDAN RÄTT -->
+    <button class="button test" onclick="location.href='https://1kuli1.github.io/test/'">
+        🧪 Testmiljö
+    </button>
+
+    <button class="button ai" onclick="openAI()">
+        🤖 DX AI Assistent
+    </button>
+
+</div>
+
+</div>
+
+<script>
+
+// ===== TID =====
+const locale = navigator.language;
+
+function updateTime() {
+    const now = new Date();
+
+    document.getElementById("date").innerText =
+        now.toLocaleDateString(locale, {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+    document.getElementById("localTime").innerText =
+        "Lokal: " + now.toLocaleTimeString(locale);
+
+    document.getElementById("utcTime").innerText =
+        "UTC: " + now.toUTCString().split(" ")[4];
+}
+
+// ===== VÄLKOMST =====
+function updateWelcome() {
+
+    const now = new Date();
+    const hour = now.getHours();
+    const lang = navigator.language;
+
+    let greeting = "";
+
+    if (lang.startsWith("sv")) {
+
+        if (hour < 10) greeting = "God morgon";
+        else if (hour < 17) greeting = "God dag";
+        else greeting = "God kväll";
+
+        greeting += " – redo att utforska världen via radio?";
+    }
+
+    else {
+
+        if (hour < 10) greeting = "Good morning";
+        else if (hour < 17) greeting = "Good day";
+        else greeting = "Good evening";
+
+        greeting += " – ready to explore the world?";
+    }
+
+    document.getElementById("welcome").innerText = greeting;
+}
+
+// ===== AI KNAPP =====
+function openAI() {
+    window.open("https://chat.openai.com", "_blank");
+}
+
+// Starta allt
+updateTime();
+updateWelcome();
+setInterval(updateTime, 1000);
+
+</script>
+
+</body>
+</html>
