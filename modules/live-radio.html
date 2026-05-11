@@ -1,1 +1,351 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX-OS Live Radio</title>
 
+<style>
+
+/* ===== GRUND ===== */
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#05070b;
+    color:#ffffff;
+}
+
+/* ===== HEADER ===== */
+header{
+    background:#0b1220;
+    padding:30px 20px;
+    text-align:center;
+    border-bottom:2px solid #1f2937;
+}
+
+header h1{
+    margin:0;
+    color:#22c55e;
+    font-size:42px;
+}
+
+header p{
+    color:#94a3b8;
+    margin-top:10px;
+    font-size:20px;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+/* ===== INFOBOX ===== */
+.info-box{
+    background:#111827;
+    border:1px solid #1f2937;
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:35px;
+    line-height:1.8;
+}
+
+.info-box h2{
+    margin-top:0;
+    color:#eab308;
+}
+
+.info-box ul{
+    padding-left:25px;
+}
+
+.highlight{
+    color:#22c55e;
+    font-size:24px;
+    font-weight:bold;
+}
+
+/* ===== RADIOBOX ===== */
+.radio-box{
+    background:#0f172a;
+    border:1px solid #1f2937;
+    border-radius:20px;
+    padding:30px;
+}
+
+/* ===== TITEL ===== */
+.section-title{
+    font-size:30px;
+    margin-bottom:20px;
+    color:#eab308;
+}
+
+/* ===== SELECT ===== */
+select{
+    width:100%;
+    padding:18px;
+    border-radius:14px;
+    border:none;
+    font-size:18px;
+    margin-bottom:25px;
+    background:#1e293b;
+    color:#ffffff;
+}
+
+/* ===== KNAPP ===== */
+button{
+    width:100%;
+    padding:20px;
+    border:none;
+    border-radius:16px;
+    background:#22c55e;
+    color:#ffffff;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.02);
+    background:#16a34a;
+}
+
+/* ===== STATUS ===== */
+.status{
+    margin-top:25px;
+    padding:20px;
+    background:#111827;
+    border-radius:14px;
+    border:1px solid #1f2937;
+    line-height:1.8;
+}
+
+/* ===== TILLBAKA ===== */
+.back-button{
+    display:inline-block;
+    margin-top:30px;
+    padding:14px 24px;
+    background:#1e293b;
+    color:#ffffff;
+    text-decoration:none;
+    border-radius:12px;
+    transition:0.3s;
+}
+
+.back-button:hover{
+    background:#334155;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    text-align:center;
+    padding:40px 20px;
+    color:#64748b;
+}
+
+/* ===== MOBIL ===== */
+@media(max-width:700px){
+
+    header h1{
+        font-size:32px;
+    }
+
+    header p{
+        font-size:18px;
+    }
+
+    .section-title{
+        font-size:24px;
+    }
+
+    button{
+        font-size:20px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+
+    <h1>
+        📡 LIVE RADIO
+    </h1>
+
+    <p>
+        Lyssna på världen live via KiwiSDR
+    </p>
+
+</header>
+
+<!-- ===== CONTAINER ===== -->
+<div class="container">
+
+    <!-- ===== INFO ===== -->
+    <div class="info-box">
+
+        <h2>
+            Vad är KiwiSDR?
+        </h2>
+
+        <p>
+            KiwiSDR är webbaserade radiomottagare placerade runt om i världen.
+            Du kan lyssna live via internet på riktiga radiosignaler från olika länder.
+        </p>
+
+        <p>
+            Välj en mottagare i listan och klicka sedan på:
+        </p>
+
+        <p class="highlight">
+            ▶ Öppna mottagare
+        </p>
+
+        <p>
+            När mottagaren öppnas kan du:
+        </p>
+
+        <ul>
+            <li>Lyssna på kortvåg</li>
+            <li>Välja frekvens</li>
+            <li>Utforska olika radioband</li>
+            <li>Lyssna på CW, AM och SSB</li>
+            <li>Utforska radiosignaler från hela världen</li>
+        </ul>
+
+        <p>
+            Vissa mottagare kan vara fulla eftersom flera användare lyssnar samtidigt.
+            Testa då en annan mottagare i listan.
+        </p>
+
+        <p>
+            Officiell KiwiSDR-lista:
+        </p>
+
+        <p>
+            <a href="http://kiwisdr.com/public/"
+               target="_blank"
+               style="color:#22c55e;">
+               http://kiwisdr.com/public/
+            </a>
+        </p>
+
+    </div>
+
+    <!-- ===== RADIO ===== -->
+    <div class="radio-box">
+
+        <div class="section-title">
+            🌍 Välj mottagare
+        </div>
+
+        <select id="receiverSelect">
+
+            <option value="">
+                -- Välj KiwiSDR mottagare --
+            </option>
+
+            <option value="http://kiwisdr.com/public/">
+                🌍 Officiell KiwiSDR Lista
+            </option>
+
+            <option value="http://websdr.ewi.utwente.nl:8901/">
+                🇳🇱 Twente WebSDR
+            </option>
+
+            <option value="http://kiwisdr.com/public/">
+                🇸🇪 Sverige
+            </option>
+
+            <option value="http://kiwisdr.com/public/">
+                🇫🇮 Finland
+            </option>
+
+            <option value="http://kiwisdr.com/public/">
+                🇩🇪 Tyskland
+            </option>
+
+            <option value="http://kiwisdr.com/public/">
+                🇺🇸 USA
+            </option>
+
+            <option value="http://kiwisdr.com/public/">
+                🇯🇵 Japan
+            </option>
+
+        </select>
+
+        <button onclick="openReceiver()">
+            ▶ Öppna mottagare
+        </button>
+
+        <!-- ===== STATUS ===== -->
+        <div class="status">
+
+            <strong>Status:</strong>
+            <span style="color:#22c55e;">
+                🟢 System aktivt
+            </span>
+
+            <br><br>
+
+            <strong>Tips:</strong>
+
+            <br>
+
+            Börja med AM eller SSB för att lättare höra stationer.
+
+        </div>
+
+        <!-- ===== TILLBAKA ===== -->
+        <a class="back-button"
+           href="../operations-center.html">
+
+           ← Tillbaka till DX-OS
+
+        </a>
+
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+    DX-OS Live Radio v1.0
+</div>
+
+<script>
+
+/* ===== ÖPPNA MOTTAGARE ===== */
+function openReceiver(){
+
+    const select =
+        document.getElementById("receiverSelect");
+
+    const url = select.value;
+
+    if(url !== ""){
+
+        window.open(url,"_blank");
+    }
+
+    else{
+
+        alert("Välj en mottagare först.");
+    }
+}
+
+</script>
+
+</body>
+</html>
