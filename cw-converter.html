@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX-OS CW Converter</title>
+
+<style>
+
+/* ===== GRUND ===== */
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#05070b;
+    color:#ffffff;
+}
+
+/* ===== HEADER ===== */
+header{
+    background:#0b1220;
+    padding:30px 20px;
+    text-align:center;
+    border-bottom:2px solid #1f2937;
+}
+
+header h1{
+    margin:0;
+    color:#eab308;
+    font-size:42px;
+}
+
+header p{
+    color:#94a3b8;
+    margin-top:10px;
+    font-size:20px;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+/* ===== INFOBOX ===== */
+.info-box{
+    background:#111827;
+    border:1px solid #1f2937;
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:35px;
+    line-height:1.8;
+}
+
+.info-box h2{
+    margin-top:0;
+    color:#eab308;
+}
+
+/* ===== UPLOAD BOX ===== */
+.upload-box{
+    background:#0f172a;
+    border:2px dashed #334155;
+    border-radius:20px;
+    padding:40px;
+    text-align:center;
+    transition:0.3s;
+}
+
+.upload-box:hover{
+    border-color:#eab308;
+}
+
+/* ===== FILINPUT ===== */
+input[type="file"]{
+    margin-top:20px;
+    color:#ffffff;
+    font-size:18px;
+}
+
+/* ===== KNAPP ===== */
+button{
+    width:100%;
+    margin-top:25px;
+    padding:20px;
+    border:none;
+    border-radius:16px;
+    background:#eab308;
+    color:#000000;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.02);
+    background:#facc15;
+}
+
+/* ===== RESULTAT ===== */
+.result-box{
+    background:#111827;
+    border:1px solid #1f2937;
+    border-radius:20px;
+    padding:30px;
+    margin-top:35px;
+}
+
+/* ===== RESULTAT TITLAR ===== */
+.result-title{
+    color:#22c55e;
+    font-size:24px;
+    margin-bottom:15px;
+    font-weight:bold;
+}
+
+/* ===== RESULTAT TEXT ===== */
+.result-text{
+    background:#0b1220;
+    padding:20px;
+    border-radius:14px;
+    font-size:22px;
+    line-height:1.8;
+    word-break:break-word;
+    margin-bottom:25px;
+}
+
+/* ===== STATUS ===== */
+.status{
+    margin-top:25px;
+    color:#22c55e;
+    font-size:20px;
+}
+
+/* ===== TILLBAKA ===== */
+.back-button{
+    display:inline-block;
+    margin-top:30px;
+    padding:14px 24px;
+    background:#1e293b;
+    color:#ffffff;
+    text-decoration:none;
+    border-radius:12px;
+    transition:0.3s;
+}
+
+.back-button:hover{
+    background:#334155;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    text-align:center;
+    padding:40px 20px;
+    color:#64748b;
+}
+
+/* ===== MOBIL ===== */
+@media(max-width:700px){
+
+    header h1{
+        font-size:32px;
+    }
+
+    header p{
+        font-size:18px;
+    }
+
+    .result-text{
+        font-size:18px;
+    }
+
+    button{
+        font-size:20px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+
+    <h1>
+        🔊 CW CONVERTER
+    </h1>
+
+    <p>
+        Översätt morsekod till text och svenska
+    </p>
+
+</header>
+
+<!-- ===== CONTAINER ===== -->
+<div class="container">
+
+    <!-- ===== INFO ===== -->
+    <div class="info-box">
+
+        <h2>
+            Hur fungerar CW Converter?
+        </h2>
+
+        <p>
+            Ladda upp en ljudfil med CW/morsekod från radio,
+            SDR eller mobilinspelning.
+        </p>
+
+        <p>
+            DX-OS analyserar signalen och visar:
+        </p>
+
+        <ul>
+            <li>Morsekod</li>
+            <li>Klartext</li>
+            <li>Svensk översättning</li>
+        </ul>
+
+        <p>
+            Stöd för:
+        </p>
+
+        <ul>
+            <li>.wav</li>
+            <li>.mp3</li>
+            <li>.m4a</li>
+        </ul>
+
+    </div>
+
+    <!-- ===== UPPLADDNING ===== -->
+    <div class="upload-box">
+
+        <h2>
+            🎙 Ladda upp ljudfil
+        </h2>
+
+        <input type="file"
+               id="audioFile"
+               accept=".wav,.mp3,.m4a">
+
+        <button onclick="analyzeCW()">
+            ▶ Analysera CW
+        </button>
+
+        <div class="status" id="status">
+            Väntar på ljudfil...
+        </div>
+
+    </div>
+
+    <!-- ===== RESULTAT ===== -->
+    <div class="result-box">
+
+        <!-- CW -->
+        <div class="result-title">
+            📡 Upptäckt CW
+        </div>
+
+        <div class="result-text"
+             id="cwResult">
+
+             ---
+        </div>
+
+        <!-- KLARTEXT -->
+        <div class="result-title">
+            📝 Klartext
+        </div>
+
+        <div class="result-text"
+             id="textResult">
+
+             ---
+        </div>
+
+        <!-- SVENSKA -->
+        <div class="result-title">
+            🇸🇪 Svensk översättning
+        </div>
+
+        <div class="result-text"
+             id="swedishResult">
+
+             ---
+        </div>
+
+        <!-- TILLBAKA -->
+        <a class="back-button"
+           href="../operations-center.html">
+
+           ← Tillbaka till DX-OS
+
+        </a>
+
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+    DX-OS CW Converter v1.0
+</div>
+
+<script>
+
+/* ===== ANALYS ===== */
+function analyzeCW(){
+
+    const fileInput =
+        document.getElementById("audioFile");
+
+    const status =
+        document.getElementById("status");
+
+    /* KONTROLL */
+    if(fileInput.files.length === 0){
+
+        alert("Välj en ljudfil först.");
+
+        return;
+    }
+
+    /* FIL */
+    const file =
+        fileInput.files[0];
+
+    /* STATUS */
+    status.innerHTML =
+        "🔄 Analyserar: " + file.name;
+
+    /* SIMULERAD ANALYS */
+    setTimeout(function(){
+
+        /* CW */
+        document.getElementById("cwResult").innerHTML =
+            "-.-. --.-";
+
+        /* TEXT */
+        document.getElementById("textResult").innerHTML =
+            "CQ";
+
+        /* SVENSKA */
+        document.getElementById("swedishResult").innerHTML =
+            "Allmänt anrop";
+
+        /* STATUS */
+        status.innerHTML =
+            "✅ Analys klar";
+
+    },2000);
+}
+
+</script>
+
+</body>
+</html>
