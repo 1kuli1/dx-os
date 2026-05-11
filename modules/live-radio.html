@@ -204,26 +204,19 @@ button:hover{
         </p>
 
         <p>
-            Välj en mottagare i listan och klicka sedan på länken så öppnas mottagaren:
+            Börja med att välja ett land och välj sedan en mottagare.
         </p>
-        
 
-        <p>
-            När mottagaren öppnas kan du:
+        <p class="highlight">
+            ▶ Öppna mottagare
         </p>
 
         <ul>
             <li>Lyssna på kortvåg</li>
-            <li>Välja frekvens</li>
             <li>Utforska olika radioband</li>
-            <li>Lyssna på CW, AM och SSB</li>
+            <li>Testa CW, AM och SSB</li>
             <li>Utforska radiosignaler från hela världen</li>
         </ul>
-
-        <p>
-            Vissa mottagare kan vara fulla eftersom flera användare lyssnar samtidigt.
-            Testa då en annan mottagare i listan.
-        </p>
 
         <p>
             Officiell KiwiSDR-lista:
@@ -243,45 +236,53 @@ button:hover{
     <div class="radio-box">
 
         <div class="section-title">
-            🌍 Välj mottagare
+            🌍 Välj land
         </div>
 
-        <select id="receiverSelect">
+        <!-- ===== LAND ===== -->
+        <select id="countrySelect"
+                onchange="updateReceivers()">
 
             <option value="">
-                -- Välj KiwiSDR mottagare --
+                -- Välj land --
             </option>
 
-            <option value="http://kiwisdr.com/public/">
-                🌍 Officiell KiwiSDR Lista
-            </option>
-
-            <option value="http://websdr.ewi.utwente.nl:8901/">
-                🇳🇱 Twente WebSDR
-            </option>
-
-            <option value="http://kiwisdr.com/public/">
+            <option value="Sverige">
                 🇸🇪 Sverige
             </option>
 
-            <option value="http://kiwisdr.com/public/">
+            <option value="Finland">
                 🇫🇮 Finland
             </option>
 
-            <option value="http://kiwisdr.com/public/">
+            <option value="Tyskland">
                 🇩🇪 Tyskland
             </option>
 
-            <option value="http://kiwisdr.com/public/">
+            <option value="USA">
                 🇺🇸 USA
             </option>
 
-            <option value="http://kiwisdr.com/public/">
+            <option value="Japan">
                 🇯🇵 Japan
             </option>
 
         </select>
 
+        <!-- ===== MOTTAGARE ===== -->
+        <div class="section-title">
+            📡 Välj mottagare
+        </div>
+
+        <select id="receiverSelect">
+
+            <option value="">
+                -- Välj land först --
+            </option>
+
+        </select>
+
+        <!-- ===== KNAPP ===== -->
         <button onclick="openReceiver()">
             ▶ Öppna mottagare
         </button>
@@ -290,6 +291,7 @@ button:hover{
         <div class="status">
 
             <strong>Status:</strong>
+
             <span style="color:#22c55e;">
                 🟢 System aktivt
             </span>
@@ -318,20 +320,109 @@ button:hover{
 
 <!-- ===== FOOTER ===== -->
 <div class="footer">
-    DX-OS Live Radio v1.0
+    DX-OS Live Radio v1.1
 </div>
 
 <script>
 
+/* ===== MOTTAGARLISTA ===== */
+const receivers = {
+
+    Sverige: [
+
+        {
+            name: "🇸🇪 SK2HG KiwiSDR",
+            url: "http://kiwisdr.com/public/"
+        },
+
+        {
+            name: "🇸🇪 Stockholm SDR",
+            url: "http://kiwisdr.com/public/"
+        }
+    ],
+
+    Finland: [
+
+        {
+            name: "🇫🇮 Finland KiwiSDR",
+            url: "http://kiwisdr.com/public/"
+        }
+    ],
+
+    Tyskland: [
+
+        {
+            name: "🇩🇪 Germany SDR",
+            url: "http://kiwisdr.com/public/"
+        }
+    ],
+
+    USA: [
+
+        {
+            name: "🇺🇸 USA KiwiSDR",
+            url: "http://kiwisdr.com/public/"
+        }
+    ],
+
+    Japan: [
+
+        {
+            name: "🇯🇵 Tokyo KiwiSDR",
+            url: "http://kiwisdr.com/public/"
+        }
+    ]
+};
+
+/* ===== UPPDATERA MOTTAGARE ===== */
+function updateReceivers(){
+
+    const country =
+        document.getElementById("countrySelect").value;
+
+    const receiverSelect =
+        document.getElementById("receiverSelect");
+
+    /* TÖM LISTAN */
+    receiverSelect.innerHTML = "";
+
+    /* KONTROLL */
+    if(country === ""){
+
+        receiverSelect.innerHTML =
+            "<option>-- Välj land först --</option>";
+
+        return;
+    }
+
+    /* HÄMTA LAND */
+    const countryReceivers =
+        receivers[country];
+
+    /* FYLL LISTAN */
+    countryReceivers.forEach(function(receiver){
+
+        const option =
+            document.createElement("option");
+
+        option.value = receiver.url;
+
+        option.textContent = receiver.name;
+
+        receiverSelect.appendChild(option);
+    });
+}
+
 /* ===== ÖPPNA MOTTAGARE ===== */
 function openReceiver(){
 
-    const select =
+    const receiverSelect =
         document.getElementById("receiverSelect");
 
-    const url = select.value;
+    const url =
+        receiverSelect.value;
 
-    if(url !== ""){
+    if(url){
 
         window.open(url,"_blank");
     }
