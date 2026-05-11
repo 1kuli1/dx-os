@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
+
 <meta charset="UTF-8">
+
+<!-- Mobilvänlig -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Titel -->
 <title>DX SYSTEM</title>
 
 <style>
@@ -12,6 +18,7 @@
     box-sizing:border-box;
 }
 
+/* ===== BODY ===== */
 body{
     font-family:Arial, sans-serif;
     background:#0b0f14;
@@ -92,6 +99,12 @@ header{
     background:#9c27b0;
 }
 
+/* ===== LOGGCENTER ===== */
+.logg{
+    background:#eab308;
+    color:black;
+}
+
 /* ===== HOVER ===== */
 .button:hover{
     transform:scale(1.05);
@@ -99,51 +112,31 @@ header{
 }
 
 /* ===== AUDIO PANEL ===== */
-
 .audio-controls{
-
     display:grid;
-
     grid-template-columns:1fr 1fr;
-
     gap:15px;
-
     padding:20px;
-
     max-width:600px;
-
     margin:0 auto;
-
 }
 
 .audio-controls button{
-
     padding:14px;
-
     border:none;
-
     border-radius:10px;
-
     background:#eab308;
-
     color:black;
-
     font-weight:bold;
-
     cursor:pointer;
-
 }
 
+/* ===== STATUS ===== */
 #statusText{
-
     text-align:center;
-
     color:#eab308;
-
     margin-bottom:30px;
-
     font-size:18px;
-
 }
 
 /* ===== MOBIL ===== */
@@ -177,75 +170,92 @@ header{
     }
 
     .audio-controls{
-
         grid-template-columns:1fr;
-
     }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="wrapper">
 
+<!-- ===== HEADER ===== -->
 <header>
 DX SYSTEM DASHBOARD
 </header>
 
+<!-- ===== VÄLKOMST ===== -->
 <div id="welcome"></div>
 
+<!-- ===== TID ===== -->
 <div class="timebar">
+
     <div id="date"></div>
+
     <div id="localTime"></div>
+
     <div id="utcTime"></div>
+
 </div>
 
+<!-- ===== KNAPPAR ===== -->
 <div class="container">
 
     <!-- DX-OS -->
     <button class="button os"
         onclick="location.href='operations-center.html'">
+
         📡 DX-OS
+
+    </button>
+
+    <!-- LOGGCENTER -->
+    <button class="button logg"
+        onclick="location.href='logcenter.html'">
+
+        📓 Loggcenter
+
     </button>
 
     <!-- AI -->
     <button class="button ai"
         onclick="openAI()">
+
         🤖 DX AI Assistent
+
     </button>
 
 </div>
 
-<!-- AUDIO PANEL START -->
-
+<!-- ===== AUDIO PANEL ===== -->
 <div class="audio-controls">
 
-<button id="startRecording">
-▶ Starta inspelning
-</button>
+    <button id="startRecording">
+        ▶ Starta inspelning
+    </button>
 
-<button id="stopRecording">
-■ Stoppa inspelning
-</button>
+    <button id="stopRecording">
+        ■ Stoppa inspelning
+    </button>
 
-<button id="playRecording">
-▶ Spela upp
-</button>
+    <button id="playRecording">
+        ▶ Spela upp
+    </button>
 
-<button id="downloadRecording">
-⬇ Ladda ner
-</button>
+    <button id="downloadRecording">
+        ⬇ Ladda ner
+    </button>
 
 </div>
 
+<!-- ===== STATUS ===== -->
 <div id="statusText">
 Redo för inspelning
 </div>
-
-<!-- AUDIO PANEL END -->
 
 </div>
 
@@ -254,6 +264,7 @@ Redo för inspelning
 /* ===== TID ===== */
 const locale = navigator.language;
 
+/* Uppdaterar tid */
 function updateTime(){
 
     const now = new Date();
@@ -271,13 +282,16 @@ function updateTime(){
 
     document.getElementById("utcTime").innerText =
         "UTC: " + now.toUTCString().split(" ")[4];
+
 }
 
 /* ===== VÄLKOMST ===== */
 function updateWelcome(){
 
     const now = new Date();
+
     const hour = now.getHours();
+
     const lang = navigator.language;
 
     let greeting = "";
@@ -297,6 +311,7 @@ function updateWelcome(){
         }
 
         greeting += " – redo att utforska världen via radio?";
+
     }
 
     else{
@@ -314,29 +329,34 @@ function updateWelcome(){
         }
 
         greeting += " – ready to explore the world?";
+
     }
 
     document.getElementById("welcome").innerText = greeting;
+
 }
 
 /* ===== AI KNAPP ===== */
 function openAI(){
 
     window.open("https://chat.openai.com","_blank");
+
 }
 
 /* ===== START ===== */
 updateTime();
+
 updateWelcome();
+
 setInterval(updateTime,1000);
 
 </script>
 
-<script src="../js/audio-engine.js"></script>
-<script src="../js/live-radio.js"></script>
+<!-- ===== JS FILER ===== -->
 
-</body>
-</html>
+<script src="js/audio-engine.js"></script>
+
+<script src="js/live-radio.js"></script>
 
 </body>
 </html>
