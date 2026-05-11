@@ -1,0 +1,34 @@
+{
+  "Sverige": [
+    {
+      "name": "SK2HG KiwiSDR",
+      "url": "http://kiwisdr.com/public/"
+    },
+
+    {
+      "name": "Stockholm SDR",
+      "url": "http://kiwisdr.com/public/"
+    }
+  ],
+
+  "Finland": [
+    {
+      "name": "Finland KiwiSDR",
+      "url": "http://kiwisdr.com/public/"
+    }
+  ],
+
+  "Tyskland": [
+    {
+      "name": "Germany SDR",
+      "url": "http://kiwisdr.com/public/"
+    }
+  ],
+
+  "USA": [
+    {
+      "name": "USA KiwiSDR",
+      "url": "http://kiwisdr.com/public/"
+    }
+  ]
+}
