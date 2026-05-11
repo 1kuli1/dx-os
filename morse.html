@@ -1,1 +1,259 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>DX-OS Morse</title>
+
+<style>
+/* ===== GRUND ===== */
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#05070b;
+    color:white;
+}
+
+/* ===== HEADER ===== */
+header{
+    background:#111821;
+    padding:25px 20px;
+    text-align:center;
+    border-bottom:2px solid #1f2937;
+}
+
+header h1{
+    margin:0;
+    color:#eab308;
+    font-size:30px;
+}
+
+header p{
+    margin:10px 0 0 0;
+    color:#9ca3af;
+}
+
+/* ===== WRAPPER ===== */
+.wrapper{
+    max-width:900px;
+    margin:0 auto;
+    padding:25px;
+}
+
+/* ===== PANEL ===== */
+.panel{
+    background:#0b1220;
+    border:1px solid #1f2937;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:20px;
+}
+
+/* ===== RUBRIKER ===== */
+h2{
+    color:#eab308;
+    margin-top:0;
+}
+
+/* ===== AUDIOKNAPPAR ===== */
+.audio-controls{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-top:20px;
+}
+
+button{
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#eab308;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+}
+
+/* ===== STATUS ===== */
+#statusText{
+    margin-top:20px;
+    color:#eab308;
+    text-align:center;
+    font-size:18px;
+}
+
+/* ===== MORSEFÄLT ===== */
+textarea{
+    width:100%;
+    min-height:130px;
+    background:#020617;
+    color:white;
+    border:1px solid #334155;
+    border-radius:10px;
+    padding:15px;
+    font-size:18px;
+    resize:vertical;
+}
+
+.output{
+    background:#020617;
+    border:1px solid #334155;
+    border-radius:10px;
+    padding:15px;
+    min-height:70px;
+    font-size:20px;
+    letter-spacing:2px;
+    color:#9ecfff;
+}
+
+/* ===== MOBIL ===== */
+@media(max-width:600px){
+    .audio-controls{
+        grid-template-columns:1fr;
+    }
+
+    header h1{
+        font-size:24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>DX-OS Morse</h1>
+    <p>Testmodul för inspelning, uppspelning och Morse-träning</p>
+</header>
+
+<div class="wrapper">
+
+    <div class="panel">
+        <h2>🎙 Morse-inspelning</h2>
+        <p>Spela in CW/Morse-ljud via mikrofon eller vald ljudkälla.</p>
+
+        <div class="audio-controls">
+
+            <button id="startRecording">
+                ▶ Starta inspelning
+            </button>
+
+            <button id="stopRecording">
+                ■ Stoppa inspelning
+            </button>
+
+            <button id="playRecording">
+                ▶ Spela upp
+            </button>
+
+            <button id="downloadRecording">
+                ⬇ Ladda ner
+            </button>
+
+        </div>
+
+        <div id="statusText">
+            Redo för Morse-inspelning
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>✍ Morse-text</h2>
+        <p>Skriv text här. Senare kopplar vi detta till automatisk Morse-konvertering.</p>
+
+        <textarea id="morseInput" placeholder="Skriv text här, till exempel: CQ CQ DX"></textarea>
+
+        <br><br>
+
+        <button onclick="convertToMorse()">
+            Konvertera till Morse
+        </button>
+
+        <br><br>
+
+        <div class="output" id="morseOutput">
+            Morse visas här
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>📡 Nästa steg</h2>
+        <p>
+            Här kommer vi senare lägga till tonanalys, hastighet i WPM,
+            automatisk avkodning och koppling till DX-loggen.
+        </p>
+    </div>
+
+</div>
+
+<script>
+/* ===== MORSE-TABELL ===== */
+const morseTable = {
+    "A": ".-",
+    "B": "-...",
+    "C": "-.-.",
+    "D": "-..",
+    "E": ".",
+    "F": "..-.",
+    "G": "--.",
+    "H": "....",
+    "I": "..",
+    "J": ".---",
+    "K": "-.-",
+    "L": ".-..",
+    "M": "--",
+    "N": "-.",
+    "O": "---",
+    "P": ".--.",
+    "Q": "--.-",
+    "R": ".-.",
+    "S": "...",
+    "T": "-",
+    "U": "..-",
+    "V": "...-",
+    "W": ".--",
+    "X": "-..-",
+    "Y": "-.--",
+    "Z": "--..",
+    "0": "-----",
+    "1": ".----",
+    "2": "..---",
+    "3": "...--",
+    "4": "....-",
+    "5": ".....",
+    "6": "-....",
+    "7": "--...",
+    "8": "---..",
+    "9": "----.",
+    " ": "/"
+};
+
+/* ===== KONVERTERA TEXT TILL MORSE ===== */
+function convertToMorse(){
+
+    const input = document.getElementById("morseInput").value.toUpperCase();
+
+    const output = input
+        .split("")
+        .map(character => morseTable[character] || "")
+        .join(" ");
+
+    document.getElementById("morseOutput").innerText = output || "Ingen text att konvertera";
+}
+</script>
+
+<script src="js/audio-engine.js"></script>
+<script src="js/live-radio.js"></script>
+
+</body>
+</html>
