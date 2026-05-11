@@ -1,34 +1,158 @@
 <!DOCTYPE html>
 <html lang="sv">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DX-OS Operations Center</title>
+<title>DX-OS BASIC</title>
 
 <style>
 
-body{
-    margin:0;
-    background:#05070b;
-    color:white;
-    font-family:Arial,sans-serif;
+/* ===== GRUND ===== */
+*{
+    box-sizing:border-box;
 }
 
-.topbar{
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#05070b;
+    color:#ffffff;
+}
+
+/* ===== HEADER ===== */
+header{
     background:#0b1220;
-    padding:20px;
+    padding:30px 20px;
+    text-align:center;
     border-bottom:2px solid #1f2937;
 }
 
-.logo{
-    font-size:32px;
-    font-weight:bold;
+header h1{
+    margin:0;
     color:#eab308;
+    font-size:42px;
 }
 
-.content{
+header p{
+    color:#94a3b8;
+    font-size:20px;
+    margin-top:10px;
+}
+
+/* ===== MODULGRID ===== */
+.module-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
     padding:40px;
+    max-width:1400px;
+    margin:auto;
+}
+
+/* ===== MODULKORT ===== */
+.module-card{
+    border-radius:20px;
+    padding:35px;
+    min-height:220px;
+    cursor:pointer;
+    transition:0.3s;
+    position:relative;
+    overflow:hidden;
+    border:2px solid rgba(255,255,255,0.05);
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+/* ===== HOVER ===== */
+.module-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 0 30px rgba(234,179,8,0.25);
+}
+
+/* ===== IKON ===== */
+.icon{
+    font-size:54px;
+    margin-bottom:20px;
+}
+
+/* ===== TITEL ===== */
+.module-title{
+    font-size:28px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+/* ===== TEXT ===== */
+.module-text{
+    font-size:18px;
+    line-height:1.6;
+    color:#d1d5db;
+}
+
+/* ===== FÄRGER ===== */
+
+.live{
+    background:linear-gradient(135deg,#14532d,#166534);
+}
+
+.cw{
+    background:linear-gradient(135deg,#713f12,#ca8a04);
+}
+
+.log{
+    background:linear-gradient(135deg,#1e3a8a,#2563eb);
+}
+
+.map{
+    background:linear-gradient(135deg,#134e4a,#0f766e);
+}
+
+.propagation{
+    background:linear-gradient(135deg,#7c2d12,#ea580c);
+}
+
+.ai{
+    background:linear-gradient(135deg,#581c87,#9333ea);
+}
+
+.expert{
+    background:linear-gradient(135deg,#7f1d1d,#dc2626);
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+    font-size:15px;
+}
+
+/* ===== MOBIL ===== */
+@media(max-width:700px){
+
+    header h1{
+        font-size:32px;
+    }
+
+    header p{
+        font-size:18px;
+    }
+
+    .module-grid{
+        padding:20px;
+    }
+
+    .module-card{
+        min-height:180px;
+        padding:25px;
+    }
+
+    .module-title{
+        font-size:24px;
+    }
+
+    .module-text{
+        font-size:16px;
+    }
 }
 
 </style>
@@ -36,22 +160,139 @@ body{
 
 <body>
 
-<div class="topbar">
+<!-- ===== HEADER ===== -->
+<header>
 
-    <div class="logo">
-        DX-OS OPERATIONS CENTER
+    <h1>
+        DX-OS BASIC
+    </h1>
+
+    <p>
+        Utforska världen via radio
+    </p>
+
+</header>
+
+<!-- ===== MODULER ===== -->
+<div class="module-grid">
+
+    <!-- LIVE RADIO -->
+    <div class="module-card live"
+        onclick="location.href='modules/live-radio.html'">
+
+        <div class="icon">📡</div>
+
+        <div class="module-title">
+            Live Radio
+        </div>
+
+        <div class="module-text">
+            Lyssna på världen live via SDR och radiomottagning.
+        </div>
+
+    </div>
+
+    <!-- CW -->
+    <div class="module-card cw"
+        onclick="location.href='modules/cw-converter.html'">
+
+        <div class="icon">🔊</div>
+
+        <div class="module-title">
+            CW Converter
+        </div>
+
+        <div class="module-text">
+            Översätt morsekod till klartext och svenska.
+        </div>
+
+    </div>
+
+    <!-- LOGG -->
+    <div class="module-card log"
+        onclick="location.href='modules/loggcenter.html'">
+
+        <div class="icon">📒</div>
+
+        <div class="module-title">
+            Loggcenter
+        </div>
+
+        <div class="module-text">
+            Logga stationer, signaler och inspelningar.
+        </div>
+
+    </div>
+
+    <!-- KARTA -->
+    <div class="module-card map"
+        onclick="location.href='modules/dx-map.html'">
+
+        <div class="icon">🌍</div>
+
+        <div class="module-title">
+            DX Karta
+        </div>
+
+        <div class="module-text">
+            Visa loggade stationer och signalvägar på karta.
+        </div>
+
+    </div>
+
+    <!-- PROPAGATION -->
+    <div class="module-card propagation"
+        onclick="location.href='modules/propagation.html'">
+
+        <div class="icon">☀️</div>
+
+        <div class="module-title">
+            Propagation
+        </div>
+
+        <div class="module-text">
+            Se K-index, soldata och bandförhållanden.
+        </div>
+
+    </div>
+
+    <!-- AI -->
+    <div class="module-card ai"
+        onclick="location.href='modules/dx-ai.html'">
+
+        <div class="icon">🤖</div>
+
+        <div class="module-title">
+            DX AI
+        </div>
+
+        <div class="module-text">
+            AI-assistent för analys av signaler och stationer.
+        </div>
+
+    </div>
+
+    <!-- EXPERT -->
+    <div class="module-card expert"
+        onclick="location.href='operations-advanced.html'">
+
+        <div class="icon">⚙️</div>
+
+        <div class="module-title">
+            Expertläge
+        </div>
+
+        <div class="module-text">
+            Öppna avancerat operationscenter med full analys.
+        </div>
+
     </div>
 
 </div>
 
-<div class="content">
-
-    <h1>Systemet fungerar</h1>
-
-    <p>
-        Första modulen är nu aktiv.
-    </p>
-
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+    DX-OS BASIC v1.0
 </div>
 
 </body>
