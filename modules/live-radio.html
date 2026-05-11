@@ -226,7 +226,9 @@ button:hover{
             <a href="http://kiwisdr.com/public/"
                target="_blank"
                style="color:#22c55e;">
+
                http://kiwisdr.com/public/
+
             </a>
         </p>
 
@@ -320,59 +322,31 @@ button:hover{
 
 <!-- ===== FOOTER ===== -->
 <div class="footer">
-    DX-OS Live Radio v1.1
+    DX-OS Live Radio v1.2
 </div>
 
 <script>
 
-/* ===== MOTTAGARLISTA ===== */
-const receivers = {
+let receivers = {};
 
-    Sverige: [
+/* ===== LADDA JSON ===== */
+fetch("../data/receivers.json")
 
-        {
-            name: "🇸🇪 SK2HG KiwiSDR",
-            url: "http://kiwisdr.com/public/"
-        },
+.then(response => response.json())
 
-        {
-            name: "🇸🇪 Stockholm SDR",
-            url: "http://kiwisdr.com/public/"
-        }
-    ],
+.then(data => {
 
-    Finland: [
+    receivers = data;
 
-        {
-            name: "🇫🇮 Finland KiwiSDR",
-            url: "http://kiwisdr.com/public/"
-        }
-    ],
+    console.log("Mottagare laddade");
 
-    Tyskland: [
+})
 
-        {
-            name: "🇩🇪 Germany SDR",
-            url: "http://kiwisdr.com/public/"
-        }
-    ],
+.catch(error => {
 
-    USA: [
+    console.error("Fel vid laddning av JSON:", error);
 
-        {
-            name: "🇺🇸 USA KiwiSDR",
-            url: "http://kiwisdr.com/public/"
-        }
-    ],
-
-    Japan: [
-
-        {
-            name: "🇯🇵 Tokyo KiwiSDR",
-            url: "http://kiwisdr.com/public/"
-        }
-    ]
-};
+});
 
 /* ===== UPPDATERA MOTTAGARE ===== */
 function updateReceivers(){
@@ -399,15 +373,26 @@ function updateReceivers(){
     const countryReceivers =
         receivers[country];
 
+    /* KONTROLL */
+    if(!countryReceivers){
+
+        receiverSelect.innerHTML =
+            "<option>Inga mottagare hittades</option>";
+
+        return;
+    }
+
     /* FYLL LISTAN */
     countryReceivers.forEach(function(receiver){
 
         const option =
             document.createElement("option");
 
-        option.value = receiver.url;
+        option.value =
+            receiver.url;
 
-        option.textContent = receiver.name;
+        option.textContent =
+            receiver.name;
 
         receiverSelect.appendChild(option);
     });
