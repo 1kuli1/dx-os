@@ -1,424 +1,51 @@
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DX-OS Live Radio</title>
-
-<style>
-
-/* ===== GRUND ===== */
-*{
-    box-sizing:border-box;
-}
-
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#05070b;
-    color:#ffffff;
-}
-
-/* ===== HEADER ===== */
-header{
-    background:#0b1220;
-    padding:30px 20px;
-    text-align:center;
-    border-bottom:2px solid #1f2937;
-}
-
-header h1{
-    margin:0;
-    color:#22c55e;
-    font-size:42px;
-}
-
-header p{
-    color:#94a3b8;
-    margin-top:10px;
-    font-size:20px;
-}
-
-/* ===== CONTAINER ===== */
-.container{
-    max-width:1100px;
-    margin:auto;
-    padding:30px 20px;
-}
-
-/* ===== INFOBOX ===== */
-.info-box{
-    background:#111827;
-    border:1px solid #1f2937;
-    border-radius:20px;
-    padding:30px;
-    margin-bottom:35px;
-    line-height:1.8;
-}
-
-.info-box h2{
-    margin-top:0;
-    color:#eab308;
-}
-
-.info-box ul{
-    padding-left:25px;
-}
-
-.highlight{
-    color:#22c55e;
-    font-size:24px;
-    font-weight:bold;
-}
-
-/* ===== RADIOBOX ===== */
-.radio-box{
-    background:#0f172a;
-    border:1px solid #1f2937;
-    border-radius:20px;
-    padding:30px;
-}
-
-/* ===== TITEL ===== */
-.section-title{
-    font-size:30px;
-    margin-bottom:20px;
-    color:#eab308;
-}
-
-/* ===== SELECT ===== */
-select{
-    width:100%;
-    padding:18px;
-    border-radius:14px;
-    border:none;
-    font-size:18px;
-    margin-bottom:25px;
-    background:#1e293b;
-    color:#ffffff;
-}
-
-/* ===== KNAPP ===== */
-button{
-    width:100%;
-    padding:20px;
-    border:none;
-    border-radius:16px;
-    background:#22c55e;
-    color:#ffffff;
-    font-size:22px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    transform:scale(1.02);
-    background:#16a34a;
-}
-
-/* ===== STATUS ===== */
-.status{
-    margin-top:25px;
-    padding:20px;
-    background:#111827;
-    border-radius:14px;
-    border:1px solid #1f2937;
-    line-height:1.8;
-}
-
-/* ===== TILLBAKA ===== */
-.back-button{
-    display:inline-block;
-    margin-top:30px;
-    padding:14px 24px;
-    background:#1e293b;
-    color:#ffffff;
-    text-decoration:none;
-    border-radius:12px;
-    transition:0.3s;
-}
-
-.back-button:hover{
-    background:#334155;
-}
-
-/* ===== FOOTER ===== */
-.footer{
-    text-align:center;
-    padding:40px 20px;
-    color:#64748b;
-}
-
-/* ===== MOBIL ===== */
-@media(max-width:700px){
-
-    header h1{
-        font-size:32px;
-    }
-
-    header p{
-        font-size:18px;
-    }
-
-    .section-title{
-        font-size:24px;
-    }
-
-    button{
-        font-size:20px;
-    }
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- ===== HEADER ===== -->
-<header>
-
-    <h1>
-        📡 LIVE RADIO
-    </h1>
-
-    <p>
-        Lyssna på världen live via KiwiSDR
-    </p>
-
-</header>
-
-<!-- ===== CONTAINER ===== -->
-<div class="container">
-
-    <!-- ===== INFO ===== -->
-    <div class="info-box">
-
-        <h2>
-            Vad är KiwiSDR?
-        </h2>
-
-        <p>
-            KiwiSDR är webbaserade radiomottagare placerade runt om i världen.
-            Du kan lyssna live via internet på riktiga radiosignaler från olika länder.
-        </p>
-
-        <p>
-            Börja med att välja ett land och välj sedan en mottagare.
-        </p>
-
-        <p class="highlight">
-            ▶ Öppna mottagare
-        </p>
-
-        <ul>
-            <li>Lyssna på kortvåg</li>
-            <li>Utforska olika radioband</li>
-            <li>Testa CW, AM och SSB</li>
-            <li>Utforska radiosignaler från hela världen</li>
-        </ul>
+document.addEventListener("DOMContentLoaded", () => {
 
-        <p>
-            Officiell KiwiSDR-lista:
-        </p>
+    const startButton = document.getElementById("startRecording");
+    const stopButton = document.getElementById("stopRecording");
+    const playButton = document.getElementById("playRecording");
+    const downloadButton = document.getElementById("downloadRecording");
+    const statusText = document.getElementById("statusText");
 
-        <p>
-            <a href="http://kiwisdr.com/public/"
-               target="_blank"
-               style="color:#22c55e;">
+    stopButton.disabled = true;
 
-               http://kiwisdr.com/public/
+    startButton.addEventListener("click", async () => {
 
-            </a>
-        </p>
+        statusText.innerText = "Startar inspelning...";
 
-    </div>
+        await startRecording();
 
-    <!-- ===== RADIO ===== -->
-    <div class="radio-box">
+        statusText.innerText = "● Inspelning pågår";
 
-        <div class="section-title">
-            🌍 Välj land
-        </div>
+        startButton.disabled = true;
+        stopButton.disabled = false;
 
-        <!-- ===== LAND ===== -->
-        <select id="countrySelect"
-                onchange="updateReceivers()">
+    });
 
-            <option value="">
-                -- Välj land --
-            </option>
+    stopButton.addEventListener("click", () => {
 
-            <option value="Sverige">
-                🇸🇪 Sverige
-            </option>
+        stopRecording();
 
-            <option value="Finland">
-                🇫🇮 Finland
-            </option>
+        statusText.innerText = "■ Inspelning stoppad";
 
-            <option value="Tyskland">
-                🇩🇪 Tyskland
-            </option>
+        startButton.disabled = false;
+        stopButton.disabled = true;
 
-            <option value="USA">
-                🇺🇸 USA
-            </option>
+    });
 
-            <option value="Japan">
-                🇯🇵 Japan
-            </option>
+    playButton.addEventListener("click", () => {
 
-        </select>
+        playRecording();
 
-        <!-- ===== MOTTAGARE ===== -->
-        <div class="section-title">
-            📡 Välj mottagare
-        </div>
+        statusText.innerText = "▶ Spelar upp";
 
-        <select id="receiverSelect">
+    });
 
-            <option value="">
-                -- Välj land först --
-            </option>
+    downloadButton.addEventListener("click", () => {
 
-        </select>
+        downloadRecording();
 
-        <!-- ===== KNAPP ===== -->
-        <button onclick="openReceiver()">
-            ▶ Öppna mottagare
-        </button>
+        statusText.innerText = "⬇ Nedladdning startad";
 
-        <!-- ===== STATUS ===== -->
-        <div class="status">
-
-            <strong>Status:</strong>
-
-            <span style="color:#22c55e;">
-                🟢 System aktivt
-            </span>
-
-            <br><br>
-
-            <strong>Tips:</strong>
-
-            <br>
-
-            Börja med AM eller SSB för att lättare höra stationer.
-
-        </div>
-
-        <!-- ===== TILLBAKA ===== -->
-        <a class="back-button"
-           href="../operations-center.html">
-
-           ← Tillbaka till DX-OS
-
-        </a>
-
-    </div>
-
-</div>
-
-<!-- ===== FOOTER ===== -->
-<div class="footer">
-    DX-OS Live Radio v1.2
-</div>
-
-<script>
-
-let receivers = {};
-
-/* ===== LADDA JSON ===== */
-fetch("../data/receivers.json")
-
-.then(response => response.json())
-
-.then(data => {
-
-    receivers = data;
-
-    console.log("Mottagare laddade");
-
-})
-
-.catch(error => {
-
-    console.error("Fel vid laddning av JSON:", error);
+    });
 
 });
-
-/* ===== UPPDATERA MOTTAGARE ===== */
-function updateReceivers(){
-
-    const country =
-        document.getElementById("countrySelect").value;
-
-    const receiverSelect =
-        document.getElementById("receiverSelect");
-
-    /* TÖM LISTAN */
-    receiverSelect.innerHTML = "";
-
-    /* KONTROLL */
-    if(country === ""){
-
-        receiverSelect.innerHTML =
-            "<option>-- Välj land först --</option>";
-
-        return;
-    }
-
-    /* HÄMTA LAND */
-    const countryReceivers =
-        receivers[country];
-
-    /* KONTROLL */
-    if(!countryReceivers){
-
-        receiverSelect.innerHTML =
-            "<option>Inga mottagare hittades</option>";
-
-        return;
-    }
-
-    /* FYLL LISTAN */
-    countryReceivers.forEach(function(receiver){
-
-        const option =
-            document.createElement("option");
-
-        option.value =
-            receiver.url;
-
-        option.textContent =
-            receiver.name;
-
-        receiverSelect.appendChild(option);
-    });
-}
-
-/* ===== ÖPPNA MOTTAGARE ===== */
-function openReceiver(){
-
-    const receiverSelect =
-        document.getElementById("receiverSelect");
-
-    const url =
-        receiverSelect.value;
-
-    if(url){
-
-        window.open(url,"_blank");
-    }
-
-    else{
-
-        alert("Välj en mottagare först.");
-    }
-}
-
-</script>
-
-</body>
-</html>
