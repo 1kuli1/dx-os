@@ -62,7 +62,7 @@ header p{
     margin-bottom:25px;
 }
 
-/* ===== KNAPPSTIL ===== */
+/* ===== SDR KNAPP ===== */
 .sdr-link{
     display:inline-block;
     background:#eab308;
@@ -106,7 +106,7 @@ header p{
 /* ===== TEXTAREA ===== */
 textarea{
     width:100%;
-    height:300px;
+    height:350px;
     background:#020617;
     color:#ffffff;
     border:1px solid #334155;
@@ -114,6 +114,7 @@ textarea{
     padding:15px;
     resize:vertical;
     font-size:15px;
+    line-height:1.5;
 }
 
 /* ===== INFOBOX ===== */
@@ -131,6 +132,32 @@ textarea{
 .status{
     color:#22c55e;
     font-weight:bold;
+}
+
+/* ===== KNAPPGRUPP ===== */
+.log-buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+/* ===== KNAPP ===== */
+.action-btn{
+    background:#eab308;
+    color:#000000;
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.2s;
+}
+
+/* ===== HOVER ===== */
+.action-btn:hover{
+    transform:scale(1.03);
+    opacity:0.92;
 }
 
 /* ===== FOOTER ===== */
@@ -180,23 +207,8 @@ footer{
            rel="noopener"
            onclick="setReceiver('Twente WebSDR')">
 
-            Öppna Twente WebSDR
+            🌍 Twente WebSDR
 
-        </a>
-
-        
-</a><
-        <a class="sdr-link"
-   href="http://kiwisdr1.proxy.kiwisdr.com:8073"
-   target="_blank"
-   rel="noopener"
-   onclick="setReceiver('KiwiSDR')">
-
-📡 Öppna KiwiSDR
-
-    </a>
-
-</a>
         </a>
 
     </div>
@@ -209,16 +221,48 @@ footer{
 
             <h2>DX Logg</h2>
 
-            <textarea placeholder="Skriv din DX-logg här..."></textarea>
+            <!-- ===== LOGGFÄLT ===== -->
+            <textarea id="dxLog"
+placeholder="Skriv din DX-logg här..."></textarea>
 
+            <!-- ===== KNAPPAR ===== -->
+            <div class="log-buttons">
+
+                <!-- ===== UTC KNAPP ===== -->
+                <button class="action-btn"
+                        onclick="insertUTC()">
+
+                    Lägg till UTC
+
+                </button>
+
+                <!-- ===== NY LOGG ===== -->
+                <button class="action-btn"
+                        onclick="insertTemplate()">
+
+                    Ny loggrad
+
+                </button>
+
+                <!-- ===== RENSA ===== -->
+                <button class="action-btn"
+                        onclick="clearLog()">
+
+                    Rensa logg
+
+                </button>
+
+            </div>
+
+            <!-- ===== INFO ===== -->
             <div class="info-box">
 
                 <strong>Tips:</strong><br><br>
 
-                • Öppna en SDR-mottagare ovan.<br>
-                • Lyssna efter stationer.<br>
-                • Logga frekvens, tid och signalstyrka.<br>
-                • Använd senare AI-analys i DX-OS.
+                • Öppna SDR-mottagaren ovan.<br>
+                • Logga stationer och frekvenser.<br>
+                • Loggen sparas automatiskt.<br>
+                • UTC används internationellt inom DX.<br>
 
             </div>
 
@@ -229,6 +273,7 @@ footer{
 
             <h2>Mottagarpanel</h2>
 
+            <!-- ===== STATUS ===== -->
             <div class="info-box">
 
                 <strong>Aktiv mottagare</strong><br><br>
@@ -242,22 +287,17 @@ footer{
 
             </div>
 
+            <!-- ===== TWENTE INFO ===== -->
             <div class="info-box">
 
-                <strong>Twente WebSDR</strong><br>
+                <strong>Twente WebSDR</strong><br><br>
 
-                Klassisk webbmottagare för kortvåg och DX-lyssning.
+                Klassisk webbmottagare för:
+                kortvåg, AM, SSB och DX-lyssning.
 
             </div>
 
-            <div class="info-box">
-
-                <strong>KiwiSDR</strong><br>
-
-                Globalt nätverk av mottagare runt hela världen.
-
-            </div>
-
+            <!-- ===== PLANERADE FUNKTIONER ===== -->
             <div class="info-box">
 
                 <strong>Planerade funktioner</strong><br><br>
@@ -265,7 +305,7 @@ footer{
                 • Favoritmottagare<br>
                 • Direktval av frekvens<br>
                 • AI-analys<br>
-                • Automatisk stationsidentifiering<br>
+                • Stationsidentifiering<br>
                 • DX-databas<br>
                 • Inspelning<br>
                 • Global mottagarkarta
@@ -287,14 +327,19 @@ footer{
 
 <script>
 
-/* ===== AKTIV MOTTAGARE ===== */
-function setReceiver(name){
+/* ===== HÄMTA LOGGFÄLT ===== */
+const dxLog =
+document.getElementById("dxLog");
 
-    document.getElementById("activeReceiver").innerText = name;
+/* ===== LADDA SPARAD LOGG ===== */
+window.onload = function(){
 
-}
+    /* ===== HÄMTA LOGG ===== */
+    const savedLog =
+    localStorage.getItem("dxos_log");
 
-</script>
+    /* ===== OM LOGG FINNS ===== */
+    if(savedLog){
 
-</body>
-</html>
+        /* ===== LÄS IN LOGG ===== */
+        dxLog.value =
