@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="sv">
 
@@ -253,6 +252,14 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 </button>
 
+                <!-- ===== EXPORT ===== -->
+                <button class="action-btn"
+                        onclick="exportLog()">
+
+                    Exportera logg
+
+                </button>
+
                 <!-- ===== RENSA ===== -->
                 <button class="action-btn"
                         onclick="clearLog()">
@@ -316,7 +323,7 @@ placeholder="Skriv din DX-logg här..."></textarea>
                 • Öppna SDR-mottagaren ovan.<br>
                 • Klicka på bandknappar för snabb loggning.<br>
                 • Loggen sparas automatiskt.<br>
-                • UTC används internationellt inom DX.<br>
+                • Exportera loggen till TXT-fil.<br>
 
             </div>
 
@@ -395,7 +402,7 @@ window.onload = function(){
     /* ===== OM LOGG FINNS ===== */
     if(savedLog){
 
-        /* ===== LÄS IN LOGG ===== */
+        /* ===== VISA LOGG ===== */
         dxLog.value = savedLog;
 
     }
@@ -416,7 +423,7 @@ dxLog.addEventListener("input", function(){
 /* ===== AKTIV MOTTAGARE ===== */
 function setReceiver(name){
 
-    /* ===== VISA MOTTAGARE ===== */
+    /* ===== VISA ===== */
     document.getElementById(
         "activeReceiver"
     ).innerText = name;
@@ -486,7 +493,7 @@ function insertBand(band,frequency){
         String(now.getUTCMinutes()).padStart(2,"0") +
         " UTC";
 
-    /* ===== SKRIV LOGG ===== */
+    /* ===== LOGGMALL ===== */
     dxLog.value +=
 `\n========================
 UTC: ${utcString}
@@ -503,6 +510,47 @@ Kommentar:
         "dxos_log",
         dxLog.value
     );
+
+}
+
+/* ===== EXPORTERA LOGG ===== */
+function exportLog(){
+
+    /* ===== HÄMTA LOGG ===== */
+    const logContent =
+    dxLog.value;
+
+    /* ===== SKAPA FIL ===== */
+    const blob =
+    new Blob(
+        [logContent],
+        {type:"text/plain"}
+    );
+
+    /* ===== SKAPA LÄNK ===== */
+    const link =
+    document.createElement("a");
+
+    /* ===== FILNAMN ===== */
+    const now = new Date();
+
+    const fileName =
+    "dx-log-" +
+    now.getFullYear() + "-" +
+    String(now.getMonth()+1).padStart(2,"0") + "-" +
+    String(now.getDate()).padStart(2,"0") +
+    ".txt";
+
+    /* ===== FILURL ===== */
+    link.href =
+    URL.createObjectURL(blob);
+
+    /* ===== FILNAMN ===== */
+    link.download =
+    fileName;
+
+    /* ===== STARTA NEDLADDNING ===== */
+    link.click();
 
 }
 
