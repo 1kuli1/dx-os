@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -13,9 +15,10 @@
     box-sizing:border-box;
 }
 
+/* ===== BODY ===== */
 body{
     margin:0;
-    font-family:Arial,sans-serif;
+    font-family:Arial, sans-serif;
     background:#05070b;
     color:#ffffff;
 }
@@ -28,22 +31,53 @@ header{
     border-bottom:2px solid #1f2937;
 }
 
+/* ===== RUBRIK ===== */
 header h1{
     margin:0;
     color:#eab308;
-    font-size:32px;
+    font-size:36px;
 }
 
+/* ===== UNDERTEXT ===== */
 header p{
     margin-top:10px;
-    color:#9ca3af;
+    color:#cbd5e1;
+    font-size:16px;
 }
 
 /* ===== WRAPPER ===== */
 .wrapper{
-    max-width:1200px;
-    margin:0 auto;
+    width:100%;
+    max-width:1400px;
+    margin:auto;
     padding:20px;
+}
+
+/* ===== SDR KNAPPAR ===== */
+.sdr-buttons{
+    display:flex;
+    gap:15px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+/* ===== KNAPPAR ===== */
+.sdr-buttons button{
+    background:#eab308;
+    color:#000;
+    border:none;
+    padding:15px 24px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+/* ===== HOVER ===== */
+.sdr-buttons button:hover{
+    transform:scale(1.05);
 }
 
 /* ===== GRID ===== */
@@ -55,313 +89,186 @@ header p{
 
 /* ===== PANEL ===== */
 .panel{
-    background:#0b1220;
-    border:1px solid #1f2937;
-    border-radius:18px;
+    background:#0f172a;
+    border:1px solid #1e293b;
+    border-radius:16px;
     padding:20px;
+    min-height:500px;
 }
 
-/* ===== RUBRIK ===== */
+/* ===== PANEL RUBRIK ===== */
 .panel h2{
     margin-top:0;
     color:#eab308;
 }
 
-/* ===== SDR ===== */
-iframe{
+/* ===== TEXTAREA ===== */
+textarea{
     width:100%;
-    height:500px;
-    border:none;
-    border-radius:12px;
-    background:black;
-}
-
-/* ===== AUDIO PANEL ===== */
-.audio-controls{
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:15px;
-
-    margin-top:20px;
-
-}
-
-.audio-controls button{
-
-    padding:15px;
-
-    border:none;
-
-    border-radius:10px;
-
-    background:#eab308;
-
-    color:black;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    font-size:16px;
-
-}
-
-.audio-controls button:hover{
-
-    transform:scale(1.02);
-
-}
-
-/* ===== STATUS ===== */
-#statusText{
-
-    margin-top:20px;
-
-    text-align:center;
-
-    color:#eab308;
-
-    font-size:18px;
-
-}
-
-/* ===== LOGG ===== */
-.log-box{
-
+    height:300px;
     background:#020617;
-
+    color:#ffffff;
     border:1px solid #334155;
-
     border-radius:12px;
-
     padding:15px;
-
-    min-height:250px;
-
-    overflow:auto;
-
+    resize:vertical;
     font-size:15px;
-
-    line-height:1.5;
-
 }
 
-/* ===== INPUT ===== */
-input, textarea{
-
-    width:100%;
-
-    padding:12px;
-
-    margin-top:10px;
-
-    border-radius:10px;
-
-    border:1px solid #334155;
-
+/* ===== INFOBOX ===== */
+.info-box{
     background:#020617;
-
-    color:white;
-
+    border:1px solid #1e293b;
+    border-radius:12px;
+    padding:15px;
+    margin-top:15px;
+    line-height:1.6;
+    color:#cbd5e1;
 }
 
-/* ===== SAVE BUTTON ===== */
-.save-btn{
-
-    width:100%;
-
-    margin-top:15px;
-
-    padding:14px;
-
-    border:none;
-
-    border-radius:10px;
-
-    background:#22c55e;
-
-    color:white;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
+/* ===== FOOTER ===== */
+footer{
+    text-align:center;
+    padding:25px;
+    color:#64748b;
+    font-size:14px;
 }
 
 /* ===== MOBIL ===== */
 @media(max-width:900px){
 
     .grid{
-
         grid-template-columns:1fr;
-
     }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
+<!-- ===== HEADER ===== -->
 <header>
 
-<h1>📡 DX-OS Live Radio</h1>
+    <h1>DX-OS LIVE RADIO</h1>
 
-<p>
-Live radioövervakning, inspelning och DX-loggning
-</p>
+    <p>
+        SDR-kontrollcenter för DX-OS
+    </p>
 
 </header>
 
+<!-- ===== WRAPPER ===== -->
 <div class="wrapper">
 
-<div class="grid">
+    <!-- ===== SDR KNAPPAR ===== -->
+    <div class="sdr-buttons">
 
-<!-- ===== SDR PANEL ===== -->
+        <button onclick="openTwente()">
+            Öppna Twente WebSDR
+        </button>
 
-<div class="panel">
+        <button onclick="openKiwi()">
+            Öppna KiwiSDR
+        </button>
 
-<h2>🌍 WebSDR</h2>
+    </div>
 
-<iframe
-src="http://websdr.ewi.utwente.nl:8901/">
-</iframe>
+    <!-- ===== GRID ===== -->
+    <div class="grid">
 
-</div>
+        <!-- ===== VÄNSTER PANEL ===== -->
+        <div class="panel">
 
-<!-- ===== AUDIO PANEL ===== -->
+            <h2>DX Logg</h2>
 
-<div class="panel">
+            <textarea placeholder="Skriv din DX-logg här..."></textarea>
 
-<h2>🎙 Inspelning</h2>
+            <div class="info-box">
 
-<p>
-Spela in stationer, identifieringar och DX-klipp.
-</p>
+                <strong>Tips:</strong><br><br>
 
-<div class="audio-controls">
+                • Öppna en SDR-mottagare ovan.<br>
+                • Lyssna efter stationer.<br>
+                • Logga frekvens, tid och signalstyrka.<br>
+                • Använd senare AI-analys i DX-OS.
 
-<button id="startRecording">
-▶ Starta inspelning
-</button>
+            </div>
 
-<button id="stopRecording">
-■ Stoppa inspelning
-</button>
+        </div>
 
-<button id="playRecording">
-▶ Spela upp
-</button>
+        <!-- ===== HÖGER PANEL ===== -->
+        <div class="panel">
 
-<button id="downloadRecording">
-⬇ Ladda ner
-</button>
+            <h2>Mottagarpanel</h2>
 
-</div>
+            <div class="info-box">
 
-<div id="statusText">
-Redo för inspelning
-</div>
+                <strong>Twente WebSDR</strong><br>
+                Klassisk webbmottagare för kortvåg och DX-lyssning.
 
-</div>
+            </div>
 
-<!-- ===== LOGG PANEL ===== -->
+            <div class="info-box">
 
-<div class="panel">
+                <strong>KiwiSDR</strong><br>
+                Globalt nätverk av mottagare runt hela världen.
 
-<h2>📝 DX-Logg</h2>
+            </div>
 
-<div class="log-box" id="logBox">
+            <div class="info-box">
 
-Ingen logg ännu...
+                <strong>Planerade funktioner</strong><br><br>
 
-</div>
+                • Favoritmottagare<br>
+                • Direktval av frekvens<br>
+                • AI-analys<br>
+                • Inspelning<br>
+                • Automatisk stationsidentifiering<br>
+                • DX-databas
 
-</div>
+            </div>
 
-<!-- ===== STATION PANEL ===== -->
+        </div>
 
-<div class="panel">
-
-<h2>📻 Station</h2>
-
-<input
-type="text"
-id="stationName"
-placeholder="Stationsnamn">
-
-<input
-type="text"
-id="frequency"
-placeholder="Frekvens">
-
-<textarea
-id="notes"
-placeholder="Anteckningar">
-</textarea>
-
-<button
-class="save-btn"
-onclick="saveLog()">
-
-Spara logg
-
-</button>
+    </div>
 
 </div>
 
-</div>
+<!-- ===== FOOTER ===== -->
+<footer>
 
-</div>
+    DX-OS © 2026
+
+</footer>
 
 <script>
 
-/* ===== SPARA LOGG ===== */
-function saveLog(){
+/* ===== ÖPPNA TWENTE ===== */
+function openTwente(){
 
-    const station =
-        document.getElementById("stationName").value;
+    /* Öppnar Twente WebSDR */
+    window.open(
+        "http://websdr.ewi.utwente.nl:8901/",
+        "_blank"
+    );
 
-    const frequency =
-        document.getElementById("frequency").value;
+}
 
-    const notes =
-        document.getElementById("notes").value;
+/* ===== ÖPPNA KIWI ===== */
+function openKiwi(){
 
-    const now = new Date();
-
-    const entry = `
-
-${now.toUTCString()}
-Station: ${station}
-Frekvens: ${frequency}
-Anteckningar: ${notes}
-
---------------------------------
-
-`;
-
-    const logBox =
-        document.getElementById("logBox");
-
-    logBox.innerText =
-        entry + logBox.innerText;
+    /* Öppnar KiwiSDR-kartan */
+    window.open(
+        "https://kiwisdr.com/public/",
+        "_blank"
+    );
 
 }
 
 </script>
-
-<script src="../js/audio-engine.js"></script>
-<script src="../js/live-radio.js"></script>
-
-</body>
-</html>
 
 </body>
 </html>
