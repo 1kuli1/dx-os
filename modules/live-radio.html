@@ -10,10 +10,12 @@
 
 <style>
 
+/* ===== GRUND ===== */
 *{
     box-sizing:border-box;
 }
 
+/* ===== BODY ===== */
 body{
     margin:0;
     font-family:Arial,sans-serif;
@@ -21,6 +23,7 @@ body{
     color:#ffffff;
 }
 
+/* ===== HEADER ===== */
 header{
     background:#0b1220;
     padding:30px 20px;
@@ -28,18 +31,21 @@ header{
     border-bottom:2px solid #1f2937;
 }
 
+/* ===== RUBRIK ===== */
 header h1{
     margin:0;
     color:#eab308;
     font-size:36px;
 }
 
+/* ===== UNDERTEXT ===== */
 header p{
     margin-top:10px;
     color:#cbd5e1;
     font-size:16px;
 }
 
+/* ===== WRAPPER ===== */
 .wrapper{
     width:100%;
     max-width:1400px;
@@ -47,6 +53,7 @@ header p{
     padding:20px;
 }
 
+/* ===== SDR KNAPPAR ===== */
 .sdr-buttons{
     display:flex;
     gap:15px;
@@ -55,33 +62,33 @@ header p{
     margin-bottom:25px;
 }
 
+/* ===== SDR LÄNKKNAPP ===== */
 .sdr-link{
-    text-decoration:none;
-}
-
-.sdr-link button{
+    display:inline-block;
     background:#eab308;
     color:#000000;
-    border:none;
     padding:15px 24px;
     border-radius:12px;
     font-size:16px;
     font-weight:bold;
-    cursor:pointer;
+    text-decoration:none;
     transition:0.2s;
 }
 
-.sdr-link button:hover{
+/* ===== HOVER ===== */
+.sdr-link:hover{
     transform:scale(1.05);
     opacity:0.92;
 }
 
+/* ===== GRID ===== */
 .grid{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
 }
 
+/* ===== PANEL ===== */
 .panel{
     background:#0f172a;
     border:1px solid #1e293b;
@@ -90,11 +97,13 @@ header p{
     min-height:500px;
 }
 
+/* ===== PANEL RUBRIK ===== */
 .panel h2{
     margin-top:0;
     color:#eab308;
 }
 
+/* ===== TEXTAREA ===== */
 textarea{
     width:100%;
     height:300px;
@@ -107,6 +116,7 @@ textarea{
     font-size:15px;
 }
 
+/* ===== INFOBOX ===== */
 .info-box{
     background:#020617;
     border:1px solid #1e293b;
@@ -117,11 +127,13 @@ textarea{
     color:#cbd5e1;
 }
 
+/* ===== STATUS ===== */
 .status{
     color:#22c55e;
     font-weight:bold;
 }
 
+/* ===== FOOTER ===== */
 footer{
     text-align:center;
     padding:25px;
@@ -129,6 +141,7 @@ footer{
     font-size:14px;
 }
 
+/* ===== MOBIL ===== */
 @media(max-width:900px){
 
     .grid{
@@ -143,44 +156,49 @@ footer{
 
 <body>
 
+<!-- ===== HEADER ===== -->
 <header>
 
     <h1>DX-OS LIVE RADIO</h1>
 
-    <p>SDR-kontrollcenter för DX-OS</p>
+    <p>
+        SDR-kontrollcenter för DX-OS
+    </p>
 
 </header>
 
+<!-- ===== WRAPPER ===== -->
 <div class="wrapper">
 
+    <!-- ===== SDR KNAPPAR ===== -->
     <div class="sdr-buttons">
 
+        <!-- ===== TWENTE ===== -->
         <a class="sdr-link"
-           href="https://websdr.ewi.utwente.nl:8901/"
+           href="http://websdr.ewi.utwente.nl:8901/"
            target="_blank"
            rel="noopener">
 
-            <button type="button">
-                Öppna Twente WebSDR
-            </button>
+            Öppna Twente WebSDR
 
         </a>
 
+        <!-- ===== KIWI ===== -->
         <a class="sdr-link"
            href="https://kiwisdr.com/public/?top=kiwi"
            target="_blank"
            rel="noopener">
 
-            <button type="button">
-                Öppna KiwiSDR
-            </button>
+            Öppna KiwiSDR
 
         </a>
 
     </div>
 
+    <!-- ===== GRID ===== -->
     <div class="grid">
 
+        <!-- ===== VÄNSTER PANEL ===== -->
         <div class="panel">
 
             <h2>DX Logg</h2>
@@ -200,6 +218,7 @@ footer{
 
         </div>
 
+        <!-- ===== HÖGER PANEL ===== -->
         <div class="panel">
 
             <h2>Mottagarpanel</h2>
@@ -209,7 +228,9 @@ footer{
                 <strong>Aktiv mottagare</strong><br><br>
 
                 <span class="status">
+
                     Välj mottagare med knapparna ovan
+
                 </span>
 
             </div>
@@ -217,6 +238,7 @@ footer{
             <div class="info-box">
 
                 <strong>Twente WebSDR</strong><br>
+
                 Klassisk webbmottagare för kortvåg och DX-lyssning.
 
             </div>
@@ -224,6 +246,7 @@ footer{
             <div class="info-box">
 
                 <strong>KiwiSDR</strong><br>
+
                 Globalt nätverk av mottagare runt hela världen.
 
             </div>
@@ -248,8 +271,11 @@ footer{
 
 </div>
 
+<!-- ===== FOOTER ===== -->
 <footer>
+
     DX-OS © 2026
+
 </footer>
 
 </body>
