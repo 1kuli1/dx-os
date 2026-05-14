@@ -62,7 +62,7 @@ header p{
     margin-bottom:25px;
 }
 
-/* ===== SDR LÄNKKNAPP ===== */
+/* ===== LÄNKKNAPP ===== */
 .sdr-link{
     display:inline-block;
     background:#eab308;
@@ -177,7 +177,8 @@ footer{
         <a class="sdr-link"
            href="http://websdr.ewi.utwente.nl:8901/"
            target="_blank"
-           rel="noopener">
+           rel="noopener"
+           onclick="setReceiver('Twente WebSDR')">
 
             Öppna Twente WebSDR
 
@@ -187,7 +188,8 @@ footer{
         <a class="sdr-link"
            href="https://kiwisdr.com/public/?top=kiwi"
            target="_blank"
-           rel="noopener">
+           rel="noopener"
+           onclick="setReceiver('KiwiSDR')">
 
             Öppna KiwiSDR
 
@@ -223,18 +225,21 @@ footer{
 
             <h2>Mottagarpanel</h2>
 
+            <!-- ===== AKTIV MOTTAGARE ===== -->
             <div class="info-box">
 
                 <strong>Aktiv mottagare</strong><br><br>
 
-                <span class="status">
+                <span class="status"
+                      id="activeReceiver">
 
-                    Välj mottagare med knapparna ovan
+                    Ingen mottagare vald
 
                 </span>
 
             </div>
 
+            <!-- ===== TWENTE INFO ===== -->
             <div class="info-box">
 
                 <strong>Twente WebSDR</strong><br>
@@ -243,6 +248,7 @@ footer{
 
             </div>
 
+            <!-- ===== KIWI INFO ===== -->
             <div class="info-box">
 
                 <strong>KiwiSDR</strong><br>
@@ -251,6 +257,7 @@ footer{
 
             </div>
 
+            <!-- ===== PLANERADE FUNKTIONER ===== -->
             <div class="info-box">
 
                 <strong>Planerade funktioner</strong><br><br>
@@ -277,6 +284,18 @@ footer{
     DX-OS © 2026
 
 </footer>
+
+<script>
+
+/* ===== AKTIV MOTTAGARE ===== */
+function setReceiver(name){
+
+    /* Visar vald mottagare */
+    document.getElementById("activeReceiver").innerText = name;
+
+}
+
+</script>
 
 </body>
 </html>
