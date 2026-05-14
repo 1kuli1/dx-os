@@ -62,7 +62,7 @@ header p{
     margin-bottom:25px;
 }
 
-/* ===== LÄNK KNAPP ===== */
+/* ===== LÄNK ===== */
 .sdr-link{
     text-decoration:none;
 }
@@ -102,7 +102,7 @@ header p{
     min-height:500px;
 }
 
-/* ===== PANEL RUBRIK ===== */
+/* ===== RUBRIK PANEL ===== */
 .panel h2{
     margin-top:0;
     color:#eab308;
@@ -130,6 +130,12 @@ textarea{
     margin-top:15px;
     line-height:1.6;
     color:#cbd5e1;
+}
+
+/* ===== STATUS TEXT ===== */
+.status{
+    color:#22c55e;
+    font-weight:bold;
 }
 
 /* ===== FOOTER ===== */
@@ -175,7 +181,8 @@ footer{
         <!-- ===== TWENTE ===== -->
         <a class="sdr-link"
            href="http://websdr.ewi.utwente.nl:8901/"
-           target="_blank">
+           target="_blank"
+           onclick="setReceiver('Twente WebSDR')">
 
             <button>
                 Öppna Twente WebSDR
@@ -185,8 +192,9 @@ footer{
 
         <!-- ===== KIWI ===== -->
         <a class="sdr-link"
-           href="http://kiwisdr.com/public/?top=kiwi"
-           target="_blank">
+           href="https://kiwisdr.com/public/?top=kiwi"
+           target="_blank"
+           onclick="setReceiver('KiwiSDR')">
 
             <button>
                 Öppna KiwiSDR
@@ -224,20 +232,39 @@ footer{
 
             <h2>Mottagarpanel</h2>
 
+            <!-- ===== AKTIV MOTTAGARE ===== -->
+            <div class="info-box">
+
+                <strong>Aktiv mottagare</strong><br><br>
+
+                <span class="status"
+                      id="activeReceiver">
+
+                    Ingen mottagare vald
+
+                </span>
+
+            </div>
+
+            <!-- ===== SDR INFO ===== -->
             <div class="info-box">
 
                 <strong>Twente WebSDR</strong><br>
+
                 Klassisk webbmottagare för kortvåg och DX-lyssning.
 
             </div>
 
+            <!-- ===== KIWI INFO ===== -->
             <div class="info-box">
 
                 <strong>KiwiSDR</strong><br>
+
                 Globalt nätverk av mottagare runt hela världen.
 
             </div>
 
+            <!-- ===== PLANER ===== -->
             <div class="info-box">
 
                 <strong>Planerade funktioner</strong><br><br>
@@ -264,6 +291,18 @@ footer{
     DX-OS © 2026
 
 </footer>
+
+<script>
+
+/* ===== AKTIV MOTTAGARE ===== */
+function setReceiver(name){
+
+    /* Visar vald mottagare */
+    document.getElementById("activeReceiver").innerText = name;
+
+}
+
+</script>
 
 </body>
 </html>
