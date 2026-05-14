@@ -73,8 +73,6 @@ header p{
     font-weight:bold;
     text-decoration:none;
     transition:0.2s;
-    border:none;
-    cursor:pointer;
 }
 
 /* ===== HOVER ===== */
@@ -210,12 +208,14 @@ footer{
     <div class="sdr-buttons">
 
         <!-- ===== TWENTE ===== -->
-        <button class="sdr-link"
-                onclick="setActiveSDR('twente')">
+        <a class="sdr-link"
+           href="http://websdr.ewi.utwente.nl:8901/"
+           target="_blank"
+           rel="noopener">
 
-            🌍 Aktivera Twente WebSDR
+            🌍 Öppna Twente WebSDR
 
-        </button>
+        </a>
 
     </div>
 
@@ -316,8 +316,7 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 <strong>Aktiv SDR</strong><br><br>
 
-                <span class="status"
-                      id="activeReceiver">
+                <span class="status">
 
                     Twente WebSDR
 
@@ -383,11 +382,11 @@ onclick="openFavorite(
 
                 <strong>AI Workflow</strong><br><br>
 
-                1. Öppna station.<br>
-                2. Lyssna och spela in.<br>
-                3. Ladda upp ljud till ChatGPT.<br>
-                4. Få transkribering och översättning.<br>
-                5. Klistra in AI-analys i loggen.<br>
+                1. Öppna Twente manuellt.<br>
+                2. Klicka favoritstation i DX-OS.<br>
+                3. Frekvens loggas automatiskt.<br>
+                4. Lyssna och spela in.<br>
+                5. Ladda upp till ChatGPT.<br>
 
             </div>
 
@@ -409,9 +408,6 @@ onclick="openFavorite(
 /* ===== LOGGFÄLT ===== */
 const dxLog =
 document.getElementById("dxLog");
-
-/* ===== AKTIV SDR ===== */
-let activeSDR = "twente";
 
 /* ===== LADDA SPARAD LOGG ===== */
 window.onload = function(){
@@ -441,18 +437,6 @@ function saveLog(){
         "dxos_log",
         dxLog.value
     );
-
-}
-
-/* ===== AKTIV SDR ===== */
-function setActiveSDR(sdr){
-
-    activeSDR = sdr;
-
-    document.getElementById(
-        "activeReceiver"
-    ).innerText =
-    "Twente WebSDR";
 
 }
 
@@ -528,7 +512,6 @@ frequency,
 country
 ){
 
-    /* ===== LOGGA ===== */
     dxLog.value +=
 `\n========================
 UTC: ${getUTC()}
@@ -541,22 +524,9 @@ Kommentar:
 
     saveLog();
 
-    /* ===== ÖPPNA TWENTE ===== */
-    if(activeSDR === "twente"){
-
-        const url =
-"https://websdr.ewi.utwente.nl:8901/";
-
-        window.open(
-            url,
-            "_blank"
-        );
-
-    }
-
 }
 
-/* ===== UTC FUNKTION ===== */
+/* ===== UTC ===== */
 function getUTC(){
 
     const now = new Date();
@@ -627,4 +597,5 @@ function clearLog(){
 </script>
 
 </body>
+
 </html>
