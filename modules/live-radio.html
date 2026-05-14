@@ -18,7 +18,7 @@
 /* ===== BODY ===== */
 body{
     margin:0;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
     background:#05070b;
     color:#ffffff;
 }
@@ -62,10 +62,15 @@ header p{
     margin-bottom:25px;
 }
 
+/* ===== LÄNK KNAPP ===== */
+.sdr-link{
+    text-decoration:none;
+}
+
 /* ===== KNAPPAR ===== */
-.sdr-buttons button{
+.sdr-link button{
     background:#eab308;
-    color:#000;
+    color:#000000;
     border:none;
     padding:15px 24px;
     border-radius:12px;
@@ -76,8 +81,9 @@ header p{
 }
 
 /* ===== HOVER ===== */
-.sdr-buttons button:hover{
+.sdr-link button:hover{
     transform:scale(1.05);
+    opacity:0.92;
 }
 
 /* ===== GRID ===== */
@@ -166,13 +172,27 @@ footer{
     <!-- ===== SDR KNAPPAR ===== -->
     <div class="sdr-buttons">
 
-        <button onclick="openTwente()">
-            Öppna Twente WebSDR
-        </button>
+        <!-- ===== TWENTE ===== -->
+        <a class="sdr-link"
+           href="http://websdr.ewi.utwente.nl:8901/"
+           target="_blank">
 
-        <button onclick="openKiwi()">
-            Öppna KiwiSDR
-        </button>
+            <button>
+                Öppna Twente WebSDR
+            </button>
+
+        </a>
+
+        <!-- ===== KIWI ===== -->
+        <a class="sdr-link"
+           href="https://kiwisdr.com/public/"
+           target="_blank">
+
+            <button>
+                Öppna KiwiSDR
+            </button>
+
+        </a>
 
     </div>
 
@@ -225,9 +245,10 @@ footer{
                 • Favoritmottagare<br>
                 • Direktval av frekvens<br>
                 • AI-analys<br>
-                • Inspelning<br>
                 • Automatisk stationsidentifiering<br>
-                • DX-databas
+                • DX-databas<br>
+                • Inspelning<br>
+                • Global mottagarkarta
 
             </div>
 
@@ -243,32 +264,6 @@ footer{
     DX-OS © 2026
 
 </footer>
-
-<script>
-
-/* ===== ÖPPNA TWENTE ===== */
-function openTwente(){
-
-    /* Öppnar Twente WebSDR */
-    window.open(
-        "http://websdr.ewi.utwente.nl:8901/",
-        "_blank"
-    );
-
-}
-
-/* ===== ÖPPNA KIWI ===== */
-function openKiwi(){
-
-    /* Öppnar KiwiSDR-kartan */
-    window.open(
-        "https://kiwisdr.com/public/",
-        "_blank"
-    );
-
-}
-
-</script>
 
 </body>
 </html>
