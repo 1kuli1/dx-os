@@ -207,15 +207,13 @@ footer{
     <!-- ===== SDR ===== -->
     <div class="sdr-buttons">
 
-   <!-- ===== TWENTE ===== -->
-<a class="sdr-link"
-   href="http://websdr.ewi.utwente.nl:8901/"
-   target="_blank"
-   rel="noopener">
+        <!-- ===== TWENTE ===== -->
+        <a class="sdr-link"
+           href="http://websdr.ewi.utwente.nl:8901/"
+           target="_blank"
+           rel="noopener">
 
-    🌍 Öppna Twente WebSDR
-
-</a>
+            🌍 Öppna Twente WebSDR
 
         </a>
 
@@ -525,6 +523,12 @@ Kommentar:
 ========================\n`;
 
     saveLog();
+
+    /* ===== ÖPPNA TWENTE PÅ FREKVENS ===== */
+    window.open(
+        "http://websdr.ewi.utwente.nl:8901/#freq=" + frequency,
+        "_blank"
+    );
 
 }
 
