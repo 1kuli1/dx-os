@@ -38,7 +38,7 @@ header h1{
     font-size:36px;
 }
 
-/* ===== UNDERTEXT ===== */
+/* ===== TEXT ===== */
 header p{
     margin-top:10px;
     color:#cbd5e1;
@@ -48,7 +48,7 @@ header p{
 /* ===== WRAPPER ===== */
 .wrapper{
     width:100%;
-    max-width:1400px;
+    max-width:1500px;
     margin:auto;
     padding:20px;
 }
@@ -73,6 +73,8 @@ header p{
     font-weight:bold;
     text-decoration:none;
     transition:0.2s;
+    border:none;
+    cursor:pointer;
 }
 
 /* ===== HOVER ===== */
@@ -84,7 +86,7 @@ header p{
 /* ===== GRID ===== */
 .grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1.3fr 1fr;
     gap:20px;
 }
 
@@ -94,19 +96,18 @@ header p{
     border:1px solid #1e293b;
     border-radius:16px;
     padding:20px;
-    min-height:500px;
 }
 
-/* ===== PANEL RUBRIK ===== */
+/* ===== RUBRIK ===== */
 .panel h2{
     margin-top:0;
     color:#eab308;
 }
 
-/* ===== TEXTAREA ===== */
+/* ===== LOGGFÄLT ===== */
 textarea{
     width:100%;
-    height:420px;
+    height:500px;
     background:#020617;
     color:#ffffff;
     border:1px solid #334155;
@@ -134,20 +135,14 @@ textarea{
     font-weight:bold;
 }
 
-/* ===== KNAPPGRUPP ===== */
-.log-buttons{
+/* ===== KNAPPGRUPPER ===== */
+.log-buttons,
+.band-buttons,
+.favorite-buttons{
     display:flex;
     gap:10px;
     flex-wrap:wrap;
     margin-top:15px;
-}
-
-/* ===== BANDKNAPPAR ===== */
-.band-buttons{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:20px;
 }
 
 /* ===== KNAPP ===== */
@@ -160,6 +155,12 @@ textarea{
     cursor:pointer;
     font-weight:bold;
     transition:0.2s;
+}
+
+/* ===== FAVORITKNAPP ===== */
+.favorite-btn{
+    width:100%;
+    text-align:left;
 }
 
 /* ===== HOVER ===== */
@@ -177,7 +178,7 @@ footer{
 }
 
 /* ===== MOBIL ===== */
-@media(max-width:900px){
+@media(max-width:1000px){
 
     .grid{
         grid-template-columns:1fr;
@@ -205,19 +206,16 @@ footer{
 <!-- ===== WRAPPER ===== -->
 <div class="wrapper">
 
-    <!-- ===== SDR KNAPPAR ===== -->
+    <!-- ===== SDR ===== -->
     <div class="sdr-buttons">
 
         <!-- ===== TWENTE ===== -->
-        <a class="sdr-link"
-           href="http://websdr.ewi.utwente.nl:8901/"
-           target="_blank"
-           rel="noopener"
-           onclick="setReceiver('Twente WebSDR')">
+        <button class="sdr-link"
+                onclick="setActiveSDR('twente')">
 
-            🌍 Twente WebSDR
+            🌍 Aktivera Twente WebSDR
 
-        </a>
+        </button>
 
     </div>
 
@@ -252,7 +250,7 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 </button>
 
-                <!-- ===== AI ANALYS ===== -->
+                <!-- ===== AI ===== -->
                 <button class="action-btn"
                         onclick="insertAIAnalysis()">
 
@@ -281,7 +279,6 @@ placeholder="Skriv din DX-logg här..."></textarea>
             <!-- ===== BANDKNAPPAR ===== -->
             <div class="band-buttons">
 
-                <!-- ===== 31m ===== -->
                 <button class="action-btn"
                         onclick="insertBand('31m','9500-9900 kHz')">
 
@@ -289,7 +286,6 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 </button>
 
-                <!-- ===== 49m ===== -->
                 <button class="action-btn"
                         onclick="insertBand('49m','5900-6200 kHz')">
 
@@ -297,7 +293,6 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 </button>
 
-                <!-- ===== MW ===== -->
                 <button class="action-btn"
                         onclick="insertBand('MW','530-1700 kHz')">
 
@@ -305,34 +300,12 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 </button>
 
-                <!-- ===== HAM 40m ===== -->
                 <button class="action-btn"
                         onclick="insertBand('HAM 40m','7000-7200 kHz')">
 
                     HAM 40m
 
                 </button>
-
-                <!-- ===== UTILITY ===== -->
-                <button class="action-btn"
-                        onclick="insertBand('Utility','Olika utility-frekvenser')">
-
-                    Utility
-
-                </button>
-
-            </div>
-
-            <!-- ===== INFO ===== -->
-            <div class="info-box">
-
-                <strong>AI Workflow:</strong><br><br>
-
-                1. Lyssna på SDR.<br>
-                2. Spela in ljud.<br>
-                3. Klistra in i ChatGPT.<br>
-                4. Få transkribering och översättning.<br>
-                5. Lägg in analysen i DX-loggen.<br>
 
             </div>
 
@@ -341,43 +314,85 @@ placeholder="Skriv din DX-logg här..."></textarea>
         <!-- ===== HÖGER PANEL ===== -->
         <div class="panel">
 
-            <h2>Mottagarpanel</h2>
+            <h2>Favoritstationer</h2>
 
-            <!-- ===== AKTIV ===== -->
+            <!-- ===== AKTIV SDR ===== -->
             <div class="info-box">
 
-                <strong>Aktiv mottagare</strong><br><br>
+                <strong>Aktiv SDR</strong><br><br>
 
                 <span class="status"
                       id="activeReceiver">
 
-                    Ingen mottagare vald
+                    Twente WebSDR
 
                 </span>
 
             </div>
 
-            <!-- ===== TWENTE ===== -->
-            <div class="info-box">
+            <!-- ===== FAVORITER ===== -->
+            <div class="favorite-buttons">
 
-                <strong>Twente WebSDR</strong><br><br>
+                <!-- ===== BBC ===== -->
+                <button class="action-btn favorite-btn"
+onclick="openFavorite(
+'BBC World Service',
+'5975',
+'Storbritannien'
+)">
 
-                Klassisk webbmottagare för:
-                kortvåg, AM, SSB och DX-lyssning.
+📻 BBC World Service — 5975 kHz
+
+                </button>
+
+                <!-- ===== ROMANIA ===== -->
+                <button class="action-btn favorite-btn"
+onclick="openFavorite(
+'Radio Romania',
+'9510',
+'Rumänien'
+)">
+
+📻 Radio Romania — 9510 kHz
+
+                </button>
+
+                <!-- ===== CHINA ===== -->
+                <button class="action-btn favorite-btn"
+onclick="openFavorite(
+'China Radio International',
+'13670',
+'Kina'
+)">
+
+📻 China Radio International — 13670 kHz
+
+                </button>
+
+                <!-- ===== TURKEY ===== -->
+                <button class="action-btn favorite-btn"
+onclick="openFavorite(
+'Voice of Turkey',
+'5960',
+'Turkiet'
+)">
+
+📻 Voice of Turkey — 5960 kHz
+
+                </button>
 
             </div>
 
-            <!-- ===== AI INFO ===== -->
+            <!-- ===== INFO ===== -->
             <div class="info-box">
 
-                <strong>AI-Funktioner</strong><br><br>
+                <strong>AI Workflow</strong><br><br>
 
-                • Språkigenkänning<br>
-                • Transkribering<br>
-                • Svensk översättning<br>
-                • Stationsidentifiering<br>
-                • Programanalys<br>
-                • DX-kommentarer<br>
+                1. Öppna station.<br>
+                2. Lyssna och spela in.<br>
+                3. Ladda upp ljud till ChatGPT.<br>
+                4. Få transkribering och översättning.<br>
+                5. Klistra in AI-analys i loggen.<br>
 
             </div>
 
@@ -396,18 +411,19 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
 <script>
 
-/* ===== HÄMTA LOGGFÄLT ===== */
+/* ===== LOGGFÄLT ===== */
 const dxLog =
 document.getElementById("dxLog");
+
+/* ===== AKTIV SDR ===== */
+let activeSDR = "twente";
 
 /* ===== LADDA SPARAD LOGG ===== */
 window.onload = function(){
 
-    /* ===== HÄMTA ===== */
     const savedLog =
     localStorage.getItem("dxos_log");
 
-    /* ===== VISA ===== */
     if(savedLog){
 
         dxLog.value = savedLog;
@@ -419,43 +435,43 @@ window.onload = function(){
 /* ===== SPARA AUTOMATISKT ===== */
 dxLog.addEventListener("input", function(){
 
+    saveLog();
+
+});
+
+/* ===== SPARA ===== */
+function saveLog(){
+
     localStorage.setItem(
         "dxos_log",
         dxLog.value
     );
 
-});
+}
 
 /* ===== AKTIV SDR ===== */
-function setReceiver(name){
+function setActiveSDR(sdr){
+
+    activeSDR = sdr;
 
     document.getElementById(
         "activeReceiver"
-    ).innerText = name;
+    ).innerText =
+    "Twente WebSDR";
 
 }
 
 /* ===== UTC ===== */
 function insertUTC(){
 
-    const now = new Date();
-
-    const utcString =
-        now.getUTCFullYear() + "-" +
-        String(now.getUTCMonth()+1).padStart(2,"0") + "-" +
-        String(now.getUTCDate()).padStart(2,"0") + " " +
-        String(now.getUTCHours()).padStart(2,"0") + ":" +
-        String(now.getUTCMinutes()).padStart(2,"0") +
-        " UTC";
-
     dxLog.value +=
-    "\n" + utcString + "\n";
+    "\n" + getUTC() + "\n";
 
     saveLog();
 
 }
 
-/* ===== STANDARDLOGG ===== */
+/* ===== STANDARDMALL ===== */
 function insertTemplate(){
 
     dxLog.value +=
@@ -471,22 +487,12 @@ Kommentar:
 
 }
 
-/* ===== BANDLOGG ===== */
+/* ===== BANDMALL ===== */
 function insertBand(band,frequency){
-
-    const now = new Date();
-
-    const utcString =
-        now.getUTCFullYear() + "-" +
-        String(now.getUTCMonth()+1).padStart(2,"0") + "-" +
-        String(now.getUTCDate()).padStart(2,"0") + " " +
-        String(now.getUTCHours()).padStart(2,"0") + ":" +
-        String(now.getUTCMinutes()).padStart(2,"0") +
-        " UTC";
 
     dxLog.value +=
 `\n========================
-UTC: ${utcString}
+UTC: ${getUTC()}
 Band: ${band}
 Frekvens: ${frequency}
 Station:
@@ -517,6 +523,58 @@ Osäkerhet:
 --------------------------------\n`;
 
     saveLog();
+
+}
+
+/* ===== FAVORIT ===== */
+function openFavorite(
+station,
+frequency,
+country
+){
+
+    /* ===== LOGGA ===== */
+    dxLog.value +=
+`\n========================
+UTC: ${getUTC()}
+Station: ${station}
+Frekvens: ${frequency} kHz
+Land: ${country}
+SINPO:
+Kommentar:
+========================\n`;
+
+    saveLog();
+
+    /* ===== ÖPPNA SDR ===== */
+    if(activeSDR === "twente"){
+
+        const url =
+"https://websdr.ewi.utwente.nl:8901/?tune=" +
+frequency;
+
+        window.open(
+            url,
+            "_blank"
+        );
+
+    }
+
+}
+
+/* ===== UTC FUNKTION ===== */
+function getUTC(){
+
+    const now = new Date();
+
+    return (
+        now.getUTCFullYear() + "-" +
+        String(now.getUTCMonth()+1).padStart(2,"0") + "-" +
+        String(now.getUTCDate()).padStart(2,"0") + " " +
+        String(now.getUTCHours()).padStart(2,"0") + ":" +
+        String(now.getUTCMinutes()).padStart(2,"0") +
+        " UTC"
+    );
 
 }
 
@@ -569,16 +627,6 @@ function clearLog(){
         );
 
     }
-
-}
-
-/* ===== SPARA ===== */
-function saveLog(){
-
-    localStorage.setItem(
-        "dxos_log",
-        dxLog.value
-    );
 
 }
 
