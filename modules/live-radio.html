@@ -53,7 +53,7 @@ header p{
     padding:20px;
 }
 
-/* ===== SDR KNAPPAR ===== */
+/* ===== SDR ===== */
 .sdr-buttons{
     display:flex;
     gap:15px;
@@ -98,7 +98,7 @@ header p{
     padding:20px;
 }
 
-/* ===== RUBRIK ===== */
+/* ===== PANEL RUBRIK ===== */
 .panel h2{
     margin-top:0;
     color:#eab308;
@@ -222,7 +222,7 @@ footer{
     <!-- ===== GRID ===== -->
     <div class="grid">
 
-        <!-- ===== VÄNSTER PANEL ===== -->
+        <!-- ===== VÄNSTER ===== -->
         <div class="panel">
 
             <h2>DX Logg</h2>
@@ -234,7 +234,6 @@ placeholder="Skriv din DX-logg här..."></textarea>
             <!-- ===== LOGGKNAPPAR ===== -->
             <div class="log-buttons">
 
-                <!-- ===== UTC ===== -->
                 <button class="action-btn"
                         onclick="insertUTC()">
 
@@ -242,7 +241,6 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 </button>
 
-                <!-- ===== NY LOGG ===== -->
                 <button class="action-btn"
                         onclick="insertTemplate()">
 
@@ -250,7 +248,6 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 </button>
 
-                <!-- ===== AI ===== -->
                 <button class="action-btn"
                         onclick="insertAIAnalysis()">
 
@@ -258,7 +255,6 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 </button>
 
-                <!-- ===== EXPORT ===== -->
                 <button class="action-btn"
                         onclick="exportLog()">
 
@@ -266,7 +262,6 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
                 </button>
 
-                <!-- ===== RENSA ===== -->
                 <button class="action-btn"
                         onclick="clearLog()">
 
@@ -311,12 +306,12 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
         </div>
 
-        <!-- ===== HÖGER PANEL ===== -->
+        <!-- ===== HÖGER ===== -->
         <div class="panel">
 
             <h2>Favoritstationer</h2>
 
-            <!-- ===== AKTIV SDR ===== -->
+            <!-- ===== STATUS ===== -->
             <div class="info-box">
 
                 <strong>Aktiv SDR</strong><br><br>
@@ -471,7 +466,7 @@ function insertUTC(){
 
 }
 
-/* ===== STANDARDMALL ===== */
+/* ===== STANDARDLOGG ===== */
 function insertTemplate(){
 
     dxLog.value +=
@@ -487,7 +482,7 @@ Kommentar:
 
 }
 
-/* ===== BANDMALL ===== */
+/* ===== BANDLOGG ===== */
 function insertBand(band,frequency){
 
     dxLog.value +=
@@ -526,7 +521,7 @@ Osäkerhet:
 
 }
 
-/* ===== FAVORIT ===== */
+/* ===== FAVORITSTATION ===== */
 function openFavorite(
 station,
 frequency,
@@ -546,12 +541,11 @@ Kommentar:
 
     saveLog();
 
-    /* ===== ÖPPNA SDR ===== */
+    /* ===== ÖPPNA TWENTE ===== */
     if(activeSDR === "twente"){
 
         const url =
-"https://websdr.ewi.utwente.nl:8901/?tune=" +
-frequency;
+"https://websdr.ewi.utwente.nl:8901/";
 
         window.open(
             url,
