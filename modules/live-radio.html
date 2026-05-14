@@ -62,7 +62,7 @@ header p{
     margin-bottom:25px;
 }
 
-/* ===== SDR LÄNKKNAPP ===== */
+/* ===== KNAPPSTIL ===== */
 .sdr-link{
     display:inline-block;
     background:#eab308;
@@ -186,9 +186,7 @@ footer{
 
         <!-- ===== KIWI ===== -->
         <a class="sdr-link"
-           href="https://map.kiwisdr.com/"
-           target="_blank"
-           rel="noopener"
+           href="open-kiwi.html"
            onclick="setReceiver('KiwiSDR')">
 
             Öppna KiwiSDR
@@ -225,7 +223,6 @@ footer{
 
             <h2>Mottagarpanel</h2>
 
-            <!-- ===== AKTIV MOTTAGARE ===== -->
             <div class="info-box">
 
                 <strong>Aktiv mottagare</strong><br><br>
@@ -239,7 +236,6 @@ footer{
 
             </div>
 
-            <!-- ===== TWENTE INFO ===== -->
             <div class="info-box">
 
                 <strong>Twente WebSDR</strong><br>
@@ -248,7 +244,6 @@ footer{
 
             </div>
 
-            <!-- ===== KIWI INFO ===== -->
             <div class="info-box">
 
                 <strong>KiwiSDR</strong><br>
@@ -257,7 +252,6 @@ footer{
 
             </div>
 
-            <!-- ===== PLANERADE FUNKTIONER ===== -->
             <div class="info-box">
 
                 <strong>Planerade funktioner</strong><br><br>
@@ -290,7 +284,6 @@ footer{
 /* ===== AKTIV MOTTAGARE ===== */
 function setReceiver(name){
 
-    /* Visar vald mottagare */
     document.getElementById("activeReceiver").innerText = name;
 
 }
