@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="sv">
 
@@ -160,6 +161,14 @@ textarea{
     opacity:0.92;
 }
 
+/* ===== BANDKNAPPAR ===== */
+.band-buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
 /* ===== FOOTER ===== */
 footer{
     text-align:center;
@@ -225,10 +234,10 @@ footer{
             <textarea id="dxLog"
 placeholder="Skriv din DX-logg här..."></textarea>
 
-            <!-- ===== KNAPPAR ===== -->
+            <!-- ===== LOGGKNAPPAR ===== -->
             <div class="log-buttons">
 
-                <!-- ===== UTC KNAPP ===== -->
+                <!-- ===== UTC ===== -->
                 <button class="action-btn"
                         onclick="insertUTC()">
 
@@ -254,13 +263,58 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
             </div>
 
+            <!-- ===== BANDKNAPPAR ===== -->
+            <div class="band-buttons">
+
+                <!-- ===== 31m ===== -->
+                <button class="action-btn"
+                        onclick="insertBand('31m','9500-9900 kHz')">
+
+                    31m
+
+                </button>
+
+                <!-- ===== 49m ===== -->
+                <button class="action-btn"
+                        onclick="insertBand('49m','5900-6200 kHz')">
+
+                    49m
+
+                </button>
+
+                <!-- ===== MW ===== -->
+                <button class="action-btn"
+                        onclick="insertBand('MW','530-1700 kHz')">
+
+                    MW
+
+                </button>
+
+                <!-- ===== HAM 40m ===== -->
+                <button class="action-btn"
+                        onclick="insertBand('HAM 40m','7000-7200 kHz')">
+
+                    HAM 40m
+
+                </button>
+
+                <!-- ===== UTILITY ===== -->
+                <button class="action-btn"
+                        onclick="insertBand('Utility','Olika utility-frekvenser')">
+
+                    Utility
+
+                </button>
+
+            </div>
+
             <!-- ===== INFO ===== -->
             <div class="info-box">
 
                 <strong>Tips:</strong><br><br>
 
                 • Öppna SDR-mottagaren ovan.<br>
-                • Logga stationer och frekvenser.<br>
+                • Klicka på bandknappar för snabb loggning.<br>
                 • Loggen sparas automatiskt.<br>
                 • UTC används internationellt inom DX.<br>
 
@@ -273,7 +327,7 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
             <h2>Mottagarpanel</h2>
 
-            <!-- ===== STATUS ===== -->
+            <!-- ===== AKTIV ===== -->
             <div class="info-box">
 
                 <strong>Aktiv mottagare</strong><br><br>
@@ -287,7 +341,7 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
             </div>
 
-            <!-- ===== TWENTE INFO ===== -->
+            <!-- ===== TWENTE ===== -->
             <div class="info-box">
 
                 <strong>Twente WebSDR</strong><br><br>
@@ -297,7 +351,7 @@ placeholder="Skriv din DX-logg här..."></textarea>
 
             </div>
 
-            <!-- ===== PLANERADE FUNKTIONER ===== -->
+            <!-- ===== PLANER ===== -->
             <div class="info-box">
 
                 <strong>Planerade funktioner</strong><br><br>
@@ -342,4 +396,139 @@ window.onload = function(){
     if(savedLog){
 
         /* ===== LÄS IN LOGG ===== */
-        dxLog.value =
+        dxLog.value = savedLog;
+
+    }
+
+}
+
+/* ===== SPARA AUTOMATISKT ===== */
+dxLog.addEventListener("input", function(){
+
+    /* ===== SPARA ===== */
+    localStorage.setItem(
+        "dxos_log",
+        dxLog.value
+    );
+
+});
+
+/* ===== AKTIV MOTTAGARE ===== */
+function setReceiver(name){
+
+    /* ===== VISA MOTTAGARE ===== */
+    document.getElementById(
+        "activeReceiver"
+    ).innerText = name;
+
+}
+
+/* ===== UTC ===== */
+function insertUTC(){
+
+    /* ===== DATUM ===== */
+    const now = new Date();
+
+    /* ===== FORMAT ===== */
+    const utcString =
+        now.getUTCFullYear() + "-" +
+        String(now.getUTCMonth()+1).padStart(2,"0") + "-" +
+        String(now.getUTCDate()).padStart(2,"0") + " " +
+        String(now.getUTCHours()).padStart(2,"0") + ":" +
+        String(now.getUTCMinutes()).padStart(2,"0") +
+        " UTC";
+
+    /* ===== SKRIV ===== */
+    dxLog.value +=
+    "\n" + utcString + "\n";
+
+    /* ===== SPARA ===== */
+    localStorage.setItem(
+        "dxos_log",
+        dxLog.value
+    );
+
+}
+
+/* ===== STANDARDMALL ===== */
+function insertTemplate(){
+
+    /* ===== MALL ===== */
+    dxLog.value +=
+`\n========================
+Frekvens:
+Station:
+Land:
+SINPO:
+Kommentar:
+========================\n`;
+
+    /* ===== SPARA ===== */
+    localStorage.setItem(
+        "dxos_log",
+        dxLog.value
+    );
+
+}
+
+/* ===== BANDMALL ===== */
+function insertBand(band,frequency){
+
+    /* ===== DATUM ===== */
+    const now = new Date();
+
+    /* ===== UTC ===== */
+    const utcString =
+        now.getUTCFullYear() + "-" +
+        String(now.getUTCMonth()+1).padStart(2,"0") + "-" +
+        String(now.getUTCDate()).padStart(2,"0") + " " +
+        String(now.getUTCHours()).padStart(2,"0") + ":" +
+        String(now.getUTCMinutes()).padStart(2,"0") +
+        " UTC";
+
+    /* ===== SKRIV LOGG ===== */
+    dxLog.value +=
+`\n========================
+UTC: ${utcString}
+Band: ${band}
+Frekvens: ${frequency}
+Station:
+Land:
+SINPO:
+Kommentar:
+========================\n`;
+
+    /* ===== SPARA ===== */
+    localStorage.setItem(
+        "dxos_log",
+        dxLog.value
+    );
+
+}
+
+/* ===== RENSA ===== */
+function clearLog(){
+
+    /* ===== FRÅGA ===== */
+    const confirmClear =
+    confirm("Vill du rensa loggen?");
+
+    /* ===== OM JA ===== */
+    if(confirmClear){
+
+        /* ===== TÖM ===== */
+        dxLog.value = "";
+
+        /* ===== TA BORT ===== */
+        localStorage.removeItem(
+            "dxos_log"
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
