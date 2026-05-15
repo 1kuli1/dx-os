@@ -5,11 +5,9 @@
 
 <meta charset="UTF-8">
 
-<!-- ===== MOBIL ===== -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- ===== TITEL ===== -->
-<title>DX SYSTEM</title>
+<title>DX-OS</title>
 
 <style>
 
@@ -20,127 +18,103 @@
 
 /* ===== BODY ===== */
 body{
-    font-family:Arial, sans-serif;
-    background:#0b0f14;
-    color:#ffffff;
     margin:0;
-    display:flex;
-    justify-content:center;
-}
-
-/* ===== WRAPPER ===== */
-.wrapper{
-    width:100%;
-    max-width:900px;
+    font-family:Arial,sans-serif;
+    background:#05070b;
+    color:#ffffff;
 }
 
 /* ===== HEADER ===== */
 header{
-    background:#111821;
-    padding:20px;
+    background:#0b1220;
+    padding:50px 20px;
     text-align:center;
-    font-size:28px;
-    font-weight:bold;
-    color:#eab308;
     border-bottom:2px solid #1f2937;
 }
 
-/* ===== VÄLKOMST ===== */
-#welcome{
-    text-align:center;
-    font-size:22px;
+/* ===== LOGO ===== */
+header h1{
+    margin:0;
+    color:#eab308;
+    font-size:48px;
+}
+
+/* ===== TEXT ===== */
+header p{
     margin-top:15px;
-    color:#9ecfff;
-    padding:0 15px;
-}
-
-/* ===== TIDRAD ===== */
-.timebar{
-    display:flex;
-    justify-content:center;
-    gap:40px;
-    background:#16202a;
-    padding:15px;
+    color:#cbd5e1;
     font-size:18px;
-    flex-wrap:wrap;
-    border-bottom:1px solid #223040;
 }
 
-/* ===== KNAPPOMRÅDE ===== */
-.container{
-    display:flex;
-    justify-content:center;
-    gap:40px;
-    padding:60px 20px;
-    flex-wrap:wrap;
+/* ===== WRAPPER ===== */
+.wrapper{
+    max-width:1400px;
+    margin:auto;
+    padding:30px 20px;
 }
 
-/* ===== KNAPPAR ===== */
-.button{
-    padding:30px 50px;
-    font-size:20px;
-    border-radius:12px;
-    border:none;
-    cursor:pointer;
-    transition:0.3s;
-    min-width:240px;
-    color:#ffffff;
-    font-weight:bold;
-    box-shadow:0 0 15px rgba(0,0,0,0.4);
+/* ===== GRID ===== */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
 }
 
-/* ===== DX-OS ===== */
-.os{
-    background:#28a745;
-}
-
-/* ===== LOGGCENTER ===== */
-.logg{
-    background:#eab308;
-    color:#000000;
-}
-
-/* ===== AI ===== */
-.ai{
-    background:#9c27b0;
+/* ===== CARD ===== */
+.card{
+    background:#0b1220;
+    border:1px solid #1f2937;
+    border-radius:18px;
+    padding:25px;
+    transition:0.2s;
 }
 
 /* ===== HOVER ===== */
-.button:hover{
-    transform:scale(1.05);
-    opacity:0.92;
+.card:hover{
+    transform:translateY(-4px);
+    border-color:#eab308;
 }
 
-/* ===== MOBIL ===== */
-@media(max-width:600px){
+/* ===== RUBRIK ===== */
+.card h2{
+    margin-top:0;
+    color:#eab308;
+    font-size:26px;
+}
 
-    .container{
-        gap:20px;
-        padding:40px 15px;
-    }
+/* ===== TEXT ===== */
+.card p{
+    color:#cbd5e1;
+    line-height:1.6;
+}
 
-    .button{
-        width:100%;
-        max-width:320px;
-        padding:20px;
-        font-size:18px;
-    }
+/* ===== BUTTON ===== */
+.button{
+    display:block;
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    text-align:center;
+    background:#eab308;
+    color:#000000;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:16px;
+}
 
-    .timebar{
-        gap:10px;
-        font-size:16px;
-        flex-direction:column;
-        align-items:center;
-    }
+/* ===== BUTTON HOVER ===== */
+.button:hover{
+    opacity:0.9;
+}
 
-    header{
-        font-size:22px;
-    }
-
-    #welcome{
-        font-size:18px;
-    }
-
+/* ===== FOOTER ===== */
+footer{
+    text-align:center;
+    padding:30px 20px;
+    color:#64748b;
+    border-top:2px solid #1f2937;
+    margin-top:40px;
 }
 
 </style>
@@ -149,171 +123,190 @@ header{
 
 <body>
 
-<div class="wrapper">
-
 <!-- ===== HEADER ===== -->
 <header>
 
-    DX SYSTEM DASHBOARD
+<h1>
+
+DX-OS
+
+</h1>
+
+<p>
+
+DX-operativsystem för SDR, DX-loggning, propagation och global radiolyssning.
+
+</p>
 
 </header>
 
-<!-- ===== VÄLKOMST ===== -->
-<div id="welcome"></div>
+<!-- ===== WRAPPER ===== -->
+<div class="wrapper">
 
-<!-- ===== TID ===== -->
-<div class="timebar">
+<!-- ===== GRID ===== -->
+<div class="grid">
 
-    <div id="date"></div>
+<!-- ===== DX MAP ===== -->
+<div class="card">
 
-    <div id="localTime"></div>
+<h2>
 
-    <div id="utcTime"></div>
+DX World Map
 
-</div>
+</h2>
 
-<!-- ===== KNAPPAR ===== -->
-<div class="container">
+<p>
 
-    <!-- ===== DX-OS ===== -->
-    <button class="button os"
-        onclick="location.href='operations-center.html'">
+Global DX-karta med mottagare, DX-paths, statistik, frekvensförslag och propagation.
 
-        📡 DX-OS
+</p>
 
-    </button>
+<a
+href="modules/dx-map.html"
+class="button">
 
-    <!-- ===== LOGGCENTER ===== -->
-    <button class="button logg"
-        onclick="location.href='modules/logcenter.html'">
+Öppna DX Map
 
-        📓 Loggcenter
-
-    </button>
-
-    <!-- ===== AI ===== -->
-    <button class="button ai"
-        onclick="openAI()">
-
-        🤖 DX AI Assistent
-
-    </button>
+</a>
 
 </div>
 
+<!-- ===== SDR DIRECTORY ===== -->
+<div class="card">
+
+<h2>
+
+SDR Directory
+
+</h2>
+
+<p>
+
+Hitta KiwiSDR, OpenWebRX, WebSDR och specialmottagare för HF, VHF, UHF och satellit.
+
+</p>
+
+<a
+href="modules/sdr-directory.html"
+class="button">
+
+Öppna SDR Directory
+
+</a>
+
 </div>
 
-<script>
+<!-- ===== RECEIVER MANAGER ===== -->
+<div class="card">
 
-/* ===== SPRÅK ===== */
-const locale = navigator.language;
+<h2>
 
-/* ===== UPPDATERA TID ===== */
-function updateTime(){
+Receiver Manager
 
-    /* Hämtar aktuell tid */
-    const now = new Date();
+</h2>
 
-    /* Visar datum */
-    document.getElementById("date").innerText =
-        now.toLocaleDateString(locale,{
-            weekday:'long',
-            year:'numeric',
-            month:'long',
-            day:'numeric'
-        });
+<p>
 
-    /* Visar lokal tid */
-    document.getElementById("localTime").innerText =
-        "Lokal: " + now.toLocaleTimeString(locale);
+Hantera mottagare, koordinater, färger och SDR-data för hela DX-OS.
 
-    /* Visar UTC */
-    document.getElementById("utcTime").innerText =
-        "UTC: " + now.toUTCString().split(" ")[4];
+</p>
 
-}
+<a
+href="modules/receiver-manager.html"
+class="button">
 
-/* ===== VÄLKOMSTTEXT ===== */
-function updateWelcome(){
+Öppna Receiver Manager
 
-    /* Hämtar tid */
-    const now = new Date();
+</a>
 
-    /* Hämtar timme */
-    const hour = now.getHours();
+</div>
 
-    /* Hämtar språk */
-    const lang = navigator.language;
+<!-- ===== LIVE RADIO ===== -->
+<div class="card">
 
-    /* Tom text */
-    let greeting = "";
+<h2>
 
-    /* Svenska */
-    if(lang.startsWith("sv")){
+Live Radio
 
-        if(hour < 10){
-            greeting = "God morgon";
-        }
+</h2>
 
-        else if(hour < 17){
-            greeting = "God dag";
-        }
+<p>
 
-        else{
-            greeting = "God kväll";
-        }
+Öppna SDR-mottagare och lyssna live på HF, kortvåg, utility, flyg och specialband.
 
-        greeting += " – redo att utforska världen via radio?";
+</p>
 
-    }
+<a
+href="modules/live-radio.html"
+class="button">
 
-    /* Engelska */
-    else{
+Öppna Live Radio
 
-        if(hour < 10){
-            greeting = "Good morning";
-        }
+</a>
 
-        else if(hour < 17){
-            greeting = "Good day";
-        }
+</div>
 
-        else{
-            greeting = "Good evening";
-        }
+<!-- ===== LOGGCENTER ===== -->
+<div class="card">
 
-        greeting += " – ready to explore the world?";
+<h2>
 
-    }
+Loggcenter
 
-    /* Skriver ut text */
-    document.getElementById("welcome").innerText = greeting;
+</h2>
 
-}
+<p>
 
-/* ===== ÖPPNA AI ===== */
-function openAI(){
+Logga stationer, frekvenser, UTC-tider och DX-observationer i DX-OS.
 
-    /* Öppnar ChatGPT */
-    window.open(
-        "https://chat.openai.com",
-        "_blank"
-    );
+</p>
 
-}
+<a
+href="modules/loggcenter.html"
+class="button">
 
-/* ===== START ===== */
+Öppna Loggcenter
 
-/* Startar tid */
-updateTime();
+</a>
 
-/* Startar välkomsttext */
-updateWelcome();
+</div>
 
-/* Uppdaterar tid varje sekund */
-setInterval(updateTime,1000);
+<!-- ===== FRAMTIDA MODUL ===== -->
+<div class="card">
 
-</script>
+<h2>
+
+Propagation Center
+
+</h2>
+
+<p>
+
+Kommande modul för greyline, nattzon, MUF och realtidspropagation.
+
+</p>
+
+<a
+href="#"
+class="button">
+
+Kommer snart
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+
+DX-OS © 2026
+
+</footer>
 
 </body>
+
 </html>
