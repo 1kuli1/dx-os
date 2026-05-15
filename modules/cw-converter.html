@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DX-OS CW Converter V2</title>
+<title>DX-OS CW Converter</title>
 
 <style>
 
@@ -25,7 +25,7 @@ body{
 
 /* ===== HEADER ===== */
 header{
-    background:#0b1220;
+    background:#111821;
     padding:30px 20px;
     text-align:center;
     border-bottom:2px solid #1f2937;
@@ -45,11 +45,12 @@ header p{
     font-size:18px;
 }
 
-/* ===== CONTAINER ===== */
-.container{
-    max-width:1200px;
+/* ===== WRAPPER ===== */
+.wrapper{
+    width:100%;
+    max-width:1300px;
     margin:auto;
-    padding:30px 20px;
+    padding:25px;
 }
 
 /* ===== GRID ===== */
@@ -61,7 +62,7 @@ header p{
 
 /* ===== PANEL ===== */
 .panel{
-    background:#111827;
+    background:#0b1220;
     border:1px solid #1f2937;
     border-radius:20px;
     padding:25px;
@@ -81,7 +82,7 @@ textarea{
     border:none;
     outline:none;
     border-radius:14px;
-    background:#0b1220;
+    background:#020617;
     color:#ffffff;
     padding:18px;
     font-size:20px;
@@ -89,10 +90,17 @@ textarea{
     margin-top:15px;
 }
 
-/* ===== INPUT ===== */
-input[type="file"]{
+/* ===== RESULTAT ===== */
+.result-box{
+    background:#020617;
+    border:1px solid #334155;
+    border-radius:14px;
+    padding:20px;
     margin-top:20px;
-    color:#ffffff;
+    min-height:120px;
+    font-size:20px;
+    line-height:1.8;
+    color:#9ecfff;
 }
 
 /* ===== KNAPPGRID ===== */
@@ -124,56 +132,41 @@ button:hover{
 }
 
 /* ===== STATUS ===== */
-.status{
+#statusBox{
     margin-top:20px;
+    background:#020617;
     padding:15px;
-    background:#0b1220;
     border-radius:12px;
     color:#22c55e;
     font-size:18px;
+    text-align:center;
+}
+
+/* ===== FILE ===== */
+input[type="file"]{
+    margin-top:20px;
+    color:#ffffff;
 }
 
 /* ===== INFO ===== */
 .info-box{
-    background:#0b1220;
+    background:#020617;
     border-radius:14px;
-    padding:18px;
+    padding:20px;
     margin-top:20px;
     line-height:1.7;
     color:#cbd5e1;
 }
 
-/* ===== CW FLASH ===== */
-.flash-box{
-    margin-top:20px;
-    width:100%;
-    height:80px;
-    border-radius:16px;
-    background:#111827;
-    border:2px solid #1f2937;
-    transition:0.1s;
-}
-
-/* ===== AKTIV FLASH ===== */
-.flash-active{
-    background:#eab308;
-    box-shadow:0 0 30px #eab308;
-}
-
-/* ===== SLIDER ===== */
-.slider-box{
-    margin-top:20px;
-}
-
-/* ===== RANGE ===== */
-input[type="range"]{
-    width:100%;
-}
-
-/* ===== WPM ===== */
-#wpmValue{
-    color:#eab308;
-    font-weight:bold;
+/* ===== BACK ===== */
+.back-button{
+    display:inline-block;
+    margin-top:25px;
+    padding:14px 24px;
+    background:#1f2937;
+    color:#ffffff;
+    text-decoration:none;
+    border-radius:12px;
 }
 
 /* ===== FOOTER ===== */
@@ -183,17 +176,6 @@ footer{
     text-align:center;
     color:#64748b;
     border-top:1px solid #1f2937;
-}
-
-/* ===== TILLBAKA ===== */
-.back-button{
-    display:inline-block;
-    margin-top:25px;
-    padding:14px 24px;
-    border-radius:12px;
-    background:#1f2937;
-    color:#ffffff;
-    text-decoration:none;
 }
 
 /* ===== MOBIL ===== */
@@ -215,66 +197,48 @@ footer{
 <header>
 
 <h1>
-CW Converter V2
+DX-OS CW Converter
 </h1>
 
 <p>
-DX-OS Morsekod, CW-analys och signalverktyg
+CW-analys, Morsekonvertering och ljudbearbetning
 </p>
 
 </header>
 
-<!-- ===== CONTAINER ===== -->
-<div class="container">
+<!-- ===== WRAPPER ===== -->
+<div class="wrapper">
 
-<!-- ===== GRID ===== -->
 <div class="grid">
 
 <!-- ===== VÄNSTER ===== -->
 <div class="panel">
 
 <h2>
-Text → CW
+🎙 CW Ljudanalys
 </h2>
 
-<textarea
-id="textInput"
-placeholder="Skriv text här..."
-></textarea>
-
-<div class="button-grid">
-
-<button onclick="convertToCW()">
-Konvertera
-</button>
-
-<button onclick="playCW()">
-▶ Spela CW
-</button>
-
-</div>
-
-<div class="slider-box">
-
-<label>
-WPM:
-<span id="wpmValue">
-15
-</span>
-</label>
+<p>
+Ladda upp en CW/Morse-inspelning från SDR, radio eller mobil.
+</p>
 
 <input
-type="range"
-min="5"
-max="40"
-value="15"
-id="wpmSlider"
-oninput="updateWPM()"
+type="file"
+id="audioFile"
+accept=".wav,.mp3,.m4a"
 >
 
-</div>
+<button onclick="startCWAnalysis()">
 
-<div class="flash-box" id="flashBox"></div>
+▶ Starta analys
+
+</button>
+
+<div id="statusBox">
+
+Redo för analys
+
+</div>
 
 <div class="info-box">
 
@@ -282,15 +246,11 @@ Stöd för:
 
 <ul>
 
-<li>Text → Morse</li>
-
-<li>Morse → Text</li>
-
-<li>Spela CW-ljud</li>
-
-<li>WPM kontroll</li>
-
-<li>Signalindikator</li>
+<li>WAV</li>
+<li>MP3</li>
+<li>M4A</li>
+<li>SDR-inspelningar</li>
+<li>Mobilinspelningar</li>
 
 </ul>
 
@@ -302,45 +262,76 @@ Stöd för:
 <div class="panel">
 
 <h2>
-CW → Text
+📡 CW Resultat
 </h2>
 
-<textarea
-id="cwOutput"
-placeholder="CW visas här..."
-></textarea>
+<div class="result-box">
 
-<div class="button-grid">
+<strong>Upptäckt CW:</strong>
 
-<button onclick="convertToText()">
-Avkoda CW
-</button>
+<div id="cwResult">
 
-<button onclick="copyCW()">
-Kopiera
-</button>
+---
 
 </div>
 
-<input
-type="file"
-id="audioFile"
-accept=".wav,.mp3,.m4a"
->
+</div>
 
-<button onclick="analyzeCW()">
-Analysera ljudfil
+<div class="result-box">
+
+<strong>Klartext:</strong>
+
+<div id="textResult">
+
+---
+
+</div>
+
+</div>
+
+<div class="result-box">
+
+<strong>Svensk översättning:</strong>
+
+<div id="swedishResult">
+
+---
+
+</div>
+
+</div>
+
+<div class="result-box">
+
+<strong>Signaldata:</strong>
+
+<div id="signalInfo">
+
+---
+
+</div>
+
+</div>
+
+<div class="button-grid">
+
+<button onclick="copyResults()">
+
+Kopiera resultat
+
 </button>
 
-<div class="status" id="status">
+<button onclick="clearResults()">
 
-Redo för analys.
+Rensa
+
+</button>
 
 </div>
 
 <a
 class="back-button"
-href="operations-center.html"
+href="operation-center.html"
 >
 
 ← Tillbaka till Operations Center
@@ -356,220 +347,153 @@ href="operations-center.html"
 <!-- ===== FOOTER ===== -->
 <footer>
 
-DX-OS CW Converter V2 • SDR • CW • AI • Signal Intelligence
+DX-OS CW Converter • SDR • CW • AI • Signal Intelligence
 
 </footer>
 
+<!-- ===== CW ANALYZER ===== -->
+<script src="data/cw-file-analyzer.js"></script>
+
 <script>
 
-/* ===== MORSETABELL ===== */
-const morseCode = {
+/* ===================================================== */
+/* ===== STARTA ANALYS ================================= */
+/* ===================================================== */
 
-"A":".-",
-"B":"-...",
-"C":"-.-.",
-"D":"-..",
-"E":".",
-"F":"..-.",
-"G":"--.",
-"H":"....",
-"I":"..",
-"J":".---",
-"K":"-.-",
-"L":".-..",
-"M":"--",
-"N":"-.",
-"O":"---",
-"P":".--.",
-"Q":"--.-",
-"R":".-.",
-"S":"...",
-"T":"-",
-"U":"..-",
-"V":"...-",
-"W":".--",
-"X":"-..-",
-"Y":"-.--",
-"Z":"--..",
-"1":".----",
-"2":"..---",
-"3":"...--",
-"4":"....-",
-"5":".....",
-"6":"-....",
-"7":"--...",
-"8":"---..",
-"9":"----.",
-"0":"-----",
-" ":"/"
+function startCWAnalysis(){
 
-};
+    /* ===== ANALYS ===== */
+    analyzeCWFile(
 
-/* ===== TEXT TILL CW ===== */
-function convertToCW(){
+        "audioFile",
+        "statusBox",
 
-    /* ===== INPUT ===== */
-    const text =
-    document.getElementById("textInput")
-    .value
-    .toUpperCase();
+        function(result){
 
-    /* ===== RESULTAT ===== */
-    let result = "";
+            /* ===== CW ===== */
+            document.getElementById(
+                "cwResult"
+            ).innerHTML =
+            result.detectedCW;
 
-    /* ===== LOOP ===== */
-    for(let char of text){
+            /* ===== TEXT ===== */
+            document.getElementById(
+                "textResult"
+            ).innerHTML =
+            result.detectedText;
 
-        /* ===== MORSE ===== */
-        if(morseCode[char]){
-            result += morseCode[char] + " ";
+            /* ===== SVENSKA ===== */
+            document.getElementById(
+                "swedishResult"
+            ).innerHTML =
+            result.swedishText;
+
+            /* ===== INFO ===== */
+            document.getElementById(
+                "signalInfo"
+            ).innerHTML =
+
+            "Fil: " +
+            result.fileName +
+
+            "<br><br>" +
+
+            "Storlek: " +
+            result.fileSize +
+
+            "<br><br>" +
+
+            "Typ: " +
+            result.fileType +
+
+            "<br><br>" +
+
+            "Signal: " +
+            result.signalQuality +
+
+            "<br><br>" +
+
+            "WPM: " +
+            result.estimatedWPM;
+
         }
 
-    }
-
-    /* ===== SKRIV ===== */
-    document.getElementById("cwOutput")
-    .value =
-    result;
+    );
 
 }
 
-/* ===== CW TILL TEXT ===== */
-function convertToText(){
+/* ===================================================== */
+/* ===== KOPIERA RESULTAT ============================== */
+/* ===================================================== */
+
+function copyResults(){
+
+    /* ===== TEXT ===== */
+    const text =
+
+        "CW: " +
+        document.getElementById(
+            "cwResult"
+        ).innerText +
+
+        "\n\nTEXT: " +
+        document.getElementById(
+            "textResult"
+        ).innerText +
+
+        "\n\nSVENSKA: " +
+        document.getElementById(
+            "swedishResult"
+        ).innerText;
+
+    /* ===== COPY ===== */
+    navigator.clipboard.writeText(
+        text
+    );
+
+    /* ===== STATUS ===== */
+    document.getElementById(
+        "statusBox"
+    ).innerHTML =
+    "✅ Resultat kopierat";
+
+}
+
+/* ===================================================== */
+/* ===== RENSA ========================================= */
+/* ===================================================== */
+
+function clearResults(){
 
     /* ===== CW ===== */
-    const cw =
-    document.getElementById("cwOutput")
-    .value
-    .trim()
-    .split(" ");
+    document.getElementById(
+        "cwResult"
+    ).innerHTML =
+    "---";
 
-    /* ===== RESULTAT ===== */
-    let result = "";
+    /* ===== TEXT ===== */
+    document.getElementById(
+        "textResult"
+    ).innerHTML =
+    "---";
 
-    /* ===== LOOP ===== */
-    cw.forEach(code => {
+    /* ===== SVENSKA ===== */
+    document.getElementById(
+        "swedishResult"
+    ).innerHTML =
+    "---";
 
-        /* ===== LOOP TABELL ===== */
-        for(let key in morseCode){
-
-            /* ===== MATCH ===== */
-            if(morseCode[key] === code){
-
-                result += key;
-
-            }
-
-        }
-
-    });
-
-    /* ===== SKRIV ===== */
-    document.getElementById("textInput")
-    .value =
-    result;
-
-}
-
-/* ===== KOPIERA ===== */
-function copyCW(){
-
-    /* ===== TEXTAREA ===== */
-    const output =
-    document.getElementById("cwOutput");
-
-    /* ===== MARKERA ===== */
-    output.select();
-
-    /* ===== KOPIERA ===== */
-    document.execCommand("copy");
+    /* ===== INFO ===== */
+    document.getElementById(
+        "signalInfo"
+    ).innerHTML =
+    "---";
 
     /* ===== STATUS ===== */
-    document.getElementById("status")
-    .innerHTML =
-    "✅ CW kopierad";
-
-}
-
-/* ===== WPM ===== */
-function updateWPM(){
-
-    /* ===== HÄMTA ===== */
-    const value =
-    document.getElementById("wpmSlider")
-    .value;
-
-    /* ===== SKRIV ===== */
-    document.getElementById("wpmValue")
-    .innerHTML =
-    value;
-
-}
-
-/* ===== SPELA CW ===== */
-function playCW(){
-
-    /* ===== FLASH ===== */
-    const flash =
-    document.getElementById("flashBox");
-
-    /* ===== AKTIV ===== */
-    flash.classList.add("flash-active");
-
-    /* ===== STOP ===== */
-    setTimeout(function(){
-
-        flash.classList.remove("flash-active");
-
-    },500);
-
-    /* ===== STATUS ===== */
-    document.getElementById("status")
-    .innerHTML =
-    "▶ Spelar CW";
-
-}
-
-/* ===== ANALYS ===== */
-function analyzeCW(){
-
-    /* ===== FIL ===== */
-    const file =
-    document.getElementById("audioFile");
-
-    /* ===== STATUS ===== */
-    if(file.files.length === 0){
-
-        alert("Välj en ljudfil först.");
-
-        return;
-
-    }
-
-    /* ===== STATUS ===== */
-    document.getElementById("status")
-    .innerHTML =
-    "🔄 Analyserar ljudfil...";
-
-    /* ===== SIMULERING ===== */
-    setTimeout(function(){
-
-        /* ===== CW ===== */
-        document.getElementById("cwOutput")
-        .value =
-        "-.-. --.-";
-
-        /* ===== TEXT ===== */
-        document.getElementById("textInput")
-        .value =
-        "CQ";
-
-        /* ===== STATUS ===== */
-        document.getElementById("status")
-        .innerHTML =
-        "✅ CW identifierad";
-
-    },2000);
+    document.getElementById(
+        "statusBox"
+    ).innerHTML =
+    "Rensat";
 
 }
 
