@@ -36,7 +36,7 @@ header{
 header h1{
     margin:0;
     color:#eab308;
-    font-size:48px;
+    font-size:52px;
 }
 
 /* ===== TEXT ===== */
@@ -44,11 +44,12 @@ header p{
     margin-top:15px;
     color:#cbd5e1;
     font-size:18px;
+    line-height:1.6;
 }
 
 /* ===== WRAPPER ===== */
 .wrapper{
-    max-width:1400px;
+    max-width:1500px;
     margin:auto;
     padding:30px 20px;
 }
@@ -56,7 +57,7 @@ header p{
 /* ===== GRID ===== */
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
     gap:25px;
 }
 
@@ -79,13 +80,14 @@ header p{
 .card h2{
     margin-top:0;
     color:#eab308;
-    font-size:26px;
+    font-size:28px;
 }
 
 /* ===== TEXT ===== */
 .card p{
     color:#cbd5e1;
     line-height:1.6;
+    min-height:90px;
 }
 
 /* ===== BUTTON ===== */
@@ -106,6 +108,17 @@ header p{
 /* ===== BUTTON HOVER ===== */
 .button:hover{
     opacity:0.9;
+}
+
+/* ===== STATUS ===== */
+.status{
+    display:inline-block;
+    margin-top:10px;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    background:#111827;
+    color:#94a3b8;
 }
 
 /* ===== FOOTER ===== */
@@ -134,7 +147,8 @@ DX-OS
 
 <p>
 
-DX-operativsystem för SDR, DX-loggning, propagation och global radiolyssning.
+DX-operativsystem för SDR, propagation, global radiolyssning,
+DX-loggning, mottagarhantering och live-analys.
 
 </p>
 
@@ -157,9 +171,16 @@ DX World Map
 
 <p>
 
-Global DX-karta med mottagare, DX-paths, statistik, frekvensförslag och propagation.
+Global DX-karta med mottagare, DX-paths, statistik,
+frekvensförslag och propagation.
 
 </p>
+
+<div class="status">
+
+Aktiv modul
+
+</div>
 
 <a
 href="modules/dx-map.html"
@@ -182,9 +203,16 @@ SDR Directory
 
 <p>
 
-Hitta KiwiSDR, OpenWebRX, WebSDR och specialmottagare för HF, VHF, UHF och satellit.
+Hitta KiwiSDR, OpenWebRX, WebSDR och specialmottagare
+för HF, VHF, UHF och satellit.
 
 </p>
+
+<div class="status">
+
+Aktiv modul
+
+</div>
 
 <a
 href="modules/sdr-directory.html"
@@ -207,9 +235,16 @@ Receiver Manager
 
 <p>
 
-Hantera mottagare, koordinater, färger och SDR-data för hela DX-OS.
+Hantera mottagare, koordinater, färger,
+URL:er och SDR-data för hela DX-OS.
 
 </p>
+
+<div class="status">
+
+Aktiv modul
+
+</div>
 
 <a
 href="modules/receiver-manager.html"
@@ -232,9 +267,16 @@ Live Radio
 
 <p>
 
-Öppna SDR-mottagare och lyssna live på HF, kortvåg, utility, flyg och specialband.
+Öppna SDR-mottagare och lyssna live på HF,
+kortvåg, utility, flyg och specialband.
 
 </p>
+
+<div class="status">
+
+Aktiv modul
+
+</div>
 
 <a
 href="modules/live-radio.html"
@@ -257,9 +299,16 @@ Loggcenter
 
 <p>
 
-Logga stationer, frekvenser, UTC-tider och DX-observationer i DX-OS.
+Logga stationer, UTC-tider, signalstyrkor,
+frekvenser och DX-observationer.
 
 </p>
+
+<div class="status">
+
+Aktiv modul
+
+</div>
 
 <a
 href="modules/loggcenter.html"
@@ -271,7 +320,7 @@ class="button">
 
 </div>
 
-<!-- ===== FRAMTIDA MODUL ===== -->
+<!-- ===== PROPAGATION ===== -->
 <div class="card">
 
 <h2>
@@ -282,15 +331,22 @@ Propagation Center
 
 <p>
 
-Kommande modul för greyline, nattzon, MUF och realtidspropagation.
+Greyline, UTC, dag/natt-zon,
+bandstatus och framtida soldata.
 
 </p>
 
+<div class="status">
+
+Ny modul
+
+</div>
+
 <a
-href="#"
+href="modules/propagation-center.html"
 class="button">
 
-Kommer snart
+Öppna Propagation Center
 
 </a>
 
