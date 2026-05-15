@@ -1,0 +1,316 @@
+!DOCTYPE html>
+<html lang="sv">
+<!DOCTYPE html>
+<html lang="sv">
+
+<html lang="sv">
+
+<head>
+
+<!-- Teckenuppsättning -->
+<meta charset="UTF-8">
+
+<!-- Mobilanpassning -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Titel -->
+<title>DX-OS World Map</title>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+
+/* ===== GRUND ===== */
+*{
+    box-sizing:border-box;
+}
+
+/* ===== BODY ===== */
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#05070b;
+    color:#ffffff;
+}
+
+/* ===== HEADER ===== */
+header{
+    background:#0b1220;
+    padding:20px;
+    text-align:center;
+    border-bottom:2px solid #1f2937;
+}
+
+/* ===== RUBRIK ===== */
+header h1{
+    margin:0;
+    color:#eab308;
+    font-size:32px;
+}
+
+/* ===== TEXT ===== */
+header p{
+    color:#cbd5e1;
+    margin-top:10px;
+}
+
+/* ===== KARTWRAPPER ===== */
+.map-wrapper{
+    width:100%;
+    height:70vh;
+}
+
+/* ===== KARTA ===== */
+#map{
+    width:100%;
+    height:100%;
+}
+
+/* ===== PANEL ===== */
+.panel{
+    padding:20px;
+    background:#0b1220;
+    border-top:2px solid #1f2937;
+}
+
+/* ===== FORM ===== */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+    max-width:500px;
+    margin:auto;
+}
+
+/* ===== INPUT ===== */
+input{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#111827;
+    color:#ffffff;
+    font-size:16px;
+}
+
+/* ===== KNAPP ===== */
+button{
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#eab308;
+    color:#000000;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* ===== KNAPP HOVER ===== */
+button:hover{
+    opacity:0.9;
+}
+
+/* ===== INFO ===== */
+.info{
+    text-align:center;
+    color:#94a3b8;
+    margin-top:15px;
+    font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+
+<h1>DX-OS World Map</h1>
+
+<p>
+Logga stationer och bygg din egen DX-världskarta.
+</p>
+
+</header>
+
+<!-- ===== KARTA ===== -->
+<div class="map-wrapper">
+
+<div id="map"></div>
+
+</div>
+
+<!-- ===== PANEL ===== -->
+<div class="panel">
+
+<div class="form-grid">
+
+<!-- Stationsnamn -->
+<input type="text" id="station" placeholder="Stationsnamn">
+
+<!-- Frekvens -->
+<input type="text" id="frequency" placeholder="Frekvens">
+
+<!-- Land -->
+<input type="text" id="country" placeholder="Land">
+
+<!-- Latitud -->
+<input type="number" id="lat" placeholder="Latitud">
+
+<!-- Longitud -->
+<input type="number" id="lng" placeholder="Longitud">
+
+<!-- Knapp -->
+<button onclick="addStation()">
+
+Lägg till station
+
+</button>
+
+</div>
+
+<!-- Info -->
+<div class="info">
+
+Tips: Du kan hitta koordinater via Google Maps.
+
+</div>
+
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+/* ===== SKAPA KARTA ===== */
+const map = L.map('map').setView([20,0],2);
+
+/* ===== KARTLAGER ===== */
+L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+    attribution:'© OpenStreetMap'
+}).addTo(map);
+
+/* ===== ARRAY FÖR STATIONER ===== */
+let stations = [];
+
+/* ===== LADDA SPARADE STATIONER ===== */
+loadStations();
+
+/* ===== FUNKTION ===== */
+function addStation(){
+
+    /* ===== HÄMTA FÄLT ===== */
+    const station =
+    document.getElementById("station").value;
+
+    const frequency =
+    document.getElementById("frequency").value;
+
+    const country =
+    document.getElementById("country").value;
+
+    const lat =
+    parseFloat(document.getElementById("lat").value);
+
+    const lng =
+    parseFloat(document.getElementById("lng").value);
+
+    /* ===== KONTROLL ===== */
+    if(
+        !station ||
+        !frequency ||
+        !country ||
+        isNaN(lat) ||
+        isNaN(lng)
+    ){
+        alert("Fyll i alla fält.");
+        return;
+    }
+
+    /* ===== SKAPA MARKÖR ===== */
+    const marker = L.marker([lat,lng]).addTo(map);
+
+    /* ===== POPUP ===== */
+    marker.bindPopup(
+        `
+        <b>${station}</b><br>
+        ${frequency}<br>
+        ${country}
+        `
+    );
+
+    /* ===== OBJEKT ===== */
+    const stationData = {
+        station:station,
+        frequency:frequency,
+        country:country,
+        lat:lat,
+        lng:lng
+    };
+
+    /* ===== SPARA I ARRAY ===== */
+    stations.push(stationData);
+
+    /* ===== SPARA LOKALT ===== */
+    localStorage.setItem(
+        "dxStations",
+        JSON.stringify(stations)
+    );
+
+    /* ===== TÖM FÄLT ===== */
+    document.getElementById("station").value = "";
+    document.getElementById("frequency").value = "";
+    document.getElementById("country").value = "";
+    document.getElementById("lat").value = "";
+    document.getElementById("lng").value = "";
+
+}
+
+/* ===== LADDA STATIONER ===== */
+function loadStations(){
+
+    /* ===== HÄMTA DATA ===== */
+    const saved =
+    localStorage.getItem("dxStations");
+
+    /* ===== KONTROLL ===== */
+    if(saved){
+
+        /* ===== KONVERTERA ===== */
+        stations = JSON.parse(saved);
+
+        /* ===== LOOP ===== */
+        stations.forEach(station => {
+
+            /* ===== MARKÖR ===== */
+            const marker =
+            L.marker([
+                station.lat,
+                station.lng
+            ]).addTo(map);
+
+            /* ===== POPUP ===== */
+            marker.bindPopup(
+                `
+                <b>${station.station}</b><br>
+                ${station.frequency}<br>
+                ${station.country}
+                `
+            );
+
+        });
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
