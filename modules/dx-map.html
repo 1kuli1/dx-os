@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>DX-OS World Map</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 
 <style>
-*{box-sizing:border-box;}
 
+/* ===== GRUND ===== */
+*{
+    box-sizing:border-box;
+}
+
+/* ===== BODY ===== */
 body{
     margin:0;
     font-family:Arial,sans-serif;
@@ -17,6 +29,7 @@ body{
     color:#ffffff;
 }
 
+/* ===== HEADER ===== */
 header{
     background:#0b1220;
     padding:20px;
@@ -24,34 +37,39 @@ header{
     border-bottom:2px solid #1f2937;
 }
 
+/* ===== RUBRIK ===== */
 header h1{
     margin:0;
     color:#eab308;
     font-size:32px;
 }
 
+/* ===== TEXT ===== */
 header p{
     margin-top:10px;
     color:#cbd5e1;
 }
 
+/* ===== MAP WRAPPER ===== */
 .map-wrapper{
     width:100%;
     height:70vh;
     position:relative;
 }
 
+/* ===== MAP ===== */
 #map{
     width:100%;
     height:100%;
 }
 
+/* ===== CONTROL PANEL ===== */
 .control-panel{
     position:absolute;
     top:15px;
     right:15px;
     z-index:1000;
-    width:250px;
+    width:260px;
     background:#0b1220;
     border:1px solid #1f2937;
     border-radius:15px;
@@ -61,12 +79,14 @@ header p{
     overflow:auto;
 }
 
+/* ===== PANEL RUBRIK ===== */
 .control-panel h2{
     margin-top:0;
     color:#eab308;
     font-size:18px;
 }
 
+/* ===== LABEL ===== */
 .control-panel label{
     display:flex;
     align-items:center;
@@ -77,12 +97,21 @@ header p{
     font-size:14px;
 }
 
+/* ===== PANELTEXT ===== */
+.panel-text{
+    margin-top:15px;
+    color:#94a3b8;
+    font-size:13px;
+}
+
+/* ===== PANEL ===== */
 .panel{
     background:#0b1220;
     border-top:2px solid #1f2937;
     padding:20px;
 }
 
+/* ===== GRID ===== */
 .form-grid{
     display:grid;
     grid-template-columns:1fr;
@@ -91,6 +120,7 @@ header p{
     margin:auto;
 }
 
+/* ===== INPUT ===== */
 input,
 select{
     width:100%;
@@ -102,6 +132,7 @@ select{
     font-size:16px;
 }
 
+/* ===== BUTTON ===== */
 button{
     padding:14px;
     border:none;
@@ -113,10 +144,12 @@ button{
     cursor:pointer;
 }
 
+/* ===== BUTTON HOVER ===== */
 button:hover{
     opacity:0.9;
 }
 
+/* ===== INFO ===== */
 .info{
     text-align:center;
     color:#94a3b8;
@@ -124,18 +157,21 @@ button:hover{
     font-size:14px;
 }
 
+/* ===== HR ===== */
 hr{
     border:none;
     border-top:1px solid #1f2937;
     margin:15px 0;
 }
 
+/* ===== STATS ===== */
 #statsPanel p{
     margin:8px 0;
     color:#cbd5e1;
     font-size:14px;
 }
 
+/* ===== FREQUENCY BOX ===== */
 #frequencySuggestions{
     background:#111827;
     border:1px solid #1f2937;
@@ -145,6 +181,7 @@ hr{
     display:none;
 }
 
+/* ===== SUGGESTION ===== */
 .suggestion-item{
     padding:10px;
     margin-top:6px;
@@ -153,87 +190,241 @@ hr{
     cursor:pointer;
 }
 
+/* ===== SUGGESTION HOVER ===== */
 .suggestion-item:hover{
     background:#1f2937;
 }
+
+/* ===== FILE ===== */
+#importFile{
+    margin-top:10px;
+    width:100%;
+    padding:10px;
+    background:#111827;
+    border-radius:10px;
+    color:#ffffff;
+    border:none;
+}
+
 </style>
+
 </head>
 
 <body>
 
+<!-- ===== HEADER ===== -->
 <header>
+
 <h1>DX-OS World Map</h1>
-<p>DX-karta med mottagare, stationer, statistik och frekvensförslag.</p>
+
+<p>
+
+DX-karta med mottagare, statistik, DX-paths och backup.
+
+</p>
+
 </header>
 
+<!-- ===== MAP WRAPPER ===== -->
 <div class="map-wrapper">
 
+<!-- ===== CONTROL PANEL ===== -->
 <div class="control-panel">
 
-<h2>Kartlager</h2>
+<h2>
+
+Kartlager
+
+</h2>
 
 <label>
-<input type="checkbox" id="toggleReceivers" checked onchange="redrawMap()">
+
+<input
+type="checkbox"
+id="toggleReceivers"
+checked
+onchange="redrawMap()">
+
 Visa mottagare
+
 </label>
 
 <label>
-<input type="checkbox" id="toggleStations" checked onchange="redrawMap()">
+
+<input
+type="checkbox"
+id="toggleStations"
+checked
+onchange="redrawMap()">
+
 Visa stationer
+
 </label>
 
 <label>
-<input type="checkbox" id="toggleLines" checked onchange="redrawMap()">
+
+<input
+type="checkbox"
+id="toggleLines"
+checked
+onchange="redrawMap()">
+
 Visa DX-linjer
+
 </label>
 
 <hr>
 
-<h2>Mottagare</h2>
-<div id="receiverFilters"></div>
+<h2>
+
+Mottagare
+
+</h2>
+
+<div id="receiverFilters">
+
+</div>
+
+<div class="panel-text">
+
+Filtrera stationer och DX-paths per mottagare.
+
+</div>
 
 <hr>
 
-<h2>Statistik</h2>
+<h2>
+
+Statistik
+
+</h2>
+
 <div id="statsPanel">
-<p>Stationer: 0</p>
-<p>Länder: 0</p>
-<p>Mottagare: 0</p>
-<p>Senaste station: Ingen</p>
-</div>
+
+<p>
+
+Stationer: 0
+
+</p>
+
+<p>
+
+Länder: 0
+
+</p>
+
+<p>
+
+Mottagare: 0
+
+</p>
+
+<p>
+
+Senaste station:
+Ingen
+
+</p>
 
 </div>
 
+<hr>
+
+<h2>
+
+Backup
+
+</h2>
+
+<button onclick="exportDXData()">
+
+Exportera DX-data
+
+</button>
+
+<input
+type="file"
+id="importFile"
+accept=".json"
+onchange="importDXData(event)">
+
+<div class="panel-text">
+
+Exportera eller återställ hela DX-OS databasen.
+
+</div>
+
+</div>
+
+<!-- ===== MAP ===== -->
 <div id="map"></div>
 
 </div>
 
+<!-- ===== PANEL ===== -->
 <div class="panel">
 
 <div class="form-grid">
 
-<input type="text" id="station" placeholder="Stationsnamn" oninput="autoFillStation()">
+<!-- ===== STATION ===== -->
+<input
+type="text"
+id="station"
+placeholder="Stationsnamn"
+oninput="autoFillStation()">
 
-<input type="text" id="frequency" placeholder="Frekvens, t.ex. 675" oninput="showFrequencySuggestions()">
+<!-- ===== FREQUENCY ===== -->
+<input
+type="text"
+id="frequency"
+placeholder="Frekvens, t.ex. 675"
+oninput="showFrequencySuggestions()">
 
-<div id="frequencySuggestions"></div>
+<!-- ===== SUGGESTIONS ===== -->
+<div id="frequencySuggestions">
 
-<input type="text" id="country" placeholder="Land">
+</div>
 
+<!-- ===== COUNTRY ===== -->
+<input
+type="text"
+id="country"
+placeholder="Land">
+
+<!-- ===== RX ===== -->
 <select id="receiverSelect">
-<option value="">Välj mottagare</option>
+
+<option value="">
+Välj mottagare
+</option>
+
 </select>
 
-<input type="number" id="lat" placeholder="Latitud">
+<!-- ===== LAT ===== -->
+<input
+type="number"
+id="lat"
+placeholder="Latitud">
 
-<input type="number" id="lng" placeholder="Longitud">
+<!-- ===== LNG ===== -->
+<input
+type="number"
+id="lng"
+placeholder="Longitud">
 
-<button onclick="addStation()">Lägg till station</button>
+<!-- ===== BUTTON ===== -->
+<button onclick="addStation()">
+
+Lägg till station
+
+</button>
 
 </div>
 
 <div class="info">
-Skriv en frekvens så visas möjliga stationer automatiskt.
+
+Skriv frekvens för att få stationsförslag automatiskt.
+
 </div>
 
 </div>
@@ -241,77 +432,145 @@ Skriv en frekvens så visas möjliga stationer automatiskt.
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
+
+/* ===== STATION DATABASE ===== */
 const stationDatabase = [
-    {name:"Radio Romania", country:"Rumänien", lat:44.43, lng:26.10},
-    {name:"Radio Caroline", country:"England", lat:51.50, lng:0.12},
-    {name:"SER", country:"Spanien", lat:40.41, lng:-3.70},
-    {name:"BBC", country:"England", lat:51.50, lng:-0.12},
-    {name:"RNE", country:"Spanien", lat:40.41, lng:-3.70},
-    {name:"Radio Maria", country:"Italien", lat:45.46, lng:9.19}
+
+{
+    name:"Radio Romania",
+    country:"Rumänien",
+    lat:44.43,
+    lng:26.10
+},
+
+{
+    name:"Radio Caroline",
+    country:"England",
+    lat:51.50,
+    lng:0.12
+},
+
+{
+    name:"SER",
+    country:"Spanien",
+    lat:40.41,
+    lng:-3.70
+},
+
+{
+    name:"BBC",
+    country:"England",
+    lat:51.50,
+    lng:-0.12
+},
+
+{
+    name:"RNE",
+    country:"Spanien",
+    lat:40.41,
+    lng:-3.70
+},
+
+{
+    name:"Radio Maria",
+    country:"Italien",
+    lat:45.46,
+    lng:9.19
+}
+
 ];
 
+/* ===== FREQUENCY DATABASE ===== */
 const frequencyDatabase = [
-    {
-        frequency:"675",
-        stations:["Radio Maria"]
-    },
-    {
-        frequency:"747",
-        stations:["Radio 5", "Mogelijke MW-stationer"]
-    },
-    {
-        frequency:"999",
-        stations:["SER", "RNE"]
-    },
-    {
-        frequency:"648",
-        stations:["Radio Caroline"]
-    },
-    {
-        frequency:"6030",
-        stations:["Radio Romania"]
-    }
+
+{
+    frequency:"675",
+    stations:["Radio Maria"]
+},
+
+{
+    frequency:"648",
+    stations:["Radio Caroline"]
+},
+
+{
+    frequency:"747",
+    stations:["Radio 5"]
+},
+
+{
+    frequency:"999",
+    stations:["SER","RNE"]
+},
+
+{
+    frequency:"6030",
+    stations:["Radio Romania"]
+}
+
 ];
 
-const map = L.map("map").setView([20,0],2);
+/* ===== MAP ===== */
+const map =
+L.map("map").setView([20,0],2);
 
+/* ===== TILE ===== */
 L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {attribution:"© OpenStreetMap"}
-).addTo(map);
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+    attribution:"© OpenStreetMap"
+}).addTo(map);
 
+/* ===== ARRAYS ===== */
 let stations = [];
+
 let receivers = [];
+
 let receiverMarkers = [];
+
 let stationMarkers = [];
+
 let dxLines = [];
+
 let receiverVisibility = {};
 
+/* ===== LOAD ===== */
 loadReceivers();
+
 createReceiverFilters();
+
 loadStations();
 
+/* ===== LOAD RX ===== */
 function loadReceivers(){
 
-    const saved = localStorage.getItem("dxReceivers");
+    const saved =
+    localStorage.getItem("dxReceivers");
 
     if(!saved){
         return;
     }
 
-    receivers = JSON.parse(saved);
+    receivers =
+    JSON.parse(saved);
 
-    const select = document.getElementById("receiverSelect");
+    const select =
+    document.getElementById("receiverSelect");
 
     receivers.forEach(receiver => {
 
-        receiverVisibility[receiver.id] = true;
+        receiverVisibility[
+            receiver.id
+        ] = true;
 
-        const option = document.createElement("option");
+        const option =
+        document.createElement("option");
 
-        option.value = receiver.id;
+        option.value =
+        receiver.id;
 
-        option.textContent = receiver.name;
+        option.textContent =
+        receiver.name;
 
         select.appendChild(option);
 
@@ -319,19 +578,37 @@ function loadReceivers(){
 
 }
 
+/* ===== CREATE FILTERS ===== */
 function createReceiverFilters(){
 
-    const container = document.getElementById("receiverFilters");
+    const container =
+    document.getElementById(
+        "receiverFilters"
+    );
 
     container.innerHTML = "";
 
     receivers.forEach(receiver => {
 
-        const label = document.createElement("label");
+        const label =
+        document.createElement("label");
 
         label.innerHTML = `
-        <input type="checkbox" checked onchange="toggleReceiver('${receiver.id}')">
-        <span style="color:${receiver.color};font-weight:bold;">${receiver.name}</span>
+
+        <input
+        type="checkbox"
+        checked
+        onchange="toggleReceiver('${receiver.id}')">
+
+        <span style="
+        color:${receiver.color};
+        font-weight:bold;
+        ">
+
+        ${receiver.name}
+
+        </span>
+
         `;
 
         container.appendChild(label);
@@ -340,27 +617,54 @@ function createReceiverFilters(){
 
 }
 
+/* ===== TOGGLE ===== */
 function toggleReceiver(receiverId){
 
-    receiverVisibility[receiverId] = !receiverVisibility[receiverId];
+    receiverVisibility[
+        receiverId
+    ] =
+    !receiverVisibility[
+        receiverId
+    ];
 
     redrawMap();
 
 }
 
+/* ===== AUTO FILL ===== */
 function autoFillStation(){
 
-    const input = document.getElementById("station").value.toLowerCase();
+    const input =
+    document.getElementById(
+        "station"
+    )
+    .value
+    .toLowerCase();
 
     stationDatabase.forEach(station => {
 
-        if(station.name.toLowerCase().includes(input) && input.length > 2){
+        if(
+            station.name
+            .toLowerCase()
+            .includes(input)
+            &&
+            input.length > 2
+        ){
 
-            document.getElementById("country").value = station.country;
+            document.getElementById(
+                "country"
+            ).value =
+            station.country;
 
-            document.getElementById("lat").value = station.lat;
+            document.getElementById(
+                "lat"
+            ).value =
+            station.lat;
 
-            document.getElementById("lng").value = station.lng;
+            document.getElementById(
+                "lng"
+            ).value =
+            station.lng;
 
         }
 
@@ -368,11 +672,21 @@ function autoFillStation(){
 
 }
 
+/* ===== FREQUENCY ===== */
 function showFrequencySuggestions(){
 
-    const input = document.getElementById("frequency").value.replace("kHz","").trim();
+    const input =
+    document.getElementById(
+        "frequency"
+    )
+    .value
+    .replace("kHz","")
+    .trim();
 
-    const box = document.getElementById("frequencySuggestions");
+    const box =
+    document.getElementById(
+        "frequencySuggestions"
+    );
 
     box.innerHTML = "";
 
@@ -384,7 +698,10 @@ function showFrequencySuggestions(){
 
     }
 
-    const match = frequencyDatabase.find(item => item.frequency === input);
+    const match =
+    frequencyDatabase.find(
+        item => item.frequency === input
+    );
 
     if(!match){
 
@@ -396,23 +713,31 @@ function showFrequencySuggestions(){
 
     box.style.display = "block";
 
-    box.innerHTML = "<strong>Möjliga stationer:</strong>";
+    box.innerHTML =
+    "<strong>Möjliga stationer:</strong>";
 
     match.stations.forEach(name => {
 
-        const div = document.createElement("div");
+        const div =
+        document.createElement("div");
 
-        div.className = "suggestion-item";
+        div.className =
+        "suggestion-item";
 
-        div.textContent = name;
+        div.textContent =
+        name;
 
-        div.onclick = function(){
+        div.onclick =
+        function(){
 
-            document.getElementById("station").value = name;
+            document.getElementById(
+                "station"
+            ).value = name;
 
             autoFillStation();
 
-            box.style.display = "none";
+            box.style.display =
+            "none";
 
         };
 
@@ -422,44 +747,88 @@ function showFrequencySuggestions(){
 
 }
 
+/* ===== ADD ===== */
 function addStation(){
 
-    const station = document.getElementById("station").value;
+    const station =
+    document.getElementById(
+        "station"
+    ).value;
 
-    const frequency = document.getElementById("frequency").value;
+    const frequency =
+    document.getElementById(
+        "frequency"
+    ).value;
 
-    const country = document.getElementById("country").value;
+    const country =
+    document.getElementById(
+        "country"
+    ).value;
 
-    const receiverId = document.getElementById("receiverSelect").value;
+    const receiverId =
+    document.getElementById(
+        "receiverSelect"
+    ).value;
 
-    const lat = parseFloat(document.getElementById("lat").value);
+    const lat =
+    parseFloat(
+        document.getElementById(
+            "lat"
+        ).value
+    );
 
-    const lng = parseFloat(document.getElementById("lng").value);
+    const lng =
+    parseFloat(
+        document.getElementById(
+            "lng"
+        ).value
+    );
 
-    if(!station || !frequency || !country || !receiverId || isNaN(lat) || isNaN(lng)){
-
-        alert("Fyll i alla fält.");
-
+    if(
+        !station ||
+        !frequency ||
+        !country ||
+        !receiverId ||
+        isNaN(lat) ||
+        isNaN(lng)
+    ){
+        alert(
+            "Fyll i alla fält."
+        );
         return;
-
     }
 
-    const receiver = receivers.find(r => r.id == receiverId);
+    const receiver =
+    receivers.find(
+        r => r.id == receiverId
+    );
 
     const stationData = {
+
         station:station,
+
         frequency:frequency,
+
         country:country,
+
         lat:lat,
+
         lng:lng,
+
         receiverId:receiver.id,
+
         receiverName:receiver.name,
+
         receiverColor:receiver.color
+
     };
 
     stations.push(stationData);
 
-    localStorage.setItem("dxStations", JSON.stringify(stations));
+    localStorage.setItem(
+        "dxStations",
+        JSON.stringify(stations)
+    );
 
     redrawMap();
 
@@ -467,13 +836,18 @@ function addStation(){
 
 }
 
+/* ===== LOAD ===== */
 function loadStations(){
 
-    const saved = localStorage.getItem("dxStations");
+    const saved =
+    localStorage.getItem(
+        "dxStations"
+    );
 
     if(saved){
 
-        stations = JSON.parse(saved);
+        stations =
+        JSON.parse(saved);
 
     }
 
@@ -481,13 +855,20 @@ function loadStations(){
 
 }
 
+/* ===== REDRAW ===== */
 function redrawMap(){
 
-    receiverMarkers.forEach(marker => map.removeLayer(marker));
+    receiverMarkers.forEach(
+        marker => map.removeLayer(marker)
+    );
 
-    stationMarkers.forEach(marker => map.removeLayer(marker));
+    stationMarkers.forEach(
+        marker => map.removeLayer(marker)
+    );
 
-    dxLines.forEach(line => map.removeLayer(line));
+    dxLines.forEach(
+        line => map.removeLayer(line)
+    );
 
     receiverMarkers = [];
 
@@ -495,32 +876,54 @@ function redrawMap(){
 
     dxLines = [];
 
-    const showReceivers = document.getElementById("toggleReceivers").checked;
+    const showReceivers =
+    document.getElementById(
+        "toggleReceivers"
+    ).checked;
 
-    const showStations = document.getElementById("toggleStations").checked;
+    const showStations =
+    document.getElementById(
+        "toggleStations"
+    ).checked;
 
-    const showLines = document.getElementById("toggleLines").checked;
+    const showLines =
+    document.getElementById(
+        "toggleLines"
+    ).checked;
 
     receivers.forEach(receiver => {
 
-        if(receiverVisibility[receiver.id] && showReceivers){
+        if(
+            receiverVisibility[
+                receiver.id
+            ]
+            &&
+            showReceivers
+        ){
 
-            const rxMarker = L.circleMarker(
-                [receiver.lat, receiver.lng],
-                {
-                    radius:8,
-                    color:receiver.color,
-                    fillColor:receiver.color,
-                    fillOpacity:1,
-                    weight:2
-                }
+            const rxMarker =
+            L.circleMarker(
+            [
+                receiver.lat,
+                receiver.lng
+            ],
+            {
+                radius:8,
+                color:receiver.color,
+                fillColor:receiver.color,
+                fillOpacity:1,
+                weight:2
+            }
             )
             .addTo(map)
-            .bindPopup(`
+
+            .bindPopup(
+                `
                 <b>${receiver.name}</b><br>
                 ${receiver.type}<br>
                 ${receiver.country}
-            `);
+                `
+            );
 
             receiverMarkers.push(rxMarker);
 
@@ -530,37 +933,63 @@ function redrawMap(){
 
     stations.forEach(station => {
 
-        if(receiverVisibility[station.receiverId]){
+        if(
+            receiverVisibility[
+                station.receiverId
+            ]
+        ){
 
-            const receiver = receivers.find(r => r.id == station.receiverId);
+            const receiver =
+            receivers.find(
+                r => r.id ==
+                station.receiverId
+            );
 
             if(showStations){
 
-                const marker = L.marker([station.lat, station.lng])
+                const marker =
+                L.marker([
+                    station.lat,
+                    station.lng
+                ])
                 .addTo(map)
-                .bindPopup(`
+
+                .bindPopup(
+                    `
                     <b>${station.station}</b><br>
                     ${station.frequency}<br>
                     ${station.country}<br>
                     RX: ${station.receiverName}
-                `);
+                    `
+                );
 
                 stationMarkers.push(marker);
 
             }
 
-            if(receiver && showLines){
+            if(
+                receiver &&
+                showLines
+            ){
 
-                const line = L.polyline(
+                const line =
+                L.polyline(
+                [
                     [
-                        [receiver.lat, receiver.lng],
-                        [station.lat, station.lng]
+                        receiver.lat,
+                        receiver.lng
                     ],
-                    {
-                        color:receiver.color,
-                        weight:2
-                    }
-                ).addTo(map);
+                    [
+                        station.lat,
+                        station.lng
+                    ]
+                ],
+                {
+                    color:receiver.color,
+                    weight:2
+                }
+                )
+                .addTo(map);
 
                 dxLines.push(line);
 
@@ -574,50 +1003,236 @@ function redrawMap(){
 
 }
 
+/* ===== STATS ===== */
 function updateStats(){
 
-    const stationCount = stations.length;
+    const stationCount =
+    stations.length;
 
-    const countries = [...new Set(stations.map(station => station.country))];
+    const countries =
+    [
+        ...new Set(
+            stations.map(
+                station =>
+                station.country
+            )
+        )
+    ];
 
-    const countryCount = countries.length;
+    const countryCount =
+    countries.length;
 
-    const receiverCount = receivers.length;
+    const receiverCount =
+    receivers.length;
 
-    let latestStation = "Ingen";
+    let latestStation =
+    "Ingen";
 
     if(stations.length > 0){
 
-        latestStation = stations[stations.length - 1].station;
+        latestStation =
+        stations[
+            stations.length - 1
+        ].station;
 
     }
 
-    document.getElementById("statsPanel").innerHTML = `
-        <p>Stationer: ${stationCount}</p>
-        <p>Länder: ${countryCount}</p>
-        <p>Mottagare: ${receiverCount}</p>
-        <p>Senaste station: ${latestStation}</p>
+    document.getElementById(
+        "statsPanel"
+    ).innerHTML = `
+
+    <p>
+
+    Stationer:
+    ${stationCount}
+
+    </p>
+
+    <p>
+
+    Länder:
+    ${countryCount}
+
+    </p>
+
+    <p>
+
+    Mottagare:
+    ${receiverCount}
+
+    </p>
+
+    <p>
+
+    Senaste station:
+    ${latestStation}
+
+    </p>
+
     `;
 
 }
 
-function clearForm(){
+/* ===== EXPORT ===== */
+function exportDXData(){
 
-    document.getElementById("station").value = "";
+    const exportData = {
 
-    document.getElementById("frequency").value = "";
+        stations:stations,
 
-    document.getElementById("country").value = "";
+        receivers:receivers,
 
-    document.getElementById("receiverSelect").value = "";
+        exportDate:
+        new Date().toISOString()
 
-    document.getElementById("lat").value = "";
+    };
 
-    document.getElementById("lng").value = "";
+    const json =
+    JSON.stringify(
+        exportData,
+        null,
+        2
+    );
 
-    document.getElementById("frequencySuggestions").style.display = "none";
+    const blob =
+    new Blob(
+    [json],
+    {
+        type:"application/json"
+    });
+
+    const url =
+    URL.createObjectURL(blob);
+
+    const a =
+    document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+    "dxos-backup.json";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
 
 }
+
+/* ===== IMPORT ===== */
+function importDXData(event){
+
+    const file =
+    event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const reader =
+    new FileReader();
+
+    reader.onload =
+    function(e){
+
+        try{
+
+            const imported =
+            JSON.parse(
+                e.target.result
+            );
+
+            if(imported.stations){
+
+                stations =
+                imported.stations;
+
+                localStorage.setItem(
+                    "dxStations",
+                    JSON.stringify(stations)
+                );
+
+            }
+
+            if(imported.receivers){
+
+                receivers =
+                imported.receivers;
+
+                localStorage.setItem(
+                    "dxReceivers",
+                    JSON.stringify(receivers)
+                );
+
+            }
+
+            receiverVisibility = {};
+
+            receivers.forEach(receiver => {
+
+                receiverVisibility[
+                    receiver.id
+                ] = true;
+
+            });
+
+            redrawMap();
+
+            createReceiverFilters();
+
+            alert(
+                "DX-data importerad."
+            );
+
+        }
+
+        catch(error){
+
+            alert(
+                "Felaktig backupfil."
+            );
+
+        }
+
+    };
+
+    reader.readAsText(file);
+
+}
+
+/* ===== CLEAR ===== */
+function clearForm(){
+
+    document.getElementById(
+        "station"
+    ).value = "";
+
+    document.getElementById(
+        "frequency"
+    ).value = "";
+
+    document.getElementById(
+        "country"
+    ).value = "";
+
+    document.getElementById(
+        "receiverSelect"
+    ).value = "";
+
+    document.getElementById(
+        "lat"
+    ).value = "";
+
+    document.getElementById(
+        "lng"
+    ).value = "";
+
+    document.getElementById(
+        "frequencySuggestions"
+    ).style.display =
+    "none";
+
+}
+
 </script>
 
 </body>
