@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX-OS Propagation Center</title>
+
+<style>
+*{box-sizing:border-box;}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#05070b;
+    color:#ffffff;
+}
+
+header{
+    background:#0b1220;
+    padding:30px 20px;
+    text-align:center;
+    border-bottom:2px solid #1f2937;
+}
+
+header h1{
+    margin:0;
+    color:#eab308;
+    font-size:38px;
+}
+
+header p{
+    color:#cbd5e1;
+}
+
+.wrapper{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#0b1220;
+    border:1px solid #1f2937;
+    border-radius:18px;
+    padding:20px;
+}
+
+.card h2{
+    margin-top:0;
+    color:#eab308;
+}
+
+.big{
+    font-size:32px;
+    font-weight:bold;
+    color:#ffffff;
+}
+
+.status{
+    padding:10px;
+    border-radius:10px;
+    background:#111827;
+    margin-top:10px;
+}
+
+.good{color:#22c55e;}
+.medium{color:#eab308;}
+.low{color:#f97316;}
+
+.map-box{
+    margin-top:20px;
+    height:420px;
+    background:linear-gradient(90deg,#020617 0%,#0f172a 50%,#111827 100%);
+    border:1px solid #1f2937;
+    border-radius:18px;
+    position:relative;
+    overflow:hidden;
+}
+
+.sun{
+    width:34px;
+    height:34px;
+    background:#eab308;
+    border-radius:50%;
+    position:absolute;
+    top:45%;
+    left:50%;
+    box-shadow:0 0 30px #eab308;
+}
+
+.night{
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:45%;
+    background:rgba(0,0,0,0.45);
+}
+
+.night.left{
+    left:0;
+}
+
+.night.right{
+    right:0;
+}
+
+.map-text{
+    position:absolute;
+    bottom:20px;
+    left:20px;
+    color:#cbd5e1;
+}
+
+.button{
+    display:block;
+    margin-top:25px;
+    padding:14px;
+    text-align:center;
+    background:#eab308;
+    color:#000000;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Propagation Center</h1>
+<p>DX-OS modul för UTC, greyline, bandstatus och radiokonditioner.</p>
+</header>
+
+<div class="wrapper">
+
+<div class="grid">
+
+<div class="card">
+<h2>UTC-tid</h2>
+<div class="big" id="utcTime">--:--:--</div>
+<p>All DX-loggning bör jämföras mot UTC.</p>
+</div>
+
+<div class="card">
+<h2>Lokal tid</h2>
+<div class="big" id="localTime">--:--:--</div>
+<p>Visar din aktuella lokala tid.</p>
+</div>
+
+<div class="card">
+<h2>Greyline-status</h2>
+<div class="big medium" id="greylineStatus">Beräknar...</div>
+<p>En enkel indikering för möjlig natt/dag-propagation.</p>
+</div>
+
+</div>
+
+<div class="map-box">
+<div class="night left" id="nightLeft"></div>
+<div class="night right" id="nightRight"></div>
+<div class="sun" id="sun"></div>
+<div class="map-text">
+<strong>Greyline-demo</strong><br>
+Visuell dag/natt-indikering. Mer exakt solkarta kan byggas senare.
+</div>
+</div>
+
+<div class="grid" style="margin-top:20px;">
+
+<div class="card">
+<h2>MW / Mellanvåg</h2>
+<div class="status good">Kväll/natt: ofta bäst</div>
+<p>Passar stationer som 675, 747, 999 och 1502 kHz.</p>
+</div>
+
+<div class="card">
+<h2>SW / Kortvåg</h2>
+<div class="status medium">Beror på band och tid</div>
+<p>31m, 49m och 41m kan vara mycket intressanta kvällstid.</p>
+</div>
+
+<div class="card">
+<h2>VHF / UHF</h2>
+<div class="status low">Normalt lokalt</div>
+<p>Kan bli intressant vid tropo, satellit eller specialmottagare.</p>
+</div>
+
+</div>
+
+<a class="button" href="../index.html">Tillbaka till DX-OS</a>
+
+</div>
+
+<script>
+function updateTime(){
+
+    const now = new Date();
+
+    document.getElementById("utcTime").textContent =
+    now.toUTCString().split(" ")[4];
+
+    document.getElementById("localTime").textContent =
+    now.toLocaleTimeString();
+
+    const utcHour = now.getUTCHours();
+
+    const sunPosition = (utcHour / 24) * 100;
+
+    document.getElementById("sun").style.left =
+    sunPosition + "%";
+
+    if(utcHour >= 18 || utcHour <= 5){
+
+        document.getElementById("greylineStatus").textContent =
+        "Bra kväll/nattläge";
+
+        document.getElementById("greylineStatus").className =
+        "big good";
+
+    }
+    else if(utcHour >= 5 && utcHour <= 8 || utcHour >= 15 && utcHour <= 18){
+
+        document.getElementById("greylineStatus").textContent =
+        "Greyline nära";
+
+        document.getElementById("greylineStatus").className =
+        "big medium";
+
+    }
+    else{
+
+        document.getElementById("greylineStatus").textContent =
+        "Dagtid";
+
+        document.getElementById("greylineStatus").className =
+        "big low";
+
+    }
+
+}
+
+updateTime();
+
+setInterval(updateTime,1000);
+</script>
+
+</body>
+</html>
