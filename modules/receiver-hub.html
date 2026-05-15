@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DX-OS Receiver Hub</title>
+
+<style>
+
+/* ===== GRUND ===== */
+*{
+    box-sizing:border-box;
+}
+
+/* ===== BODY ===== */
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#05070b;
+    color:#ffffff;
+}
+
+/* ===== HEADER ===== */
+header{
+    background:#0b1220;
+    padding:35px 20px;
+    text-align:center;
+    border-bottom:2px solid #1f2937;
+}
+
+/* ===== RUBRIK ===== */
+header h1{
+    margin:0;
+    font-size:42px;
+    color:#eab308;
+}
+
+/* ===== TEXT ===== */
+header p{
+    margin-top:12px;
+    color:#cbd5e1;
+    font-size:16px;
+}
+
+/* ===== WRAPPER ===== */
+.wrapper{
+    width:100%;
+    max-width:1400px;
+    margin:auto;
+    padding:25px;
+}
+
+/* ===== FILTER ===== */
+.filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+/* ===== FILTERKNAPP ===== */
+.filters button{
+    background:#111827;
+    color:#ffffff;
+    border:1px solid #374151;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.2s;
+}
+
+/* ===== HOVER ===== */
+.filters button:hover{
+    background:#eab308;
+    color:#000000;
+}
+
+/* ===== SÖKFÄLT ===== */
+.search-box{
+    margin-bottom:25px;
+}
+
+/* ===== INPUT ===== */
+.search-box input{
+    width:100%;
+    padding:15px;
+    border-radius:12px;
+    border:1px solid #374151;
+    background:#111827;
+    color:#ffffff;
+    font-size:16px;
+}
+
+/* ===== GRID ===== */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+/* ===== KORT ===== */
+.receiver-card{
+    background:#111827;
+    border:1px solid #1f2937;
+    border-radius:18px;
+    padding:22px;
+    transition:0.2s;
+}
+
+/* ===== HOVER ===== */
+.receiver-card:hover{
+    transform:translateY(-4px);
+    border-color:#eab308;
+}
+
+/* ===== RUBRIK ===== */
+.receiver-card h2{
+    margin-top:0;
+    color:#eab308;
+}
+
+/* ===== TEXT ===== */
+.receiver-card p{
+    color:#cbd5e1;
+    line-height:1.6;
+}
+
+/* ===== INFO ===== */
+.info{
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+/* ===== INFO RAD ===== */
+.info div{
+    margin-bottom:8px;
+}
+
+/* ===== STATUS ===== */
+.status{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+/* ===== ONLINE ===== */
+.online{
+    background:#14532d;
+    color:#86efac;
+}
+
+/* ===== LIMITED ===== */
+.limited{
+    background:#78350f;
+    color:#fde68a;
+}
+
+/* ===== OFFLINE ===== */
+.offline{
+    background:#7f1d1d;
+    color:#fecaca;
+}
+
+/* ===== KNAPPAR ===== */
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+/* ===== KNAPP ===== */
+.actions button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.2s;
+}
+
+/* ===== ÖPPNA ===== */
+.open-btn{
+    background:#eab308;
+    color:#000000;
+}
+
+/* ===== FAVORIT ===== */
+.favorite-btn{
+    background:#1f2937;
+    color:#ffffff;
+}
+
+/* ===== HOVER ===== */
+.actions button:hover{
+    opacity:0.9;
+}
+
+/* ===== FOOTER ===== */
+footer{
+    text-align:center;
+    padding:30px 20px;
+    color:#64748b;
+    border-top:1px solid #1f2937;
+    margin-top:40px;
+}
+
+/* ===== MOBIL ===== */
+@media(max-width:768px){
+
+    header h1{
+        font-size:30px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+
+<h1>Receiver Hub</h1>
+
+<p>
+Central mottagarhub för WebSDR, KiwiSDR, OpenWebRX och framtida DX-OS nätverk.
+</p>
+
+</header>
+
+<!-- ===== WRAPPER ===== -->
+<div class="wrapper">
+
+<!-- ===== FILTERKNAPPAR ===== -->
+<div class="filters">
+
+<button onclick="filterReceivers('all')">Alla</button>
+
+<button onclick="filterReceivers('hf')">HF</button>
+
+<button onclick="filterReceivers('mw')">MW</button>
+
+<button onclick="filterReceivers('vhf')">VHF</button>
+
+<button onclick="filterReceivers('uhf')">UHF</button>
+
+<button onclick="filterReceivers('airband')">Airband</button>
+
+</div>
+
+<!-- ===== SÖKFÄLT ===== -->
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Sök mottagare, land eller typ..."
+onkeyup="searchReceivers()"
+>
+
+</div>
+
+<!-- ===== GRID ===== -->
+<div class="grid" id="receiverGrid">
+
+<!-- ===== TWENTE ===== -->
+<div class="receiver-card hf">
+
+<h2>Twente WebSDR</h2>
+
+<p>
+Klassisk WebSDR för HF, kortvåg, mellanvåg och amatörradio.
+</p>
+
+<div class="info">
+
+<div><strong>Land:</strong> Nederländerna</div>
+
+<div><strong>Band:</strong> HF / MW / SW</div>
+
+<div><strong>Typ:</strong> WebSDR</div>
+
+</div>
+
+<div class="status online">
+ONLINE
+</div>
+
+<div class="actions">
+
+<button
+class="open-btn"
+onclick="window.open('http://websdr.ewi.utwente.nl:8901/','_blank')"
+>
+Öppna
+</button>
+
+<button
+class="favorite-btn"
+onclick="alert('Favorit sparad')"
+>
+★ Favorit
+</button>
+
+</div>
+
+</div>
+
+<!-- ===== KIWI ===== -->
+<div class="receiver-card hf">
+
+<h2>KiwiSDR Europe</h2>
+
+<p>
+Publik KiwiSDR med bred täckning för DX och utility-signaler.
+</p>
+
+<div class="info">
+
+<div><strong>Land:</strong> Europa</div>
+
+<div><strong>Band:</strong> HF</div>
+
+<div><strong>Typ:</strong> KiwiSDR</div>
+
+</div>
+
+<div class="status limited">
+LIMITED USERS
+</div>
+
+<div class="actions">
+
+<button
+class="open-btn"
+onclick="window.open('https://rx.linkfanel.net/','_blank')"
+>
+Öppna
+</button>
+
+<button
+class="favorite-btn"
+onclick="alert('Favorit sparad')"
+>
+★ Favorit
+</button>
+
+</div>
+
+</div>
+
+<!-- ===== OPENWEBRX ===== -->
+<div class="receiver-card vhf">
+
+<h2>OpenWebRX Germany</h2>
+
+<p>
+OpenWebRX-mottagare med VHF/UHF och amatörradioband.
+</p>
+
+<div class="info">
+
+<div><strong>Land:</strong> Tyskland</div>
+
+<div><strong>Band:</strong> VHF / UHF</div>
+
+<div><strong>Typ:</strong> OpenWebRX</div>
+
+</div>
+
+<div class="status online">
+ONLINE
+</div>
+
+<div class="actions">
+
+<button
+class="open-btn"
+onclick="window.open('https://www.receiverbook.de/map','_blank')"
+>
+Öppna
+</button>
+
+<button
+class="favorite-btn"
+onclick="alert('Favorit sparad')"
+>
+★ Favorit
+</button>
+
+</div>
+
+</div>
+
+<!-- ===== AIRBAND ===== -->
+<div class="receiver-card airband vhf">
+
+<h2>Airband Monitor</h2>
+
+<p>
+Övervakning av flygkommunikation och VHF airband.
+</p>
+
+<div class="info">
+
+<div><strong>Land:</strong> Internationell</div>
+
+<div><strong>Band:</strong> Airband</div>
+
+<div><strong>Typ:</strong> SDR</div>
+
+</div>
+
+<div class="status online">
+ONLINE
+</div>
+
+<div class="actions">
+
+<button
+class="open-btn"
+onclick="window.open('https://www.receiverbook.de/','_blank')"
+>
+Öppna
+</button>
+
+<button
+class="favorite-btn"
+onclick="alert('Favorit sparad')"
+>
+★ Favorit
+</button>
+
+</div>
+
+</div>
+
+<!-- ===== UHF ===== -->
+<div class="receiver-card uhf">
+
+<h2>UHF Signal Monitor</h2>
+
+<p>
+Specialmottagare för UHF och experimentella radiosignaler.
+</p>
+
+<div class="info">
+
+<div><strong>Land:</strong> Internationell</div>
+
+<div><strong>Band:</strong> UHF</div>
+
+<div><strong>Typ:</strong> SDR</div>
+
+</div>
+
+<div class="status offline">
+OFFLINE
+</div>
+
+<div class="actions">
+
+<button
+class="open-btn"
+onclick="window.open('https://www.receiverbook.de/','_blank')"
+>
+Öppna
+</button>
+
+<button
+class="favorite-btn"
+onclick="alert('Favorit sparad')"
+>
+★ Favorit
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+
+DX-OS Receiver Hub • SDR • DX • AI • Signal Intelligence
+
+</footer>
+
+<script>
+
+/* ===== FILTER ===== */
+function filterReceivers(type){
+
+    /* ===== HÄMTA KORT ===== */
+    const cards =
+    document.querySelectorAll(".receiver-card");
+
+    /* ===== LOOP ===== */
+    cards.forEach(card => {
+
+        /* ===== VISA ALLA ===== */
+        if(type === "all"){
+            card.style.display = "block";
+        }
+
+        /* ===== FILTER ===== */
+        else{
+
+            /* ===== MATCH ===== */
+            if(card.classList.contains(type)){
+                card.style.display = "block";
+            }
+
+            /* ===== DÖLJ ===== */
+            else{
+                card.style.display = "none";
+            }
+
+        }
+
+    });
+
+}
+
+/* ===== SÖK ===== */
+function searchReceivers(){
+
+    /* ===== INPUT ===== */
+    const input =
+    document.getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+    /* ===== KORT ===== */
+    const cards =
+    document.querySelectorAll(".receiver-card");
+
+    /* ===== LOOP ===== */
+    cards.forEach(card => {
+
+        /* ===== TEXT ===== */
+        const text =
+        card.innerText.toLowerCase();
+
+        /* ===== MATCH ===== */
+        if(text.includes(input)){
+            card.style.display = "block";
+        }
+
+        /* ===== DÖLJ ===== */
+        else{
+            card.style.display = "none";
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
