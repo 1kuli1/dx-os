@@ -6,7 +6,7 @@
 <!-- ===== TECKENUPPSÄTTNING ===== -->
 <meta charset="UTF-8">
 
-<!-- ===== MOBIL ===== -->
+<!-- ===== MOBILANPASSNING ===== -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ===== TITEL ===== -->
@@ -15,7 +15,8 @@
 <!-- ===== LEAFLET CSS ===== -->
 <link
 rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 
 <style>
 
@@ -49,17 +50,17 @@ header h1{
 
 /* ===== TEXT ===== */
 header p{
-    color:#cbd5e1;
     margin-top:10px;
+    color:#cbd5e1;
 }
 
-/* ===== KARTA ===== */
+/* ===== KARTWRAPPER ===== */
 .map-wrapper{
     width:100%;
     height:70vh;
 }
 
-/* ===== MAP ===== */
+/* ===== KARTA ===== */
 #map{
     width:100%;
     height:100%;
@@ -93,7 +94,7 @@ select{
     font-size:16px;
 }
 
-/* ===== BUTTON ===== */
+/* ===== KNAPP ===== */
 button{
     padding:14px;
     border:none;
@@ -113,8 +114,8 @@ button:hover{
 /* ===== INFO ===== */
 .info{
     text-align:center;
-    margin-top:15px;
     color:#94a3b8;
+    margin-top:15px;
     font-size:14px;
 }
 
@@ -131,7 +132,7 @@ button:hover{
 
 <p>
 
-Logga stationer och visa DX-paths från olika mottagare.
+Visa mottagare, DX-linjer och loggade stationer.
 
 </p>
 
@@ -206,7 +207,7 @@ Mottagare hämtas automatiskt från Receiver Manager.
 
 </div>
 
-<!-- ===== LEAFLET ===== -->
+<!-- ===== LEAFLET JS ===== -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
@@ -222,7 +223,7 @@ L.tileLayer(
     attribution:'© OpenStreetMap'
 }).addTo(map);
 
-/* ===== STATIONER ===== */
+/* ===== ARRAY ===== */
 let stations = [];
 
 /* ===== LADDA ===== */
@@ -237,7 +238,7 @@ function loadReceivers(){
     const saved =
     localStorage.getItem("dxReceivers");
 
-    /* ===== AVBRYT ===== */
+    /* ===== KONTROLL ===== */
     if(!saved){
         return;
     }
@@ -273,7 +274,7 @@ function loadReceivers(){
 /* ===== LÄGG TILL STATION ===== */
 function addStation(){
 
-    /* ===== HÄMTA ===== */
+    /* ===== HÄMTA FÄLT ===== */
     const station =
     document.getElementById("station").value;
 
@@ -389,25 +390,54 @@ function loadStations(){
     const saved =
     localStorage.getItem("dxStations");
 
-    /* ===== FINNS ===== */
+    /* ===== RX ===== */
+    const rxSaved =
+    localStorage.getItem("dxReceivers");
+
+    /* ===== KONTROLL ===== */
+    if(!rxSaved){
+        return;
+    }
+
+    /* ===== PARSA RX ===== */
+    const receivers =
+    JSON.parse(rxSaved);
+
+    /* ===== VISA MOTTAGARE ===== */
+    receivers.forEach(receiver => {
+
+        /* ===== CIRKEL ===== */
+        L.circleMarker(
+        [
+            receiver.lat,
+            receiver.lng
+        ],
+        {
+            radius:8,
+            color:receiver.color,
+            fillColor:receiver.color,
+            fillOpacity:1,
+            weight:2
+        })
+        .addTo(map)
+
+        /* ===== POPUP ===== */
+        .bindPopup(
+            `
+            <b>${receiver.name}</b><br>
+            ${receiver.type}<br>
+            ${receiver.country}
+            `
+        );
+
+    });
+
+    /* ===== FINNS STATIONER ===== */
     if(saved){
 
         /* ===== PARSA ===== */
         stations =
         JSON.parse(saved);
-
-        /* ===== RX ===== */
-        const rxSaved =
-        localStorage.getItem("dxReceivers");
-
-        /* ===== KONTROLL ===== */
-        if(!rxSaved){
-            return;
-        }
-
-        /* ===== PARSA ===== */
-        const receivers =
-        JSON.parse(rxSaved);
 
         /* ===== LOOP ===== */
         stations.forEach(station => {
@@ -435,7 +465,7 @@ function loadStations(){
                 r => r.id == station.receiverId
             );
 
-            /* ===== KONTROLL ===== */
+            /* ===== FINNS RX ===== */
             if(receiver){
 
                 /* ===== LINJE ===== */
@@ -457,7 +487,7 @@ function loadStations(){
 
 }
 
-/* ===== TÖM ===== */
+/* ===== TÖM FORM ===== */
 function clearForm(){
 
     document.getElementById("station").value = "";
