@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DX-OS Morse Trainer</title>
+<title>DX-OS Morse Trainer V2</title>
 
 <style>
 
@@ -35,7 +35,7 @@ header{
 header h1{
     margin:0;
     color:#eab308;
-    font-size:38px;
+    font-size:40px;
 }
 
 /* ===== TEXT ===== */
@@ -48,7 +48,7 @@ header p{
 /* ===== WRAPPER ===== */
 .wrapper{
     width:100%;
-    max-width:1200px;
+    max-width:1300px;
     margin:auto;
     padding:25px;
 }
@@ -68,7 +68,7 @@ header p{
     padding:25px;
 }
 
-/* ===== RUBRIK ===== */
+/* ===== RUBRIKER ===== */
 .panel h2{
     margin-top:0;
     color:#eab308;
@@ -154,7 +154,7 @@ button:hover{
     transition:0.1s;
 }
 
-/* ===== AKTIV ===== */
+/* ===== BLINK ===== */
 .flash-active{
     background:#eab308 !important;
     box-shadow:0 0 40px #eab308;
@@ -187,12 +187,13 @@ input[type="range"]{
     color:#cbd5e1;
 }
 
-/* ===== AUDIO ===== */
-.audio-controls{
+/* ===== FIL ===== */
+input[type="file"]{
     margin-top:20px;
+    color:#ffffff;
 }
 
-/* ===== TILLBAKA ===== */
+/* ===== BACK ===== */
 .back-button{
     display:inline-block;
     margin-top:25px;
@@ -213,7 +214,7 @@ footer{
 }
 
 /* ===== MOBIL ===== */
-@media(max-width:900px){
+@media(max-width:950px){
 
     .grid{
         grid-template-columns:1fr;
@@ -231,7 +232,7 @@ footer{
 <header>
 
 <h1>
-DX-OS Morse Trainer
+DX-OS Morse Trainer V2
 </h1>
 
 <p>
@@ -255,7 +256,7 @@ CW-träning, Morse-generator och signalanalys
 
 <textarea
 id="morseInput"
-placeholder="Skriv text här, exempel: CQ CQ DX"
+placeholder="Skriv exempelvis: CQ CQ DX"
 ></textarea>
 
 <div class="button-grid">
@@ -325,8 +326,6 @@ Rensa
 
 </div>
 
-<div class="audio-controls">
-
 <input
 type="file"
 id="audioFile"
@@ -339,8 +338,6 @@ accept=".wav,.mp3,.m4a"
 
 </button>
 
-</div>
-
 <div class="info-box">
 
 Stöd för:
@@ -349,13 +346,15 @@ Stöd för:
 
 <li>Text → Morse</li>
 
-<li>Morse playback</li>
+<li>Riktig CW-ton</li>
 
 <li>WPM kontroll</li>
 
 <li>Signalblink</li>
 
-<li>CW-ljud</li>
+<li>CW playback</li>
+
+<li>Ljudanalys</li>
 
 <li>Framtida AI-avkodning</li>
 
@@ -381,7 +380,7 @@ href="operations-center.html"
 <!-- ===== FOOTER ===== -->
 <footer>
 
-DX-OS Morse Trainer • CW • SDR • AI • Signal Intelligence
+DX-OS Morse Trainer V2 • SDR • CW • AI • Signal Intelligence
 
 </footer>
 
@@ -405,7 +404,7 @@ function convertToMorse(){
     /* ===== LOOP ===== */
     for(let char of input){
 
-        /* ===== FINNS ===== */
+        /* ===== MORSE ===== */
         if(morseTable[char]){
 
             result +=
@@ -452,7 +451,7 @@ function playCurrentMorse(){
 /* ===== WPM ===== */
 function updateWPM(){
 
-    /* ===== HÄMTA ===== */
+    /* ===== VALUE ===== */
     const value =
     document.getElementById("wpmSlider")
     .value;
@@ -472,7 +471,7 @@ function copyMorse(){
     document.getElementById("morseOutput")
     .innerText;
 
-    /* ===== KOPIERA ===== */
+    /* ===== COPY ===== */
     navigator.clipboard.writeText(text);
 
     /* ===== STATUS ===== */
@@ -509,7 +508,7 @@ function analyzeAudio(){
     const file =
     document.getElementById("audioFile");
 
-    /* ===== KONTROLL ===== */
+    /* ===== CHECK ===== */
     if(file.files.length === 0){
 
         alert("Välj en ljudfil först.");
