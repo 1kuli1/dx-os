@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DX-OS BASIC</title>
+
+<title>DX-OS Operations Center</title>
 
 <style>
 
@@ -12,6 +15,7 @@
     box-sizing:border-box;
 }
 
+/* ===== BODY ===== */
 body{
     margin:0;
     font-family:Arial,sans-serif;
@@ -23,139 +27,214 @@ body{
 header{
     background:#0b1220;
     padding:30px 20px;
-    text-align:center;
     border-bottom:2px solid #1f2937;
+    text-align:center;
 }
 
+/* ===== RUBRIK ===== */
 header h1{
     margin:0;
     color:#eab308;
     font-size:42px;
 }
 
+/* ===== TEXT ===== */
 header p{
-    color:#94a3b8;
-    font-size:20px;
+    margin-top:10px;
+    color:#cbd5e1;
+}
+
+/* ===== WRAPPER ===== */
+.wrapper{
+    width:100%;
+    max-width:1600px;
+    margin:auto;
+    padding:20px;
+}
+
+/* ===== TOPBAR ===== */
+.topbar{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:25px;
+}
+
+/* ===== PANEL ===== */
+.panel{
+    background:#111827;
+    border:1px solid #1f2937;
+    border-radius:18px;
+    padding:20px;
+}
+
+/* ===== PANEL RUBRIK ===== */
+.panel h2{
+    margin-top:0;
+    color:#eab308;
+    font-size:22px;
+}
+
+/* ===== UTC ===== */
+#utcClock{
+    font-size:32px;
+    font-weight:bold;
     margin-top:10px;
 }
 
-/* ===== MODULGRID ===== */
-.module-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:25px;
-    padding:40px;
-    max-width:1400px;
-    margin:auto;
+/* ===== DATUM ===== */
+#utcDate{
+    margin-top:10px;
+    color:#94a3b8;
 }
 
-/* ===== MODULKORT ===== */
-.module-card{
-    border-radius:20px;
-    padding:35px;
-    min-height:220px;
+/* ===== GRID ===== */
+.dashboard{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+/* ===== VÄNSTER ===== */
+.left-column{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* ===== HÖGER ===== */
+.right-column{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* ===== KNAPPGRID ===== */
+.button-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+}
+
+/* ===== KNAPP ===== */
+.button-grid button{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:14px;
+    background:#eab308;
+    color:#000000;
+    font-weight:bold;
+    font-size:16px;
     cursor:pointer;
-    transition:0.3s;
-    position:relative;
-    overflow:hidden;
-    border:2px solid rgba(255,255,255,0.05);
-    box-shadow:0 0 20px rgba(0,0,0,0.3);
+    transition:0.2s;
 }
 
 /* ===== HOVER ===== */
-.module-card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 0 30px rgba(234,179,8,0.25);
+.button-grid button:hover{
+    background:#facc15;
 }
 
-/* ===== IKON ===== */
-.icon{
-    font-size:54px;
-    margin-bottom:20px;
+/* ===== STATUSLISTA ===== */
+.status-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
 }
 
-/* ===== TITEL ===== */
-.module-title{
-    font-size:28px;
+/* ===== STATUSRAD ===== */
+.status-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#1f2937;
+    padding:12px;
+    border-radius:12px;
+}
+
+/* ===== STATUS ===== */
+.status{
+    padding:6px 12px;
+    border-radius:999px;
+    font-size:12px;
     font-weight:bold;
-    margin-bottom:15px;
+}
+
+/* ===== ONLINE ===== */
+.online{
+    background:#14532d;
+    color:#86efac;
+}
+
+/* ===== TEST ===== */
+.testing{
+    background:#78350f;
+    color:#fde68a;
+}
+
+/* ===== PLANERAD ===== */
+.planned{
+    background:#1e3a8a;
+    color:#93c5fd;
+}
+
+/* ===== LOGG ===== */
+.log-feed{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+/* ===== LOGGRAD ===== */
+.log-entry{
+    background:#1f2937;
+    padding:14px;
+    border-radius:12px;
+    border-left:4px solid #eab308;
 }
 
 /* ===== TEXT ===== */
-.module-text{
-    font-size:18px;
-    line-height:1.6;
-    color:#d1d5db;
+.log-entry p{
+    margin:0;
+    color:#cbd5e1;
 }
 
-/* ===== FÄRGER ===== */
-
-.live{
-    background:linear-gradient(135deg,#14532d,#166534);
+/* ===== TID ===== */
+.log-time{
+    margin-top:8px;
+    font-size:12px;
+    color:#94a3b8;
 }
 
-.cw{
-    background:linear-gradient(135deg,#713f12,#ca8a04);
-}
-
-.log{
-    background:linear-gradient(135deg,#1e3a8a,#2563eb);
-}
-
-.map{
-    background:linear-gradient(135deg,#134e4a,#0f766e);
-}
-
-.propagation{
-    background:linear-gradient(135deg,#7c2d12,#ea580c);
-}
-
-.ai{
-    background:linear-gradient(135deg,#581c87,#9333ea);
-}
-
-.expert{
-    background:linear-gradient(135deg,#7f1d1d,#dc2626);
+/* ===== AI PANEL ===== */
+.ai-box{
+    background:#1f2937;
+    border-radius:14px;
+    padding:15px;
+    line-height:1.7;
+    color:#cbd5e1;
 }
 
 /* ===== FOOTER ===== */
-.footer{
+footer{
+    margin-top:30px;
+    padding:20px;
     text-align:center;
-    padding:30px;
     color:#64748b;
-    font-size:15px;
+    border-top:1px solid #1f2937;
 }
 
 /* ===== MOBIL ===== */
-@media(max-width:700px){
+@media(max-width:1000px){
 
-    header h1{
-        font-size:32px;
+    .dashboard{
+        grid-template-columns:1fr;
     }
 
-    header p{
-        font-size:18px;
-    }
-
-    .module-grid{
-        padding:20px;
-    }
-
-    .module-card{
-        min-height:180px;
-        padding:25px;
-    }
-
-    .module-title{
-        font-size:24px;
-    }
-
-    .module-text{
-        font-size:16px;
-    }
 }
 
 </style>
+
 </head>
 
 <body>
@@ -163,136 +242,281 @@ header p{
 <!-- ===== HEADER ===== -->
 <header>
 
-    <h1>
-        DX-OS BASIC
-    </h1>
+<h1>DX-OS Operations Center</h1>
 
-    <p>
-        Utforska världen via radio
-    </p>
+<p>
+Centralt kontrollrum för SDR, DX, signalanalys och AI-system.
+</p>
 
 </header>
 
-<!-- ===== MODULER ===== -->
-<div class="module-grid">
+<!-- ===== WRAPPER ===== -->
+<div class="wrapper">
 
-    <!-- LIVE RADIO -->
-    <div class="module-card live"
-        onclick="location.href='modules/live-radio.html'">
+<!-- ===== TOPBAR ===== -->
+<div class="topbar">
 
-        <div class="icon">📡</div>
+<!-- ===== UTC ===== -->
+<div class="panel">
 
-        <div class="module-title">
-            Live Radio
-        </div>
+<h2>UTC Time</h2>
 
-        <div class="module-text">
-            Lyssna på världen live via SDR och radiomottagning.
-        </div>
+<div id="utcClock">
+00:00:00
+</div>
 
-    </div>
+<div id="utcDate">
+Loading...
+</div>
 
-    <!-- CW -->
-    <div class="module-card cw"
-        onclick="location.href='modules/cw-converter.html'">
+</div>
 
-        <div class="icon">🔊</div>
+<!-- ===== SYSTEM ===== -->
+<div class="panel">
 
-        <div class="module-title">
-            CW Converter
-        </div>
+<h2>System Status</h2>
 
-        <div class="module-text">
-            Översätt morsekod till klartext och svenska.
-        </div>
+<div class="status-list">
 
-    </div>
+<div class="status-item">
+<span>Receiver Hub</span>
+<div class="status online">ONLINE</div>
+</div>
 
-    <!-- LOGG -->
-    <div class="module-card log"
-        onclick="location.href='modules/loggcenter.html'">
+<div class="status-item">
+<span>Live Radio</span>
+<div class="status online">ONLINE</div>
+</div>
 
-        <div class="icon">📒</div>
+<div class="status-item">
+<span>AI Analysis</span>
+<div class="status testing">TEST</div>
+</div>
 
-        <div class="module-title">
-            Loggcenter
-        </div>
+</div>
 
-        <div class="module-text">
-            Logga stationer, signaler och inspelningar.
-        </div>
+</div>
 
-    </div>
+<!-- ===== BAND ===== -->
+<div class="panel">
 
-    <!-- KARTA -->
-    <div class="module-card map"
-        onclick="location.href='modules/dx-map.html'">
+<h2>Band Activity</h2>
 
-        <div class="icon">🌍</div>
+<p>
+HF: Aktiv<br>
+MW: Medel<br>
+SW: Hög aktivitet<br>
+VHF: Normal<br>
+UHF: Låg aktivitet
+</p>
 
-        <div class="module-title">
-            DX Karta
-        </div>
+</div>
 
-        <div class="module-text">
-            Visa loggade stationer och signalvägar på karta.
-        </div>
+</div>
 
-    </div>
+<!-- ===== DASHBOARD ===== -->
+<div class="dashboard">
 
-    <!-- PROPAGATION -->
-    <div class="module-card propagation"
-        onclick="location.href='modules/propagation.html'">
+<!-- ===== VÄNSTER ===== -->
+<div class="left-column">
 
-        <div class="icon">☀️</div>
+<!-- ===== SNABBKNAPPAR ===== -->
+<div class="panel">
 
-        <div class="module-title">
-            Propagation
-        </div>
+<h2>Quick Access</h2>
 
-        <div class="module-text">
-            Se K-index, soldata och bandförhållanden.
-        </div>
+<div class="button-grid">
 
-    </div>
+<button onclick="location.href='live-radio.html'">
+Live Radio
+</button>
 
-    <!-- AI -->
-    <div class="module-card ai"
-        onclick="location.href='modules/dx-ai.html'">
+<button onclick="location.href='receiver-hub.html'">
+Receiver Hub
+</button>
 
-        <div class="icon">🤖</div>
+<button onclick="location.href='logcenter.html'">
+Logcenter
+</button>
 
-        <div class="module-title">
-            DX AI
-        </div>
+<button onclick="location.href='morse.html'">
+Morse
+</button>
 
-        <div class="module-text">
-            AI-assistent för analys av signaler och stationer.
-        </div>
+<button onclick="location.href='dx-timeline.html'">
+Timeline
+</button>
 
-    </div>
+<button onclick="window.open('http://websdr.ewi.utwente.nl:8901/','_blank')">
+Open Twente
+</button>
 
-    <!-- EXPERT -->
-    <div class="module-card expert"
-        onclick="location.href='operations-advanced.html'">
+</div>
 
-        <div class="icon">⚙️</div>
+</div>
 
-        <div class="module-title">
-            Expertläge
-        </div>
+<!-- ===== SENASTE AKTIVITET ===== -->
+<div class="panel">
 
-        <div class="module-text">
-            Öppna avancerat operationscenter med full analys.
-        </div>
+<h2>Recent Activity</h2>
 
-    </div>
+<div class="log-feed">
+
+<div class="log-entry">
+
+<p>
+Receiver Hub initialized.
+</p>
+
+<div class="log-time">
+UTC 18:42
+</div>
+
+</div>
+
+<div class="log-entry">
+
+<p>
+Twente SDR connected.
+</p>
+
+<div class="log-time">
+UTC 18:45
+</div>
+
+</div>
+
+<div class="log-entry">
+
+<p>
+Morse module loaded.
+</p>
+
+<div class="log-time">
+UTC 18:51
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===== HÖGER ===== -->
+<div class="right-column">
+
+<!-- ===== AI ===== -->
+<div class="panel">
+
+<h2>AI Analysis</h2>
+
+<div class="ai-box">
+
+AI-system redo för framtida analys av:
+
+<ul>
+
+<li>Station identifiering</li>
+
+<li>Språkigenkänning</li>
+
+<li>Signalanalys</li>
+
+<li>Frekvensdetektion</li>
+
+<li>CW/Morse avkodning</li>
+
+<li>Utility-signaler</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<!-- ===== MODULSTATUS ===== -->
+<div class="panel">
+
+<h2>Module Status</h2>
+
+<div class="status-list">
+
+<div class="status-item">
+<span>Operations Center</span>
+<div class="status online">ONLINE</div>
+</div>
+
+<div class="status-item">
+<span>Timeline</span>
+<div class="status online">ONLINE</div>
+</div>
+
+<div class="status-item">
+<span>Receiver Hub</span>
+<div class="status online">ONLINE</div>
+</div>
+
+<div class="status-item">
+<span>DX Map</span>
+<div class="status planned">PLANERAD</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
 <!-- ===== FOOTER ===== -->
-<div class="footer">
-    DX-OS BASIC v1.0
-</div>
+<footer>
+
+DX-OS Operations Center • SDR • DX • AI • Signal Intelligence
+
+</footer>
+
+<script>
+
+/* ===== UTC KLOCKA ===== */
+function updateUTCClock(){
+
+    /* ===== DATUM ===== */
+    const now =
+    new Date();
+
+    /* ===== TID ===== */
+    const utcTime =
+    now.toUTCString().split(" ")[4];
+
+    /* ===== DATUMTEXT ===== */
+    const utcDate =
+    now.toUTCString();
+
+    /* ===== SKRIV UTC ===== */
+    document.getElementById("utcClock")
+    .innerText =
+    utcTime;
+
+    /* ===== SKRIV DATUM ===== */
+    document.getElementById("utcDate")
+    .innerText =
+    utcDate;
+
+}
+
+/* ===== UPPDATERA ===== */
+setInterval(updateUTCClock,1000);
+
+/* ===== START ===== */
+updateUTCClock();
+
+</script>
 
 </body>
+
+</html>
