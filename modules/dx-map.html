@@ -1,22 +1,21 @@
-!D
 <!DOCTYPE html>
 <html lang="sv">
 
-<
-
 <head>
 
-<!-- Teckenuppsättning -->
+<!-- ===== TECKENUPPSÄTTNING ===== -->
 <meta charset="UTF-8">
 
-<!-- Mobilanpassning -->
+<!-- ===== MOBIL ===== -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Titel -->
+<!-- ===== TITEL ===== -->
 <title>DX-OS World Map</title>
 
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<!-- ===== LEAFLET CSS ===== -->
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 
@@ -54,13 +53,13 @@ header p{
     margin-top:10px;
 }
 
-/* ===== KARTWRAPPER ===== */
+/* ===== KARTA ===== */
 .map-wrapper{
     width:100%;
     height:70vh;
 }
 
-/* ===== KARTA ===== */
+/* ===== MAP ===== */
 #map{
     width:100%;
     height:100%;
@@ -68,9 +67,9 @@ header p{
 
 /* ===== PANEL ===== */
 .panel{
-    padding:20px;
     background:#0b1220;
     border-top:2px solid #1f2937;
+    padding:20px;
 }
 
 /* ===== FORM ===== */
@@ -78,12 +77,13 @@ header p{
     display:grid;
     grid-template-columns:1fr;
     gap:12px;
-    max-width:500px;
+    max-width:550px;
     margin:auto;
 }
 
 /* ===== INPUT ===== */
-input{
+input,
+select{
     width:100%;
     padding:14px;
     border:none;
@@ -93,7 +93,7 @@ input{
     font-size:16px;
 }
 
-/* ===== KNAPP ===== */
+/* ===== BUTTON ===== */
 button{
     padding:14px;
     border:none;
@@ -105,7 +105,7 @@ button{
     cursor:pointer;
 }
 
-/* ===== KNAPP HOVER ===== */
+/* ===== HOVER ===== */
 button:hover{
     opacity:0.9;
 }
@@ -113,8 +113,8 @@ button:hover{
 /* ===== INFO ===== */
 .info{
     text-align:center;
-    color:#94a3b8;
     margin-top:15px;
+    color:#94a3b8;
     font-size:14px;
 }
 
@@ -130,7 +130,9 @@ button:hover{
 <h1>DX-OS World Map</h1>
 
 <p>
-Logga stationer och bygg din egen DX-världskarta.
+
+Logga stationer och visa DX-paths från olika mottagare.
+
 </p>
 
 </header>
@@ -147,22 +149,46 @@ Logga stationer och bygg din egen DX-världskarta.
 
 <div class="form-grid">
 
-<!-- Stationsnamn -->
-<input type="text" id="station" placeholder="Stationsnamn">
+<!-- ===== STATION ===== -->
+<input
+type="text"
+id="station"
+placeholder="Stationsnamn">
 
-<!-- Frekvens -->
-<input type="text" id="frequency" placeholder="Frekvens">
+<!-- ===== FREKVENS ===== -->
+<input
+type="text"
+id="frequency"
+placeholder="Frekvens">
 
-<!-- Land -->
-<input type="text" id="country" placeholder="Land">
+<!-- ===== LAND ===== -->
+<input
+type="text"
+id="country"
+placeholder="Land">
 
-<!-- Latitud -->
-<input type="number" id="lat" placeholder="Latitud">
+<!-- ===== MOTTAGARE ===== -->
+<select id="receiverSelect">
 
-<!-- Longitud -->
-<input type="number" id="lng" placeholder="Longitud">
+<option value="">
+Välj mottagare
+</option>
 
-<!-- Knapp -->
+</select>
+
+<!-- ===== LAT ===== -->
+<input
+type="number"
+id="lat"
+placeholder="Latitud">
+
+<!-- ===== LNG ===== -->
+<input
+type="number"
+id="lng"
+placeholder="Longitud">
+
+<!-- ===== KNAPP ===== -->
 <button onclick="addStation()">
 
 Lägg till station
@@ -171,40 +197,83 @@ Lägg till station
 
 </div>
 
-<!-- Info -->
+<!-- ===== INFO ===== -->
 <div class="info">
 
-Tips: Du kan hitta koordinater via Google Maps.
+Mottagare hämtas automatiskt från Receiver Manager.
 
 </div>
 
 </div>
 
-<!-- Leaflet JS -->
+<!-- ===== LEAFLET ===== -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 
 /* ===== SKAPA KARTA ===== */
-const map = L.map('map').setView([20,0],2);
+const map =
+L.map('map').setView([20,0],2);
 
 /* ===== KARTLAGER ===== */
 L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 {
     attribution:'© OpenStreetMap'
 }).addTo(map);
 
-/* ===== ARRAY FÖR STATIONER ===== */
+/* ===== STATIONER ===== */
 let stations = [];
 
-/* ===== LADDA SPARADE STATIONER ===== */
+/* ===== LADDA ===== */
+loadReceivers();
+
 loadStations();
 
-/* ===== FUNKTION ===== */
+/* ===== LADDA MOTTAGARE ===== */
+function loadReceivers(){
+
+    /* ===== HÄMTA ===== */
+    const saved =
+    localStorage.getItem("dxReceivers");
+
+    /* ===== AVBRYT ===== */
+    if(!saved){
+        return;
+    }
+
+    /* ===== PARSA ===== */
+    const receivers =
+    JSON.parse(saved);
+
+    /* ===== SELECT ===== */
+    const select =
+    document.getElementById("receiverSelect");
+
+    /* ===== LOOP ===== */
+    receivers.forEach(receiver => {
+
+        /* ===== OPTION ===== */
+        const option =
+        document.createElement("option");
+
+        option.value =
+        receiver.id;
+
+        option.textContent =
+        receiver.name;
+
+        /* ===== LÄGG TILL ===== */
+        select.appendChild(option);
+
+    });
+
+}
+
+/* ===== LÄGG TILL STATION ===== */
 function addStation(){
 
-    /* ===== HÄMTA FÄLT ===== */
+    /* ===== HÄMTA ===== */
     const station =
     document.getElementById("station").value;
 
@@ -214,17 +283,25 @@ function addStation(){
     const country =
     document.getElementById("country").value;
 
+    const receiverId =
+    document.getElementById("receiverSelect").value;
+
     const lat =
-    parseFloat(document.getElementById("lat").value);
+    parseFloat(
+        document.getElementById("lat").value
+    );
 
     const lng =
-    parseFloat(document.getElementById("lng").value);
+    parseFloat(
+        document.getElementById("lng").value
+    );
 
     /* ===== KONTROLL ===== */
     if(
         !station ||
         !frequency ||
         !country ||
+        !receiverId ||
         isNaN(lat) ||
         isNaN(lng)
     ){
@@ -232,57 +309,105 @@ function addStation(){
         return;
     }
 
-    /* ===== SKAPA MARKÖR ===== */
-    const marker = L.marker([lat,lng]).addTo(map);
+    /* ===== HÄMTA RX ===== */
+    const saved =
+    localStorage.getItem("dxReceivers");
+
+    const receivers =
+    JSON.parse(saved);
+
+    /* ===== HITTA RX ===== */
+    const receiver =
+    receivers.find(
+        r => r.id == receiverId
+    );
+
+    /* ===== MARKÖR ===== */
+    const marker =
+    L.marker([lat,lng]).addTo(map);
 
     /* ===== POPUP ===== */
     marker.bindPopup(
         `
         <b>${station}</b><br>
         ${frequency}<br>
-        ${country}
+        ${country}<br>
+        RX: ${receiver.name}
         `
     );
 
-    /* ===== OBJEKT ===== */
+    /* ===== DX-LINJE ===== */
+    L.polyline(
+    [
+        [receiver.lat, receiver.lng],
+        [lat, lng]
+    ],
+    {
+        color:receiver.color,
+        weight:2
+    }).addTo(map);
+
+    /* ===== DATA ===== */
     const stationData = {
+
         station:station,
+
         frequency:frequency,
+
         country:country,
+
         lat:lat,
-        lng:lng
+
+        lng:lng,
+
+        receiverId:receiver.id,
+
+        receiverName:receiver.name,
+
+        receiverColor:receiver.color
+
     };
 
-    /* ===== SPARA I ARRAY ===== */
+    /* ===== SPARA ===== */
     stations.push(stationData);
 
-    /* ===== SPARA LOKALT ===== */
+    /* ===== LOCALSTORAGE ===== */
     localStorage.setItem(
         "dxStations",
         JSON.stringify(stations)
     );
 
-    /* ===== TÖM FÄLT ===== */
-    document.getElementById("station").value = "";
-    document.getElementById("frequency").value = "";
-    document.getElementById("country").value = "";
-    document.getElementById("lat").value = "";
-    document.getElementById("lng").value = "";
+    /* ===== TÖM ===== */
+    clearForm();
 
 }
 
 /* ===== LADDA STATIONER ===== */
 function loadStations(){
 
-    /* ===== HÄMTA DATA ===== */
+    /* ===== HÄMTA ===== */
     const saved =
     localStorage.getItem("dxStations");
 
-    /* ===== KONTROLL ===== */
+    /* ===== FINNS ===== */
     if(saved){
 
-        /* ===== KONVERTERA ===== */
-        stations = JSON.parse(saved);
+        /* ===== PARSA ===== */
+        stations =
+        JSON.parse(saved);
+
+        /* ===== RX ===== */
+        const rxSaved =
+        localStorage.getItem("dxReceivers");
+
+        /* ===== KONTROLL ===== */
+        if(!rxSaved){
+            return;
+        }
+
+        /* ===== PARSA ===== */
+        const receivers =
+        JSON.parse(rxSaved);
 
         /* ===== LOOP ===== */
         stations.forEach(station => {
@@ -299,13 +424,53 @@ function loadStations(){
                 `
                 <b>${station.station}</b><br>
                 ${station.frequency}<br>
-                ${station.country}
+                ${station.country}<br>
+                RX: ${station.receiverName}
                 `
             );
+
+            /* ===== HITTA RX ===== */
+            const receiver =
+            receivers.find(
+                r => r.id == station.receiverId
+            );
+
+            /* ===== KONTROLL ===== */
+            if(receiver){
+
+                /* ===== LINJE ===== */
+                L.polyline(
+                [
+                    [receiver.lat, receiver.lng],
+                    [station.lat, station.lng]
+                ],
+                {
+                    color:receiver.color,
+                    weight:2
+                }).addTo(map);
+
+            }
 
         });
 
     }
+
+}
+
+/* ===== TÖM ===== */
+function clearForm(){
+
+    document.getElementById("station").value = "";
+
+    document.getElementById("frequency").value = "";
+
+    document.getElementById("country").value = "";
+
+    document.getElementById("receiverSelect").value = "";
+
+    document.getElementById("lat").value = "";
+
+    document.getElementById("lng").value = "";
 
 }
 
