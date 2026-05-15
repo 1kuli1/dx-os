@@ -67,13 +67,13 @@ header p{
     height:100%;
 }
 
-/* ===== PANEL ===== */
+/* ===== KONTROLLPANEL ===== */
 .control-panel{
     position:absolute;
     top:15px;
     right:15px;
     z-index:1000;
-    width:240px;
+    width:250px;
     background:#0b1220;
     border:1px solid #1f2937;
     border-radius:15px;
@@ -83,7 +83,7 @@ header p{
     overflow:auto;
 }
 
-/* ===== PANEL RUBRIK ===== */
+/* ===== RUBRIK ===== */
 .control-panel h2{
     margin-top:0;
     color:#eab308;
@@ -108,7 +108,20 @@ header p{
     font-size:13px;
 }
 
-/* ===== FORM PANEL ===== */
+/* ===== STATISTIK ===== */
+#statsPanel{
+    margin-top:15px;
+    padding-top:10px;
+}
+
+/* ===== STATISTIK TEXT ===== */
+#statsPanel p{
+    margin:8px 0;
+    color:#cbd5e1;
+    font-size:14px;
+}
+
+/* ===== PANEL ===== */
 .panel{
     background:#0b1220;
     border-top:2px solid #1f2937;
@@ -161,6 +174,13 @@ button:hover{
     font-size:14px;
 }
 
+/* ===== HR ===== */
+hr{
+    border:none;
+    border-top:1px solid #1f2937;
+    margin:15px 0;
+}
+
 </style>
 
 </head>
@@ -174,13 +194,13 @@ button:hover{
 
 <p>
 
-DX-karta med mottagare, stationer och DX-paths.
+DX-karta med mottagare, stationer, statistik och DX-paths.
 
 </p>
 
 </header>
 
-<!-- ===== KARTWRAPPER ===== -->
+<!-- ===== WRAPPER ===== -->
 <div class="map-wrapper">
 
 <!-- ===== KONTROLLPANEL ===== -->
@@ -192,7 +212,7 @@ Kartlager
 
 </h2>
 
-<!-- ===== LAGER ===== -->
+<!-- ===== TOGGLE RX ===== -->
 <label>
 
 <input
@@ -205,6 +225,7 @@ Visa mottagare
 
 </label>
 
+<!-- ===== TOGGLE STATIONER ===== -->
 <label>
 
 <input
@@ -217,6 +238,7 @@ Visa stationer
 
 </label>
 
+<!-- ===== TOGGLE LINJER ===== -->
 <label>
 
 <input
@@ -245,6 +267,44 @@ Mottagare
 <div class="panel-text">
 
 Filtrera stationer och DX-paths per mottagare.
+
+</div>
+
+<hr>
+
+<h2>
+
+Statistik
+
+</h2>
+
+<!-- ===== STATISTIK ===== -->
+<div id="statsPanel">
+
+<p>
+
+Stationer: 0
+
+</p>
+
+<p>
+
+Länder: 0
+
+</p>
+
+<p>
+
+Mottagare: 0
+
+</p>
+
+<p>
+
+Senaste station:
+Ingen
+
+</p>
 
 </div>
 
@@ -651,7 +711,7 @@ function redrawMap(){
 
     dxLines = [];
 
-    /* ===== VISA RX ===== */
+    /* ===== RX ===== */
     receivers.forEach(receiver => {
 
         if(
@@ -689,7 +749,7 @@ function redrawMap(){
 
     });
 
-    /* ===== VISA STATIONER ===== */
+    /* ===== STATIONER ===== */
     stations.forEach(station => {
 
         if(
@@ -749,6 +809,77 @@ function redrawMap(){
         }
 
     });
+
+    updateStats();
+
+}
+
+/* ===== STATISTIK ===== */
+function updateStats(){
+
+    const stationCount =
+    stations.length;
+
+    const countries =
+    [
+        ...new Set(
+            stations.map(
+                station => station.country
+            )
+        )
+    ];
+
+    const countryCount =
+    countries.length;
+
+    const receiverCount =
+    receivers.length;
+
+    let latestStation =
+    "Ingen";
+
+    if(stations.length > 0){
+
+        latestStation =
+        stations[
+            stations.length - 1
+        ].station;
+
+    }
+
+    document.getElementById(
+        "statsPanel"
+    ).innerHTML = `
+
+    <p>
+
+    Stationer:
+    ${stationCount}
+
+    </p>
+
+    <p>
+
+    Länder:
+    ${countryCount}
+
+    </p>
+
+    <p>
+
+    Mottagare:
+    ${receiverCount}
+
+    </p>
+
+    <p>
+
+    Senaste station:
+    ${latestStation}
+
+    </p>
+
+    `;
 
 }
 
