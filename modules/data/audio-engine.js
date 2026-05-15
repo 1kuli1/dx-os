@@ -1,121 +1,265 @@
-// ============================================
-// AUDIO ENGINE
-// ============================================
+/* ===================================================== */
+/* ===== DX-OS AUDIO ENGINE ============================ */
+/* ===================================================== */
 
-let mediaRecorder;
-let audioChunks = [];
-let audioBlob;
-let audioURL;
-let audioStream;
+/* ===== AUDIO CONTEXT ===== */
+let audioContext;
 
-// ============================================
-// START RECORDING
-// ============================================
+/* ===== CW SPELAS ===== */
+let isPlaying = false;
 
-async function startRecording(){
+/* ===== STARTA AUDIO ===== */
+function initAudio(){
 
-    try{
+    /* ===== FINNS EJ ===== */
+    if(!audioContext){
 
-        audioChunks = [];
-
-        audioStream =
-            await navigator.mediaDevices.getUserMedia({
-                audio:true
-            });
-
-        mediaRecorder =
-            new MediaRecorder(audioStream);
-
-        mediaRecorder.ondataavailable = event => {
-
-            audioChunks.push(event.data);
-
-        };
-
-        mediaRecorder.onstop = () => {
-
-            audioBlob =
-                new Blob(audioChunks,{
-                    type:"audio/webm"
-                });
-
-            audioURL =
-                URL.createObjectURL(audioBlob);
-
-            console.log("Inspelning klar");
-
-        };
-
-        mediaRecorder.start();
-
-        console.log("REC START");
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-        alert("Mikrofonfel: " + error);
+        /* ===== SKAPA ===== */
+        audioContext =
+        new(window.AudioContext ||
+        window.webkitAudioContext)();
 
     }
 
 }
 
-// ============================================
-// STOP RECORDING
-// ============================================
+/* ===== MORSETABELL ===== */
+const morseTable = {
 
-function stopRecording(){
+    "A":".-",
+    "B":"-...",
+    "C":"-.-.",
+    "D":"-..",
+    "E":".",
+    "F":"..-.",
+    "G":"--.",
+    "H":"....",
+    "I":"..",
+    "J":".---",
+    "K":"-.-",
+    "L":".-..",
+    "M":"--",
+    "N":"-.",
+    "O":"---",
+    "P":".--.",
+    "Q":"--.-",
+    "R":".-.",
+    "S":"...",
+    "T":"-",
+    "U":"..-",
+    "V":"...-",
+    "W":".--",
+    "X":"-..-",
+    "Y":"-.--",
+    "Z":"--..",
 
-    if(mediaRecorder){
+    "1":".----",
+    "2":"..---",
+    "3":"...--",
+    "4":"....-",
+    "5":".....",
+    "6":"-....",
+    "7":"--...",
+    "8":"---..",
+    "9":"----.",
+    "0":"-----",
 
-        mediaRecorder.stop();
+    " ":"/"
 
-        audioStream.getTracks().forEach(track => {
+};
 
-            track.stop();
+/* ===== TON ===== */
+function playTone(duration){
 
-        });
+    /* ===== AUDIO ===== */
+    initAudio();
 
-        console.log("REC STOP");
+    /* ===== OSCILLATOR ===== */
+    const oscillator =
+    audioContext.createOscillator();
+
+    /* ===== VOLUME ===== */
+    const gainNode =
+    audioContext.createGain();
+
+    /* ===== FREKVENS ===== */
+    oscillator.frequency.value = 650;
+
+    /* ===== VÅGFORM ===== */
+    oscillator.type = "sine";
+
+    /* ===== VOLYM ===== */
+    gainNode.gain.value = 0.2;
+
+    /* ===== KOPPLA ===== */
+    oscillator.connect(gainNode);
+
+    gainNode.connect(audioContext.destination);
+
+    /* ===== START ===== */
+    oscillator.start();
+
+    /* ===== STOP ===== */
+    oscillator.stop(
+        audioContext.currentTime +
+        duration
+    );
+
+}
+
+/* ===== VÄNTA ===== */
+function sleep(ms){
+
+    /* ===== PROMISE ===== */
+    return new Promise(resolve =>
+        setTimeout(resolve,ms)
+    );
+
+}
+
+/* ===== BLINK ===== */
+function flashSignal(active){
+
+    /* ===== BOX ===== */
+    const flashBox =
+    document.getElementById("flashBox");
+
+    /* ===== FINNS EJ ===== */
+    if(!flashBox){
+        return;
+    }
+
+    /* ===== AKTIV ===== */
+    if(active){
+
+        flashBox.classList.add(
+            "flash-active"
+        );
+
+    }
+
+    /* ===== AV ===== */
+    else{
+
+        flashBox.classList.remove(
+            "flash-active"
+        );
 
     }
 
 }
 
-// ============================================
-// PLAY RECORDING
-// ============================================
+/* ===== SPELA MORSE ===== */
+async function playMorse(text,wpm = 15){
 
-function playRecording(){
+    /* ===== REDAN IGÅNG ===== */
+    if(isPlaying){
+        return;
+    }
 
-    if(audioURL){
+    /* ===== STATUS ===== */
+    isPlaying = true;
 
-        const audio = new Audio(audioURL);
+    /* ===== STATUSRUTA ===== */
+    const status =
+    document.getElementById("statusText");
 
-        audio.play();
+    /* ===== STATUS ===== */
+    if(status){
+
+        status.innerHTML =
+        "▶ Spelar Morse...";
 
     }
 
-}
+    /* ===== TID ===== */
+    const dotDuration =
+    1200 / wpm;
 
-// ============================================
-// DOWNLOAD RECORDING
-// ============================================
+    /* ===== TEXT ===== */
+    text =
+    text.toUpperCase();
 
-function downloadRecording(){
+    /* ===== LOOP TEXT ===== */
+    for(let character of text){
 
-    if(audioBlob){
+        /* ===== MORSE ===== */
+        const morse =
+        morseTable[character];
 
-        const link =
-            document.createElement("a");
+        /* ===== FINNS EJ ===== */
+        if(!morse){
+            continue;
+        }
 
-        link.href = audioURL;
+        /* ===== MELLANRUM ===== */
+        if(character === " "){
 
-        link.download = "dx-recording.webm";
+            await sleep(dotDuration * 7);
 
-        link.click();
+            continue;
+
+        }
+
+        /* ===== LOOP SYMBOLER ===== */
+        for(let symbol of morse){
+
+            /* ===== DOT ===== */
+            if(symbol === "."){
+
+                /* ===== BLINK ===== */
+                flashSignal(true);
+
+                /* ===== TON ===== */
+                playTone(
+                    dotDuration / 1000
+                );
+
+                /* ===== VÄNTA ===== */
+                await sleep(dotDuration);
+
+                /* ===== AV ===== */
+                flashSignal(false);
+
+            }
+
+            /* ===== DASH ===== */
+            if(symbol === "-"){
+
+                /* ===== BLINK ===== */
+                flashSignal(true);
+
+                /* ===== TON ===== */
+                playTone(
+                    (dotDuration * 3) / 1000
+                );
+
+                /* ===== VÄNTA ===== */
+                await sleep(dotDuration * 3);
+
+                /* ===== AV ===== */
+                flashSignal(false);
+
+            }
+
+            /* ===== MELLAN SYMBOLER ===== */
+            await sleep(dotDuration);
+
+        }
+
+        /* ===== MELLAN BOKSTÄVER ===== */
+        await sleep(dotDuration * 2);
+
+    }
+
+    /* ===== KLAR ===== */
+    isPlaying = false;
+
+    /* ===== STATUS ===== */
+    if(status){
+
+        status.innerHTML =
+        "✅ Morse färdigspelad";
 
     }
 
