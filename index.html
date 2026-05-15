@@ -4,7 +4,6 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>DX-OS</title>
@@ -32,7 +31,7 @@ header{
     border-bottom:2px solid #1f2937;
 }
 
-/* ===== LOGO ===== */
+/* ===== RUBRIK ===== */
 header h1{
     margin:0;
     color:#eab308;
@@ -44,12 +43,16 @@ header p{
     margin-top:15px;
     color:#cbd5e1;
     font-size:18px;
+    max-width:800px;
+    margin-left:auto;
+    margin-right:auto;
     line-height:1.6;
 }
 
 /* ===== WRAPPER ===== */
 .wrapper{
-    max-width:1500px;
+    width:100%;
+    max-width:1400px;
     margin:auto;
     padding:30px 20px;
 }
@@ -57,13 +60,13 @@ header p{
 /* ===== GRID ===== */
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:25px;
 }
 
-/* ===== CARD ===== */
+/* ===== KORT ===== */
 .card{
-    background:#0b1220;
+    background:#111827;
     border:1px solid #1f2937;
     border-radius:18px;
     padding:25px;
@@ -80,45 +83,60 @@ header p{
 .card h2{
     margin-top:0;
     color:#eab308;
-    font-size:28px;
+    font-size:26px;
 }
 
 /* ===== TEXT ===== */
 .card p{
     color:#cbd5e1;
     line-height:1.6;
-    min-height:90px;
+    min-height:110px;
 }
 
-/* ===== BUTTON ===== */
-.button{
-    display:block;
+/* ===== KNAPP ===== */
+.card a button{
     width:100%;
-    margin-top:20px;
     padding:14px;
-    text-align:center;
+    border:none;
+    border-radius:12px;
     background:#eab308;
     color:#000000;
-    text-decoration:none;
-    border-radius:10px;
     font-weight:bold;
+    cursor:pointer;
     font-size:16px;
+    transition:0.2s;
 }
 
-/* ===== BUTTON HOVER ===== */
-.button:hover{
-    opacity:0.9;
+/* ===== HOVER ===== */
+.card a button:hover{
+    background:#facc15;
 }
 
 /* ===== STATUS ===== */
 .status{
     display:inline-block;
     margin-top:10px;
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
-    background:#111827;
-    color:#94a3b8;
+    margin-bottom:20px;
+    padding:7px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* ===== STATUSFÄRGER ===== */
+.active{
+    background:#14532d;
+    color:#86efac;
+}
+
+.testing{
+    background:#78350f;
+    color:#fde68a;
+}
+
+.planned{
+    background:#1e3a8a;
+    color:#93c5fd;
 }
 
 /* ===== FOOTER ===== */
@@ -126,8 +144,21 @@ footer{
     text-align:center;
     padding:30px 20px;
     color:#64748b;
-    border-top:2px solid #1f2937;
+    border-top:1px solid #1f2937;
     margin-top:40px;
+}
+
+/* ===== MOBIL ===== */
+@media(max-width:768px){
+
+    header h1{
+        font-size:36px;
+    }
+
+    header p{
+        font-size:16px;
+    }
+
 }
 
 </style>
@@ -139,17 +170,11 @@ footer{
 <!-- ===== HEADER ===== -->
 <header>
 
-<h1>
-
-DX-OS
-
-</h1>
+<h1>DX-OS</h1>
 
 <p>
-
-DX-operativsystem för SDR, propagation, global radiolyssning,
-DX-loggning, mottagarhantering och live-analys.
-
+DX-OS är ett avancerat operationscenter för DX-ing, SDR, signalanalys,
+mottagarstyrning, loggning och AI-baserad radioövervakning.
 </p>
 
 </header>
@@ -160,129 +185,24 @@ DX-loggning, mottagarhantering och live-analys.
 <!-- ===== GRID ===== -->
 <div class="grid">
 
-<!-- ===== DX MAP ===== -->
-<div class="card">
-
-<h2>
-
-DX World Map
-
-</h2>
-
-<p>
-
-Global DX-karta med mottagare, DX-paths, statistik,
-frekvensförslag och propagation.
-
-</p>
-
-<div class="status">
-
-Aktiv modul
-
-</div>
-
-<a
-href="modules/dx-map.html"
-class="button">
-
-Öppna DX Map
-
-</a>
-
-</div>
-
-<!-- ===== SDR DIRECTORY ===== -->
-<div class="card">
-
-<h2>
-
-SDR Directory
-
-</h2>
-
-<p>
-
-Hitta KiwiSDR, OpenWebRX, WebSDR och specialmottagare
-för HF, VHF, UHF och satellit.
-
-</p>
-
-<div class="status">
-
-Aktiv modul
-
-</div>
-
-<a
-href="modules/sdr-directory.html"
-class="button">
-
-Öppna SDR Directory
-
-</a>
-
-</div>
-
-<!-- ===== RECEIVER MANAGER ===== -->
-<div class="card">
-
-<h2>
-
-Receiver Manager
-
-</h2>
-
-<p>
-
-Hantera mottagare, koordinater, färger,
-URL:er och SDR-data för hela DX-OS.
-
-</p>
-
-<div class="status">
-
-Aktiv modul
-
-</div>
-
-<a
-href="modules/receiver-manager.html"
-class="button">
-
-Öppna Receiver Manager
-
-</a>
-
-</div>
-
 <!-- ===== LIVE RADIO ===== -->
 <div class="card">
 
-<h2>
+<h2>Live Radio</h2>
 
-Live Radio
-
-</h2>
-
-<p>
-
-Öppna SDR-mottagare och lyssna live på HF,
-kortvåg, utility, flyg och specialband.
-
-</p>
-
-<div class="status">
-
-Aktiv modul
-
+<div class="status active">
+AKTIV
 </div>
 
-<a
-href="modules/live-radio.html"
-class="button">
+<p>
+Öppna WebSDR, Twente och framtida mottagare direkt från DX-OS.
+</p>
 
-Öppna Live Radio
+<a href="modules/live-radio.html">
+
+<button>
+Öppna modul
+</button>
 
 </a>
 
@@ -291,62 +211,113 @@ class="button">
 <!-- ===== LOGGCENTER ===== -->
 <div class="card">
 
-<h2>
+<h2>Loggcenter</h2>
 
-Loggcenter
-
-</h2>
-
-<p>
-
-Logga stationer, UTC-tider, signalstyrkor,
-frekvenser och DX-observationer.
-
-</p>
-
-<div class="status">
-
-Aktiv modul
-
+<div class="status active">
+AKTIV
 </div>
 
-<a
-href="modules/loggcenter.html"
-class="button">
+<p>
+Logga stationer, frekvenser, språk, signalstyrka och mottagningsdetaljer.
+</p>
 
-Öppna Loggcenter
+<a href="modules/loggcenter.html">
+
+<button>
+Öppna modul
+</button>
 
 </a>
 
 </div>
 
-<!-- ===== PROPAGATION ===== -->
+<!-- ===== RECEIVER HUB ===== -->
 <div class="card">
 
-<h2>
+<h2>Receiver Hub</h2>
 
-Propagation Center
-
-</h2>
+<div class="status testing">
+TEST
+</div>
 
 <p>
-
-Greyline, UTC, dag/natt-zon,
-bandstatus och framtida soldata.
-
+Central mottagarhub för KiwiSDR, OpenWebRX, Twente och framtida SDR-nätverk.
 </p>
 
-<div class="status">
+<a href="modules/receiver-hub.html">
 
-Ny modul
+<button>
+Öppna modul
+</button>
+
+</a>
 
 </div>
 
-<a
-href="modules/propagation-center.html"
-class="button">
+<!-- ===== TIMELINE ===== -->
+<div class="card">
 
-Öppna Propagation Center
+<h2>DX Timeline</h2>
+
+<div class="status active">
+AKTIV
+</div>
+
+<p>
+Utvecklingshistorik, versionsspårning och framtida roadmap för DX-OS.
+</p>
+
+<a href="modules/dx-timeline.html">
+
+<button>
+Öppna modul
+</button>
+
+</a>
+
+</div>
+
+<!-- ===== AI ANALYSIS ===== -->
+<div class="card">
+
+<h2>AI Analysis</h2>
+
+<div class="status planned">
+PLANERAD
+</div>
+
+<p>
+AI-baserad identifiering av stationer, språk, modulation och signalmönster.
+</p>
+
+<a href="#">
+
+<button>
+Kommer snart
+</button>
+
+</a>
+
+</div>
+
+<!-- ===== DX MAP ===== -->
+<div class="card">
+
+<h2>DX Map</h2>
+
+<div class="status planned">
+PLANERAD
+</div>
+
+<p>
+Global DX-karta med stationer, mottagare och loggade signaler.
+</p>
+
+<a href="#">
+
+<button>
+Kommer snart
+</button>
 
 </a>
 
@@ -359,7 +330,7 @@ class="button">
 <!-- ===== FOOTER ===== -->
 <footer>
 
-DX-OS © 2026
+DX-OS • 2026 • SDR • DX • AI • Signal Intelligence
 
 </footer>
 
