@@ -2,20 +2,16 @@
 <html lang="sv">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>DX-OS CW Converter</title>
 
 <style>
-
-/* ===== GRUND ===== */
 *{
     box-sizing:border-box;
 }
 
-/* ===== BODY ===== */
 body{
     margin:0;
     font-family:Arial,sans-serif;
@@ -23,7 +19,6 @@ body{
     color:#ffffff;
 }
 
-/* ===== HEADER ===== */
 header{
     background:#111821;
     padding:30px 20px;
@@ -31,36 +26,29 @@ header{
     border-bottom:2px solid #1f2937;
 }
 
-/* ===== RUBRIK ===== */
 header h1{
     margin:0;
     color:#eab308;
     font-size:42px;
 }
 
-/* ===== TEXT ===== */
 header p{
     margin-top:10px;
     color:#94a3b8;
-    font-size:18px;
 }
 
-/* ===== WRAPPER ===== */
 .wrapper{
-    width:100%;
     max-width:1300px;
     margin:auto;
     padding:25px;
 }
 
-/* ===== GRID ===== */
 .grid{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:25px;
 }
 
-/* ===== PANEL ===== */
 .panel{
     background:#0b1220;
     border:1px solid #1f2937;
@@ -68,97 +56,65 @@ header p{
     padding:25px;
 }
 
-/* ===== RUBRIK ===== */
 .panel h2{
     margin-top:0;
     color:#eab308;
 }
 
-/* ===== TEXTAREA ===== */
-textarea{
-    width:100%;
-    min-height:220px;
-    resize:vertical;
-    border:none;
-    outline:none;
-    border-radius:14px;
-    background:#020617;
-    color:#ffffff;
-    padding:18px;
-    font-size:20px;
-    line-height:1.7;
+input[type="file"]{
     margin-top:15px;
+    color:#ffffff;
 }
 
-/* ===== RESULTAT ===== */
-.result-box{
-    background:#020617;
-    border:1px solid #334155;
-    border-radius:14px;
-    padding:20px;
-    margin-top:20px;
-    min-height:120px;
-    font-size:20px;
-    line-height:1.8;
-    color:#9ecfff;
-}
-
-/* ===== KNAPPGRID ===== */
-.button-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
+audio{
+    width:100%;
     margin-top:20px;
 }
 
-/* ===== KNAPP ===== */
 button{
     width:100%;
-    padding:18px;
+    padding:16px;
+    margin-top:15px;
     border:none;
     border-radius:14px;
     background:#eab308;
     color:#000000;
-    font-size:18px;
+    font-size:17px;
     font-weight:bold;
     cursor:pointer;
-    transition:0.2s;
 }
 
-/* ===== HOVER ===== */
 button:hover{
     background:#facc15;
-    transform:scale(1.02);
 }
 
-/* ===== STATUS ===== */
-#statusBox{
-    margin-top:20px;
+.button-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.result-box{
     background:#020617;
-    padding:15px;
-    border-radius:12px;
-    color:#22c55e;
+    border:1px solid #334155;
+    border-radius:14px;
+    padding:18px;
+    margin-top:18px;
+    color:#9ecfff;
     font-size:18px;
+    line-height:1.7;
+    min-height:70px;
+}
+
+.status{
+    background:#020617;
+    border-radius:12px;
+    padding:15px;
+    margin-top:20px;
+    color:#22c55e;
     text-align:center;
 }
 
-/* ===== FILE ===== */
-input[type="file"]{
-    margin-top:20px;
-    color:#ffffff;
-}
-
-/* ===== INFO ===== */
-.info-box{
-    background:#020617;
-    border-radius:14px;
-    padding:20px;
-    margin-top:20px;
-    line-height:1.7;
-    color:#cbd5e1;
-}
-
-/* ===== BACK ===== */
 .back-button{
     display:inline-block;
     margin-top:25px;
@@ -169,173 +125,121 @@ input[type="file"]{
     border-radius:12px;
 }
 
-/* ===== FOOTER ===== */
 footer{
     margin-top:40px;
-    padding:30px 20px;
+    padding:25px;
     text-align:center;
     color:#64748b;
     border-top:1px solid #1f2937;
 }
 
-/* ===== MOBIL ===== */
 @media(max-width:900px){
-
     .grid{
         grid-template-columns:1fr;
     }
-
 }
-
 </style>
-
 </head>
 
 <body>
 
-<!-- ===== HEADER ===== -->
 <header>
-
-<h1>
-DX-OS CW Converter
-</h1>
-
-<p>
-CW-analys, Morsekonvertering och ljudbearbetning
-</p>
-
+    <h1>DX-OS CW Converter</h1>
+    <p>Ladda upp, spela upp och analysera CW/Morse-ljud</p>
 </header>
 
-<!-- ===== WRAPPER ===== -->
 <div class="wrapper">
 
 <div class="grid">
 
-<!-- ===== VÄNSTER ===== -->
 <div class="panel">
 
-<h2>
-🎙 CW Ljudanalys
-</h2>
+<h2>🎙 Ljudfil</h2>
 
 <p>
-Ladda upp en CW/Morse-inspelning från SDR, radio eller mobil.
+Ladda upp en inspelning från SDR, radio eller mobil.
 </p>
 
 <input
 type="file"
 id="audioFile"
 accept=".wav,.mp3,.m4a"
+onchange="loadAudioPreview('audioFile','audioPlayer','statusBox')"
 >
 
-<button onclick="startCWAnalysis()">
+<audio
+id="audioPlayer"
+controls>
+</audio>
 
-▶ Starta analys
+<div class="button-grid">
 
+<button onclick="playAudioPreview('statusBox')">
+▶ Spela
 </button>
 
-<div id="statusBox">
+<button onclick="pauseAudioPreview('statusBox')">
+⏸ Pausa
+</button>
 
-Redo för analys
+<button onclick="stopAudioPreview('statusBox')">
+■ Stoppa
+</button>
 
-</div>
-
-<div class="info-box">
-
-Stöd för:
-
-<ul>
-
-<li>WAV</li>
-<li>MP3</li>
-<li>M4A</li>
-<li>SDR-inspelningar</li>
-<li>Mobilinspelningar</li>
-
-</ul>
+<button onclick="startCWAnalysis()">
+📡 Analysera
+</button>
 
 </div>
 
+<div
+class="status"
+id="statusBox">
+Redo för ljudfil
 </div>
 
-<!-- ===== HÖGER ===== -->
+</div>
+
 <div class="panel">
 
-<h2>
-📡 CW Resultat
-</h2>
+<h2>📡 Analysresultat</h2>
 
 <div class="result-box">
-
 <strong>Upptäckt CW:</strong>
-
-<div id="cwResult">
-
----
-
-</div>
-
+<div id="cwResult">---</div>
 </div>
 
 <div class="result-box">
-
 <strong>Klartext:</strong>
-
-<div id="textResult">
-
----
-
-</div>
-
+<div id="textResult">---</div>
 </div>
 
 <div class="result-box">
-
-<strong>Svensk översättning:</strong>
-
-<div id="swedishResult">
-
----
-
-</div>
-
+<strong>Svensk betydelse:</strong>
+<div id="swedishResult">---</div>
 </div>
 
 <div class="result-box">
-
 <strong>Signaldata:</strong>
-
-<div id="signalInfo">
-
----
-
-</div>
-
+<div id="signalInfo">---</div>
 </div>
 
 <div class="button-grid">
 
 <button onclick="copyResults()">
-
-Kopiera resultat
-
+Kopiera
 </button>
 
 <button onclick="clearResults()">
-
 Rensa
-
 </button>
 
 </div>
 
 <a
 class="back-button"
-href="operation-center.html"
->
-
+href="operation-center.html">
 ← Tillbaka till Operations Center
-
 </a>
 
 </div>
@@ -344,161 +248,67 @@ href="operation-center.html"
 
 </div>
 
-<!-- ===== FOOTER ===== -->
 <footer>
-
 DX-OS CW Converter • SDR • CW • AI • Signal Intelligence
-
 </footer>
 
-<!-- ===== CW ANALYZER ===== -->
+<script src="data/audio-preview-engine.js"></script>
 <script src="data/cw-file-analyzer.js"></script>
 
 <script>
-
-/* ===================================================== */
-/* ===== STARTA ANALYS ================================= */
-/* ===================================================== */
-
 function startCWAnalysis(){
 
-    /* ===== ANALYS ===== */
     analyzeCWFile(
-
         "audioFile",
         "statusBox",
-
         function(result){
 
-            /* ===== CW ===== */
-            document.getElementById(
-                "cwResult"
-            ).innerHTML =
+            document.getElementById("cwResult").innerHTML =
             result.detectedCW;
 
-            /* ===== TEXT ===== */
-            document.getElementById(
-                "textResult"
-            ).innerHTML =
+            document.getElementById("textResult").innerHTML =
             result.detectedText;
 
-            /* ===== SVENSKA ===== */
-            document.getElementById(
-                "swedishResult"
-            ).innerHTML =
+            document.getElementById("swedishResult").innerHTML =
             result.swedishText;
 
-            /* ===== INFO ===== */
-            document.getElementById(
-                "signalInfo"
-            ).innerHTML =
-
-            "Fil: " +
-            result.fileName +
-
-            "<br><br>" +
-
-            "Storlek: " +
-            result.fileSize +
-
-            "<br><br>" +
-
-            "Typ: " +
-            result.fileType +
-
-            "<br><br>" +
-
-            "Signal: " +
-            result.signalQuality +
-
-            "<br><br>" +
-
-            "WPM: " +
-            result.estimatedWPM;
-
+            document.getElementById("signalInfo").innerHTML =
+            "Fil: " + result.fileName +
+            "<br>Storlek: " + result.fileSize +
+            "<br>Typ: " + result.fileType +
+            "<br>Signal: " + result.signalQuality +
+            "<br>WPM: " + result.estimatedWPM;
         }
-
     );
-
 }
-
-/* ===================================================== */
-/* ===== KOPIERA RESULTAT ============================== */
-/* ===================================================== */
 
 function copyResults(){
 
-    /* ===== TEXT ===== */
     const text =
+    "CW: " + document.getElementById("cwResult").innerText +
+    "\nText: " + document.getElementById("textResult").innerText +
+    "\nSvenska: " + document.getElementById("swedishResult").innerText +
+    "\nSignaldata: " + document.getElementById("signalInfo").innerText;
 
-        "CW: " +
-        document.getElementById(
-            "cwResult"
-        ).innerText +
+    navigator.clipboard.writeText(text);
 
-        "\n\nTEXT: " +
-        document.getElementById(
-            "textResult"
-        ).innerText +
-
-        "\n\nSVENSKA: " +
-        document.getElementById(
-            "swedishResult"
-        ).innerText;
-
-    /* ===== COPY ===== */
-    navigator.clipboard.writeText(
-        text
-    );
-
-    /* ===== STATUS ===== */
-    document.getElementById(
-        "statusBox"
-    ).innerHTML =
+    document.getElementById("statusBox").innerHTML =
     "✅ Resultat kopierat";
-
 }
-
-/* ===================================================== */
-/* ===== RENSA ========================================= */
-/* ===================================================== */
 
 function clearResults(){
 
-    /* ===== CW ===== */
-    document.getElementById(
-        "cwResult"
-    ).innerHTML =
-    "---";
+    document.getElementById("cwResult").innerHTML = "---";
+    document.getElementById("textResult").innerHTML = "---";
+    document.getElementById("swedishResult").innerHTML = "---";
+    document.getElementById("signalInfo").innerHTML = "---";
 
-    /* ===== TEXT ===== */
-    document.getElementById(
-        "textResult"
-    ).innerHTML =
-    "---";
-
-    /* ===== SVENSKA ===== */
-    document.getElementById(
-        "swedishResult"
-    ).innerHTML =
-    "---";
-
-    /* ===== INFO ===== */
-    document.getElementById(
-        "signalInfo"
-    ).innerHTML =
-    "---";
-
-    /* ===== STATUS ===== */
-    document.getElementById(
-        "statusBox"
-    ).innerHTML =
+    document.getElementById("statusBox").innerHTML =
     "Rensat";
-
 }
 
+attachAudioEndStatus("audioPlayer","statusBox");
 </script>
 
 </body>
-
 </html>
