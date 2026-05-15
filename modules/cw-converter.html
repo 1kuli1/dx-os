@@ -46,7 +46,7 @@ header p{
 
 /* ===== WRAPPER ===== */
 .wrapper{
-    max-width:1400px;
+    max-width:1450px;
     margin:auto;
     padding:25px;
 }
@@ -66,7 +66,7 @@ header p{
     padding:25px;
 }
 
-/* ===== TITLAR ===== */
+/* ===== RUBRIKER ===== */
 .panel h2{
     margin-top:0;
     color:#eab308;
@@ -93,11 +93,18 @@ canvas{
     border-radius:14px;
 }
 
-/* ===== KNAPPAR ===== */
+/* ===== KNAPPGRID ===== */
+.button-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-top:20px;
+}
+
+/* ===== KNAPP ===== */
 button{
     width:100%;
     padding:16px;
-    margin-top:15px;
     border:none;
     border-radius:14px;
     background:#eab308;
@@ -105,17 +112,12 @@ button{
     font-size:17px;
     font-weight:bold;
     cursor:pointer;
+    transition:0.2s;
 }
 
+/* ===== HOVER ===== */
 button:hover{
     background:#facc15;
-}
-
-/* ===== BUTTON GRID ===== */
-.button-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
 }
 
 /* ===== RESULTAT ===== */
@@ -125,9 +127,9 @@ button:hover{
     border-radius:14px;
     padding:18px;
     margin-top:18px;
-    min-height:70px;
     color:#9ecfff;
-    line-height:1.7;
+    line-height:1.8;
+    min-height:70px;
 }
 
 /* ===== STATUS ===== */
@@ -138,6 +140,16 @@ button:hover{
     margin-top:20px;
     color:#22c55e;
     text-align:center;
+}
+
+/* ===== INFO ===== */
+.info-box{
+    background:#020617;
+    border-radius:14px;
+    padding:18px;
+    margin-top:20px;
+    color:#cbd5e1;
+    line-height:1.7;
 }
 
 /* ===== BACK ===== */
@@ -183,7 +195,7 @@ DX-OS CW Converter
 </h1>
 
 <p>
-CW-analys, Morsekonvertering och signalvisualisering
+CW-analys • Morse • Spectrum • Signalvisualisering
 </p>
 
 </header>
@@ -193,11 +205,11 @@ CW-analys, Morsekonvertering och signalvisualisering
 
 <div class="grid">
 
-<!-- ===== VÄNSTER ===== -->
+<!-- ===== VÄNSTER PANEL ===== -->
 <div class="panel">
 
 <h2>
-🎙 CW Audio
+🎙 CW Audio Input
 </h2>
 
 <p>
@@ -208,7 +220,7 @@ Ladda upp en inspelning från SDR, radio eller mobil.
 type="file"
 id="audioFile"
 accept=".wav,.mp3,.m4a"
-onchange="loadPreviewAndWaveform()"
+onchange="loadDXAudio()"
 >
 
 <!-- ===== AUDIO ===== -->
@@ -224,23 +236,38 @@ width="900"
 height="220">
 </canvas>
 
+<!-- ===== SPECTRUM ===== -->
+<canvas
+id="spectrumCanvas"
+width="900"
+height="220">
+</canvas>
+
 <!-- ===== KNAPPAR ===== -->
 <div class="button-grid">
 
 <button onclick="playAudioPreview('statusBox')">
+
 ▶ Spela
+
 </button>
 
 <button onclick="pauseAudioPreview('statusBox')">
+
 ⏸ Pausa
+
 </button>
 
 <button onclick="stopAudioPreview('statusBox')">
+
 ■ Stoppa
+
 </button>
 
 <button onclick="startCWAnalysis()">
+
 📡 Analysera
+
 </button>
 
 </div>
@@ -250,19 +277,37 @@ height="220">
 class="status"
 id="statusBox">
 
-Redo för ljudfil
+Redo för CW-ljud
+
+</div>
+
+<!-- ===== INFO ===== -->
+<div class="info-box">
+
+<strong>Stöd:</strong>
+
+<ul>
+
+<li>WAV</li>
+<li>MP3</li>
+<li>M4A</li>
+<li>SDR Recordings</li>
+<li>Mobilinspelningar</li>
+
+</ul>
 
 </div>
 
 </div>
 
-<!-- ===== HÖGER ===== -->
+<!-- ===== HÖGER PANEL ===== -->
 <div class="panel">
 
 <h2>
 📡 Analysresultat
 </h2>
 
+<!-- ===== CW ===== -->
 <div class="result-box">
 
 <strong>Upptäckt CW:</strong>
@@ -275,6 +320,7 @@ Redo för ljudfil
 
 </div>
 
+<!-- ===== TEXT ===== -->
 <div class="result-box">
 
 <strong>Klartext:</strong>
@@ -287,6 +333,7 @@ Redo för ljudfil
 
 </div>
 
+<!-- ===== SVENSKA ===== -->
 <div class="result-box">
 
 <strong>Svensk betydelse:</strong>
@@ -299,6 +346,7 @@ Redo för ljudfil
 
 </div>
 
+<!-- ===== SIGNAL ===== -->
 <div class="result-box">
 
 <strong>Signaldata:</strong>
@@ -311,7 +359,7 @@ Redo för ljudfil
 
 </div>
 
-<!-- ===== KNAPPAR ===== -->
+<!-- ===== KNAPPGRID ===== -->
 <div class="button-grid">
 
 <button onclick="copyResults()">
@@ -354,14 +402,15 @@ DX-OS CW Converter • SDR • CW • AI • Signal Intelligence
 <script src="data/audio-preview-engine.js"></script>
 <script src="data/cw-file-analyzer.js"></script>
 <script src="data/waveform-engine.js"></script>
+<script src="data/spectrum-engine.js"></script>
 
 <script>
 
 /* ===================================================== */
-/* ===== LADDA PREVIEW + WAVEFORM ====================== */
+/* ===== LADDA AUDIO =================================== */
 /* ===================================================== */
 
-function loadPreviewAndWaveform(){
+function loadDXAudio(){
 
     /* ===== LADDA AUDIO ===== */
     loadAudioPreview(
@@ -370,12 +419,19 @@ function loadPreviewAndWaveform(){
         "statusBox"
     );
 
-    /* ===== STARTA WAVEFORM ===== */
+    /* ===== STARTA VISNING ===== */
     setTimeout(function(){
 
+        /* ===== WAVEFORM ===== */
         initWaveform(
             "audioPlayer",
             "waveformCanvas"
+        );
+
+        /* ===== SPECTRUM ===== */
+        initSpectrum(
+            "audioPlayer",
+            "spectrumCanvas"
         );
 
     },500);
@@ -413,7 +469,7 @@ function startCWAnalysis(){
             ).innerHTML =
             result.swedishText;
 
-            /* ===== INFO ===== */
+            /* ===== SIGNALINFO ===== */
             document.getElementById(
                 "signalInfo"
             ).innerHTML =
@@ -468,6 +524,11 @@ function copyResults(){
         "\n\nSVENSKA: " +
         document.getElementById(
             "swedishResult"
+        ).innerText +
+
+        "\n\nSIGNALDATA: " +
+        document.getElementById(
+            "signalInfo"
         ).innerText;
 
     navigator.clipboard.writeText(
@@ -515,7 +576,7 @@ function clearResults(){
 }
 
 /* ===================================================== */
-/* ===== AUDIO END ===================================== */
+/* ===== AUDIO STATUS ================================== */
 /* ===================================================== */
 
 attachAudioEndStatus(
