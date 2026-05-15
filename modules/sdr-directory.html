@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DX-OS SDR Directory</title>
+
+<style>
+
+/* ===== GRUND ===== */
+*{
+    box-sizing:border-box;
+}
+
+/* ===== BODY ===== */
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#05070b;
+    color:#ffffff;
+}
+
+/* ===== HEADER ===== */
+header{
+    background:#0b1220;
+    padding:25px;
+    text-align:center;
+    border-bottom:2px solid #1f2937;
+}
+
+/* ===== RUBRIK ===== */
+header h1{
+    margin:0;
+    color:#eab308;
+    font-size:34px;
+}
+
+/* ===== TEXT ===== */
+header p{
+    margin-top:10px;
+    color:#cbd5e1;
+}
+
+/* ===== WRAPPER ===== */
+.wrapper{
+    max-width:1400px;
+    margin:auto;
+    padding:20px;
+}
+
+/* ===== FILTER ===== */
+.filters{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+    margin-bottom:25px;
+}
+
+/* ===== INPUT ===== */
+input,
+select{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#111827;
+    color:#ffffff;
+    font-size:16px;
+}
+
+/* ===== GRID ===== */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+}
+
+/* ===== KORT ===== */
+.card{
+    background:#0b1220;
+    border:1px solid #1f2937;
+    border-radius:15px;
+    padding:20px;
+    transition:0.2s;
+}
+
+/* ===== HOVER ===== */
+.card:hover{
+    transform:translateY(-3px);
+    border-color:#eab308;
+}
+
+/* ===== TITEL ===== */
+.card h2{
+    margin-top:0;
+    color:#eab308;
+    font-size:22px;
+}
+
+/* ===== TEXT ===== */
+.card p{
+    color:#cbd5e1;
+    margin:8px 0;
+}
+
+/* ===== TAGS ===== */
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:15px;
+}
+
+/* ===== TAG ===== */
+.tag{
+    background:#111827;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:13px;
+    color:#94a3b8;
+}
+
+/* ===== BUTTON ===== */
+button{
+    margin-top:18px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#eab308;
+    color:#000000;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* ===== BUTTON HOVER ===== */
+button:hover{
+    opacity:0.9;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+
+<h1>DX-OS SDR Directory</h1>
+
+<p>
+
+Global katalog för KiwiSDR, OpenWebRX, WebSDR och specialmottagare.
+
+</p>
+
+</header>
+
+<!-- ===== WRAPPER ===== -->
+<div class="wrapper">
+
+<!-- ===== FILTER ===== -->
+<div class="filters">
+
+<!-- ===== SÖK ===== -->
+<input
+type="text"
+id="searchInput"
+placeholder="Sök mottagare..."
+oninput="filterSDR()">
+
+<!-- ===== TYP ===== -->
+<select
+id="typeFilter"
+onchange="filterSDR()">
+
+<option value="all">
+
+Alla typer
+
+</option>
+
+<option value="KiwiSDR">
+
+KiwiSDR
+
+</option>
+
+<option value="OpenWebRX">
+
+OpenWebRX
+
+</option>
+
+<option value="WebSDR">
+
+WebSDR
+
+</option>
+
+</select>
+
+<!-- ===== BAND ===== -->
+<select
+id="bandFilter"
+onchange="filterSDR()">
+
+<option value="all">
+
+Alla band
+
+</option>
+
+<option value="HF">
+
+HF
+
+</option>
+
+<option value="VHF">
+
+VHF
+
+</option>
+
+<option value="UHF">
+
+UHF
+
+</option>
+
+<option value="Airband">
+
+Airband
+
+</option>
+
+<option value="Satellite">
+
+Satellite
+
+</option>
+
+</select>
+
+</div>
+
+<!-- ===== GRID ===== -->
+<div
+class="grid"
+id="sdrGrid">
+
+</div>
+
+</div>
+
+<script>
+
+/* ===== SDR DATABASE ===== */
+const sdrDatabase = [
+
+{
+    name:"University of Twente",
+    type:"WebSDR",
+    country:"Nederländerna",
+    bands:["HF"],
+    description:"Klassisk DX-mottagare för HF och kortvåg.",
+    url:"http://websdr.ewi.utwente.nl:8901/"
+},
+
+{
+    name:"Northern Utah KiwiSDR",
+    type:"KiwiSDR",
+    country:"USA",
+    bands:["HF"],
+    description:"Bra nordamerikansk HF-mottagare.",
+    url:"https://kiwisdr.com/public/"
+},
+
+{
+    name:"OpenWebRX France VHF/UHF",
+    type:"OpenWebRX",
+    country:"Frankrike",
+    bands:["VHF","UHF","Airband"],
+    description:"VHF/UHF SDR med airband och specialtrafik.",
+    url:"https://rx-tx.info/"
+},
+
+{
+    name:"OpenWebRX Germany Airband",
+    type:"OpenWebRX",
+    country:"Tyskland",
+    bands:["Airband","VHF"],
+    description:"Flygtrafik och VHF-övervakning.",
+    url:"https://rx-tx.info/"
+},
+
+{
+    name:"QO-100 Satellite SDR",
+    type:"OpenWebRX",
+    country:"Europa",
+    bands:["Satellite","UHF"],
+    description:"Satellitlyssning via QO-100.",
+    url:"https://rx-tx.info/"
+}
+
+];
+
+/* ===== RENDER ===== */
+renderSDR(sdrDatabase);
+
+/* ===== VISA ===== */
+function renderSDR(data){
+
+    const grid =
+    document.getElementById("sdrGrid");
+
+    grid.innerHTML = "";
+
+    data.forEach(sdr => {
+
+        const card =
+        document.createElement("div");
+
+        card.className =
+        "card";
+
+        card.innerHTML = `
+
+        <h2>
+
+        ${sdr.name}
+
+        </h2>
+
+        <p>
+
+        Typ:
+        ${sdr.type}
+
+        </p>
+
+        <p>
+
+        Land:
+        ${sdr.country}
+
+        </p>
+
+        <p>
+
+        ${sdr.description}
+
+        </p>
+
+        <div class="tags">
+
+        ${sdr.bands.map(
+            band =>
+            `<div class="tag">${band}</div>`
+        ).join("")}
+
+        </div>
+
+        <button onclick="openSDR('${sdr.url}')">
+
+        Öppna SDR
+
+        </button>
+
+        `;
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+/* ===== FILTER ===== */
+function filterSDR(){
+
+    const search =
+    document.getElementById(
+        "searchInput"
+    )
+    .value
+    .toLowerCase();
+
+    const type =
+    document.getElementById(
+        "typeFilter"
+    ).value;
+
+    const band =
+    document.getElementById(
+        "bandFilter"
+    ).value;
+
+    const filtered =
+    sdrDatabase.filter(sdr => {
+
+        const matchesSearch =
+        sdr.name
+        .toLowerCase()
+        .includes(search);
+
+        const matchesType =
+        type === "all" ||
+        sdr.type === type;
+
+        const matchesBand =
+        band === "all" ||
+        sdr.bands.includes(band);
+
+        return(
+            matchesSearch &&
+            matchesType &&
+            matchesBand
+        );
+
+    });
+
+    renderSDR(filtered);
+
+}
+
+/* ===== OPEN ===== */
+function openSDR(url){
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>
