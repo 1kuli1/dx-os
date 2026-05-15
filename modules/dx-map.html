@@ -6,7 +6,7 @@
 <!-- ===== TECKENUPPSÄTTNING ===== -->
 <meta charset="UTF-8">
 
-<!-- ===== MOBILANPASSNING ===== -->
+<!-- ===== MOBIL ===== -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ===== TITEL ===== -->
@@ -54,16 +54,55 @@ header p{
     color:#cbd5e1;
 }
 
-/* ===== KARTWRAPPER ===== */
+/* ===== KARTA ===== */
 .map-wrapper{
     width:100%;
     height:70vh;
+    position:relative;
 }
 
-/* ===== KARTA ===== */
+/* ===== MAP ===== */
 #map{
     width:100%;
     height:100%;
+}
+
+/* ===== KONTROLLPANEL ===== */
+.control-panel{
+    position:absolute;
+    top:15px;
+    right:15px;
+    z-index:1000;
+    background:#0b1220;
+    border:1px solid #1f2937;
+    border-radius:15px;
+    padding:15px;
+    width:220px;
+    box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+
+/* ===== PANEL RUBRIK ===== */
+.control-panel h2{
+    margin-top:0;
+    color:#eab308;
+    font-size:18px;
+}
+
+/* ===== CHECKBOX ===== */
+.control-panel label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+    color:#cbd5e1;
+    cursor:pointer;
+}
+
+/* ===== PANEL TEXT ===== */
+.panel-text{
+    margin-top:15px;
+    font-size:13px;
+    color:#94a3b8;
 }
 
 /* ===== PANEL ===== */
@@ -94,7 +133,7 @@ select{
     font-size:16px;
 }
 
-/* ===== KNAPP ===== */
+/* ===== BUTTON ===== */
 button{
     padding:14px;
     border:none;
@@ -132,7 +171,7 @@ button:hover{
 
 <p>
 
-Visa mottagare, DX-linjer och loggade stationer.
+DX-karta med mottagare, stationer och DX-paths.
 
 </p>
 
@@ -141,6 +180,60 @@ Visa mottagare, DX-linjer och loggade stationer.
 <!-- ===== KARTA ===== -->
 <div class="map-wrapper">
 
+<!-- ===== KONTROLLPANEL ===== -->
+<div class="control-panel">
+
+<h2>
+
+Kartlager
+
+</h2>
+
+<label>
+
+<input
+type="checkbox"
+id="toggleReceivers"
+checked
+onchange="toggleReceivers()">
+
+Visa mottagare
+
+</label>
+
+<label>
+
+<input
+type="checkbox"
+id="toggleStations"
+checked
+onchange="toggleStations()">
+
+Visa stationer
+
+</label>
+
+<label>
+
+<input
+type="checkbox"
+id="toggleLines"
+checked
+onchange="toggleLines()">
+
+Visa DX-linjer
+
+</label>
+
+<div class="panel-text">
+
+Du kan slå av/på olika lager på kartan.
+
+</div>
+
+</div>
+
+<!-- ===== KARTA ===== -->
 <div id="map"></div>
 
 </div>
@@ -168,7 +261,7 @@ type="text"
 id="country"
 placeholder="Land">
 
-<!-- ===== MOTTAGARE ===== -->
+<!-- ===== RX ===== -->
 <select id="receiverSelect">
 
 <option value="">
@@ -198,7 +291,6 @@ Lägg till station
 
 </div>
 
-<!-- ===== INFO ===== -->
 <div class="info">
 
 Mottagare hämtas automatiskt från Receiver Manager.
@@ -207,12 +299,12 @@ Mottagare hämtas automatiskt från Receiver Manager.
 
 </div>
 
-<!-- ===== LEAFLET JS ===== -->
+<!-- ===== LEAFLET ===== -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 
-/* ===== SKAPA KARTA ===== */
+/* ===== KARTA ===== */
 const map =
 L.map('map').setView([20,0],2);
 
@@ -223,38 +315,38 @@ L.tileLayer(
     attribution:'© OpenStreetMap'
 }).addTo(map);
 
-/* ===== ARRAY ===== */
+/* ===== ARRAYER ===== */
 let stations = [];
+
+let receiverMarkers = [];
+
+let stationMarkers = [];
+
+let dxLines = [];
 
 /* ===== LADDA ===== */
 loadReceivers();
 
 loadStations();
 
-/* ===== LADDA MOTTAGARE ===== */
+/* ===== LADDA RX ===== */
 function loadReceivers(){
 
-    /* ===== HÄMTA ===== */
     const saved =
     localStorage.getItem("dxReceivers");
 
-    /* ===== KONTROLL ===== */
     if(!saved){
         return;
     }
 
-    /* ===== PARSA ===== */
     const receivers =
     JSON.parse(saved);
 
-    /* ===== SELECT ===== */
     const select =
     document.getElementById("receiverSelect");
 
-    /* ===== LOOP ===== */
     receivers.forEach(receiver => {
 
-        /* ===== OPTION ===== */
         const option =
         document.createElement("option");
 
@@ -264,17 +356,15 @@ function loadReceivers(){
         option.textContent =
         receiver.name;
 
-        /* ===== LÄGG TILL ===== */
         select.appendChild(option);
 
     });
 
 }
 
-/* ===== LÄGG TILL STATION ===== */
+/* ===== LÄGG TILL ===== */
 function addStation(){
 
-    /* ===== HÄMTA FÄLT ===== */
     const station =
     document.getElementById("station").value;
 
@@ -297,7 +387,6 @@ function addStation(){
         document.getElementById("lng").value
     );
 
-    /* ===== KONTROLL ===== */
     if(
         !station ||
         !frequency ||
@@ -310,24 +399,21 @@ function addStation(){
         return;
     }
 
-    /* ===== HÄMTA RX ===== */
     const saved =
     localStorage.getItem("dxReceivers");
 
     const receivers =
     JSON.parse(saved);
 
-    /* ===== HITTA RX ===== */
     const receiver =
     receivers.find(
         r => r.id == receiverId
     );
 
-    /* ===== MARKÖR ===== */
+    /* ===== STATION ===== */
     const marker =
     L.marker([lat,lng]).addTo(map);
 
-    /* ===== POPUP ===== */
     marker.bindPopup(
         `
         <b>${station}</b><br>
@@ -337,7 +423,10 @@ function addStation(){
         `
     );
 
-    /* ===== DX-LINJE ===== */
+    stationMarkers.push(marker);
+
+    /* ===== LINJE ===== */
+    const line =
     L.polyline(
     [
         [receiver.lat, receiver.lng],
@@ -347,6 +436,8 @@ function addStation(){
         color:receiver.color,
         weight:2
     }).addTo(map);
+
+    dxLines.push(line);
 
     /* ===== DATA ===== */
     const stationData = {
@@ -369,16 +460,13 @@ function addStation(){
 
     };
 
-    /* ===== SPARA ===== */
     stations.push(stationData);
 
-    /* ===== LOCALSTORAGE ===== */
     localStorage.setItem(
         "dxStations",
         JSON.stringify(stations)
     );
 
-    /* ===== TÖM ===== */
     clearForm();
 
 }
@@ -386,27 +474,23 @@ function addStation(){
 /* ===== LADDA STATIONER ===== */
 function loadStations(){
 
-    /* ===== HÄMTA ===== */
     const saved =
     localStorage.getItem("dxStations");
 
-    /* ===== RX ===== */
     const rxSaved =
     localStorage.getItem("dxReceivers");
 
-    /* ===== KONTROLL ===== */
     if(!rxSaved){
         return;
     }
 
-    /* ===== PARSA RX ===== */
     const receivers =
     JSON.parse(rxSaved);
 
-    /* ===== VISA MOTTAGARE ===== */
+    /* ===== RX ===== */
     receivers.forEach(receiver => {
 
-        /* ===== CIRKEL ===== */
+        const rxMarker =
         L.circleMarker(
         [
             receiver.lat,
@@ -421,7 +505,6 @@ function loadStations(){
         })
         .addTo(map)
 
-        /* ===== POPUP ===== */
         .bindPopup(
             `
             <b>${receiver.name}</b><br>
@@ -430,26 +513,24 @@ function loadStations(){
             `
         );
 
+        receiverMarkers.push(rxMarker);
+
     });
 
-    /* ===== FINNS STATIONER ===== */
+    /* ===== STATIONER ===== */
     if(saved){
 
-        /* ===== PARSA ===== */
         stations =
         JSON.parse(saved);
 
-        /* ===== LOOP ===== */
         stations.forEach(station => {
 
-            /* ===== MARKÖR ===== */
             const marker =
             L.marker([
                 station.lat,
                 station.lng
             ]).addTo(map);
 
-            /* ===== POPUP ===== */
             marker.bindPopup(
                 `
                 <b>${station.station}</b><br>
@@ -459,16 +540,16 @@ function loadStations(){
                 `
             );
 
-            /* ===== HITTA RX ===== */
+            stationMarkers.push(marker);
+
             const receiver =
             receivers.find(
                 r => r.id == station.receiverId
             );
 
-            /* ===== FINNS RX ===== */
             if(receiver){
 
-                /* ===== LINJE ===== */
+                const line =
                 L.polyline(
                 [
                     [receiver.lat, receiver.lng],
@@ -479,6 +560,8 @@ function loadStations(){
                     weight:2
                 }).addTo(map);
 
+                dxLines.push(line);
+
             }
 
         });
@@ -487,7 +570,70 @@ function loadStations(){
 
 }
 
-/* ===== TÖM FORM ===== */
+/* ===== TOGGLE RX ===== */
+function toggleReceivers(){
+
+    const visible =
+    document.getElementById(
+        "toggleReceivers"
+    ).checked;
+
+    receiverMarkers.forEach(marker => {
+
+        if(visible){
+            map.addLayer(marker);
+        }
+        else{
+            map.removeLayer(marker);
+        }
+
+    });
+
+}
+
+/* ===== TOGGLE STATIONER ===== */
+function toggleStations(){
+
+    const visible =
+    document.getElementById(
+        "toggleStations"
+    ).checked;
+
+    stationMarkers.forEach(marker => {
+
+        if(visible){
+            map.addLayer(marker);
+        }
+        else{
+            map.removeLayer(marker);
+        }
+
+    });
+
+}
+
+/* ===== TOGGLE LINJER ===== */
+function toggleLines(){
+
+    const visible =
+    document.getElementById(
+        "toggleLines"
+    ).checked;
+
+    dxLines.forEach(line => {
+
+        if(visible){
+            map.addLayer(line);
+        }
+        else{
+            map.removeLayer(line);
+        }
+
+    });
+
+}
+
+/* ===== TÖM ===== */
 function clearForm(){
 
     document.getElementById("station").value = "";
