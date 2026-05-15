@@ -25,8 +25,8 @@ body{
 
 /* ===== HEADER ===== */
 header{
-    background:#0b1220;
-    padding:50px 20px;
+    background:#111821;
+    padding:40px 20px;
     text-align:center;
     border-bottom:2px solid #1f2937;
 }
@@ -34,25 +34,21 @@ header{
 /* ===== RUBRIK ===== */
 header h1{
     margin:0;
+    font-size:48px;
     color:#eab308;
-    font-size:52px;
 }
 
 /* ===== TEXT ===== */
 header p{
     margin-top:15px;
-    color:#cbd5e1;
-    font-size:18px;
-    max-width:800px;
-    margin-left:auto;
-    margin-right:auto;
-    line-height:1.6;
+    color:#94a3b8;
+    font-size:20px;
 }
 
 /* ===== WRAPPER ===== */
 .wrapper{
     width:100%;
-    max-width:1400px;
+    max-width:1500px;
     margin:auto;
     padding:30px 20px;
 }
@@ -60,103 +56,122 @@ header p{
 /* ===== GRID ===== */
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
     gap:25px;
 }
 
 /* ===== KORT ===== */
 .card{
-    background:#111827;
+    background:#0b1220;
     border:1px solid #1f2937;
-    border-radius:18px;
-    padding:25px;
+    border-radius:22px;
+    padding:28px;
     transition:0.2s;
 }
 
 /* ===== HOVER ===== */
 .card:hover{
-    transform:translateY(-4px);
     border-color:#eab308;
+    transform:translateY(-4px);
 }
 
-/* ===== RUBRIK ===== */
+/* ===== TITEL ===== */
 .card h2{
     margin-top:0;
     color:#eab308;
-    font-size:26px;
+    font-size:30px;
 }
 
 /* ===== TEXT ===== */
 .card p{
     color:#cbd5e1;
-    line-height:1.6;
-    min-height:110px;
-}
-
-/* ===== KNAPP ===== */
-.card a button{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:12px;
-    background:#eab308;
-    color:#000000;
-    font-weight:bold;
-    cursor:pointer;
-    font-size:16px;
-    transition:0.2s;
-}
-
-/* ===== HOVER ===== */
-.card a button:hover{
-    background:#facc15;
+    line-height:1.8;
+    min-height:100px;
 }
 
 /* ===== STATUS ===== */
 .status{
     display:inline-block;
-    margin-top:10px;
     margin-bottom:20px;
-    padding:7px 12px;
+    padding:6px 14px;
     border-radius:999px;
     font-size:12px;
     font-weight:bold;
 }
 
-/* ===== STATUSFÄRGER ===== */
-.active{
+/* ===== ONLINE ===== */
+.online{
     background:#14532d;
     color:#86efac;
 }
 
+/* ===== TEST ===== */
 .testing{
     background:#78350f;
     color:#fde68a;
 }
 
+/* ===== PLANERAD ===== */
 .planned{
     background:#1e3a8a;
     color:#93c5fd;
 }
 
+/* ===== KNAPP ===== */
+button{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:14px;
+    background:#eab308;
+    color:#000000;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+/* ===== HOVER ===== */
+button:hover{
+    background:#facc15;
+}
+
+/* ===== TOPPANEL ===== */
+.top-panel{
+    background:#0b1220;
+    border:1px solid #1f2937;
+    border-radius:22px;
+    padding:25px;
+    margin-bottom:30px;
+    text-align:center;
+}
+
+/* ===== UTC ===== */
+#utcClock{
+    margin-top:15px;
+    font-size:40px;
+    color:#eab308;
+    font-weight:bold;
+}
+
 /* ===== FOOTER ===== */
 footer{
+    margin-top:50px;
+    padding:30px;
     text-align:center;
-    padding:30px 20px;
     color:#64748b;
     border-top:1px solid #1f2937;
-    margin-top:40px;
 }
 
 /* ===== MOBIL ===== */
-@media(max-width:768px){
+@media(max-width:800px){
 
     header h1{
-        font-size:36px;
+        font-size:38px;
     }
 
     header p{
-        font-size:16px;
+        font-size:18px;
     }
 
 }
@@ -170,11 +185,12 @@ footer{
 <!-- ===== HEADER ===== -->
 <header>
 
-<h1>DX-OS</h1>
+<h1>
+DX-OS
+</h1>
 
 <p>
-DX-OS är ett avancerat operationscenter för DX-ing, SDR, signalanalys,
-mottagarstyrning, loggning och AI-baserad radioövervakning.
+SDR • DX • CW • AI • Signal Intelligence
 </p>
 
 </header>
@@ -182,144 +198,207 @@ mottagarstyrning, loggning och AI-baserad radioövervakning.
 <!-- ===== WRAPPER ===== -->
 <div class="wrapper">
 
+<!-- ===== TOPPANEL ===== -->
+<div class="top-panel">
+
+<h2>
+System Status
+</h2>
+
+<p>
+DX-OS kärnsystem online
+</p>
+
+<div id="utcClock">
+00:00:00
+</div>
+
+</div>
+
 <!-- ===== GRID ===== -->
 <div class="grid">
+
+<!-- ===== OPERATIONS CENTER ===== -->
+<div class="card">
+
+<h2>
+Operations Center
+</h2>
+
+<div class="status online">
+ONLINE
+</div>
+
+<p>
+Centralt kontrollrum för SDR, CW, DX-loggning och signalanalys.
+</p>
+
+<button onclick="location.href='modules/operations-center.html'">
+
+Öppna modul
+
+</button>
+
+</div>
 
 <!-- ===== LIVE RADIO ===== -->
 <div class="card">
 
-<h2>Live Radio</h2>
+<h2>
+Live Radio
+</h2>
 
-<div class="status active">
-AKTIV
+<div class="status online">
+ONLINE
 </div>
 
 <p>
-Öppna WebSDR, Twente och framtida mottagare direkt från DX-OS.
+Öppna live SDR-mottagare och radioövervakning direkt i DX-OS.
 </p>
 
-<a href="modules/live-radio.html">
+<button onclick="location.href='modules/live-radio.html'">
 
-<button>
 Öppna modul
+
 </button>
-
-</a>
-
-</div>
-
-<!-- ===== LOGGCENTER ===== -->
-<div class="card">
-
-<h2>Loggcenter</h2>
-
-<div class="status active">
-AKTIV
-</div>
-
-<p>
-Logga stationer, frekvenser, språk, signalstyrka och mottagningsdetaljer.
-</p>
-
-<a href="modules/logcenter.html">
-
-<button>
-Öppna modul
-</button>
-
-</a>
 
 </div>
 
 <!-- ===== RECEIVER HUB ===== -->
 <div class="card">
 
-<h2>Receiver Hub</h2>
+<h2>
+Receiver Hub
+</h2>
+
+<div class="status online">
+ONLINE
+</div>
+
+<p>
+Central hub för WebSDR, KiwiSDR och OpenWebRX mottagare.
+</p>
+
+<button onclick="location.href='modules/receiver-hub.html'">
+
+Öppna modul
+
+</button>
+
+</div>
+
+<!-- ===== MORSE ===== -->
+<div class="card">
+
+<h2>
+Morse Trainer
+</h2>
 
 <div class="status testing">
 TEST
 </div>
 
 <p>
-Central mottagarhub för KiwiSDR, OpenWebRX, Twente och framtida SDR-nätverk.
+CW-träning, Morse-generator och signalanalys.
 </p>
 
-<a href="modules/receiver-hub.html">
+<button onclick="location.href='modules/morse.html'">
 
-<button>
 Öppna modul
+
 </button>
 
-</a>
+</div>
+
+<!-- ===== CW ===== -->
+<div class="card">
+
+<h2>
+CW Converter
+</h2>
+
+<div class="status testing">
+TEST
+</div>
+
+<p>
+Konvertera, analysera och spela upp Morse/CW-signaler.
+</p>
+
+<button onclick="location.href='modules/cw-converter.html'">
+
+Öppna modul
+
+</button>
+
+</div>
+
+<!-- ===== LOGCENTER ===== -->
+<div class="card">
+
+<h2>
+Logcenter
+</h2>
+
+<div class="status online">
+ONLINE
+</div>
+
+<p>
+DX-loggning för stationer, frekvenser och signalinformation.
+</p>
+
+<button onclick="location.href='modules/logcenter.html'">
+
+Öppna modul
+
+</button>
 
 </div>
 
 <!-- ===== TIMELINE ===== -->
 <div class="card">
 
-<h2>DX Timeline</h2>
+<h2>
+DX Timeline
+</h2>
 
-<div class="status active">
-AKTIV
+<div class="status online">
+ONLINE
 </div>
 
 <p>
-Utvecklingshistorik, versionsspårning och framtida roadmap för DX-OS.
+Versionshistorik, roadmap och utvecklingsstatus för DX-OS.
 </p>
 
-<a href="modules/dx-timeline.html">
+<button onclick="location.href='modules/dx-timeline.html'">
 
-<button>
 Öppna modul
+
 </button>
-
-</a>
-
-</div>
-
-<!-- ===== AI ANALYSIS ===== -->
-<div class="card">
-
-<h2>AI Analysis</h2>
-
-<div class="status planned">
-PLANERAD
-</div>
-
-<p>
-AI-baserad identifiering av stationer, språk, modulation och signalmönster.
-</p>
-
-<a href="#">
-
-<button>
-Kommer snart
-</button>
-
-</a>
 
 </div>
 
 <!-- ===== DX MAP ===== -->
 <div class="card">
 
-<h2>DX Map</h2>
+<h2>
+DX Map
+</h2>
 
 <div class="status planned">
 PLANERAD
 </div>
 
 <p>
-Global DX-karta med stationer, mottagare och loggade signaler.
+Global karta för stationer, mottagare och DX-loggar.
 </p>
 
-<a href="#">
+<button disabled>
 
-<button>
 Kommer snart
-</button>
 
-</a>
+</button>
 
 </div>
 
@@ -330,9 +409,37 @@ Kommer snart
 <!-- ===== FOOTER ===== -->
 <footer>
 
-DX-OS • 2026 • SDR • DX • AI • Signal Intelligence
+DX-OS Portal • SDR • CW • AI • Signal Intelligence
 
 </footer>
+
+<script>
+
+/* ===== UTC ===== */
+function updateUTC(){
+
+    /* ===== DATUM ===== */
+    const now =
+    new Date();
+
+    /* ===== UTC ===== */
+    const utc =
+    now.toUTCString().split(" ")[4];
+
+    /* ===== SKRIV ===== */
+    document.getElementById("utcClock")
+    .innerHTML =
+    utc;
+
+}
+
+/* ===== START ===== */
+updateUTC();
+
+/* ===== LOOP ===== */
+setInterval(updateUTC,1000);
+
+</script>
 
 </body>
 
