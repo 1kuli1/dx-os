@@ -54,34 +54,36 @@ header p{
     color:#cbd5e1;
 }
 
-/* ===== KARTWRAPPER ===== */
+/* ===== WRAPPER ===== */
 .map-wrapper{
     width:100%;
     height:70vh;
     position:relative;
 }
 
-/* ===== MAP ===== */
+/* ===== KARTA ===== */
 #map{
     width:100%;
     height:100%;
 }
 
-/* ===== KONTROLLPANEL ===== */
+/* ===== PANEL ===== */
 .control-panel{
     position:absolute;
     top:15px;
     right:15px;
     z-index:1000;
+    width:240px;
     background:#0b1220;
     border:1px solid #1f2937;
     border-radius:15px;
     padding:15px;
-    width:220px;
     box-shadow:0 0 15px rgba(0,0,0,0.5);
+    max-height:90%;
+    overflow:auto;
 }
 
-/* ===== RUBRIK ===== */
+/* ===== PANEL RUBRIK ===== */
 .control-panel h2{
     margin-top:0;
     color:#eab308;
@@ -95,23 +97,25 @@ header p{
     gap:10px;
     margin-bottom:12px;
     color:#cbd5e1;
+    cursor:pointer;
+    font-size:14px;
 }
 
-/* ===== PANELTEXT ===== */
+/* ===== TEXT ===== */
 .panel-text{
     margin-top:15px;
-    font-size:13px;
     color:#94a3b8;
+    font-size:13px;
 }
 
-/* ===== PANEL ===== */
+/* ===== FORM PANEL ===== */
 .panel{
     background:#0b1220;
     border-top:2px solid #1f2937;
     padding:20px;
 }
 
-/* ===== FORM ===== */
+/* ===== GRID ===== */
 .form-grid{
     display:grid;
     grid-template-columns:1fr;
@@ -188,6 +192,7 @@ Kartlager
 
 </h2>
 
+<!-- ===== LAGER ===== -->
 <label>
 
 <input
@@ -224,9 +229,22 @@ Visa DX-linjer
 
 </label>
 
+<hr>
+
+<h2>
+
+Mottagare
+
+</h2>
+
+<!-- ===== RX FILTER ===== -->
+<div id="receiverFilters">
+
+</div>
+
 <div class="panel-text">
 
-Du kan slå av och på olika kartlager.
+Filtrera stationer och DX-paths per mottagare.
 
 </div>
 
@@ -237,7 +255,7 @@ Du kan slå av och på olika kartlager.
 
 </div>
 
-<!-- ===== PANEL ===== -->
+<!-- ===== FORM PANEL ===== -->
 <div class="panel">
 
 <div class="form-grid">
@@ -348,15 +366,17 @@ const stationDatabase = [
 const map =
 L.map('map').setView([20,0],2);
 
-/* ===== KARTLAGER ===== */
+/* ===== TILELAYER ===== */
 L.tileLayer(
 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 {
     attribution:'© OpenStreetMap'
 }).addTo(map);
 
-/* ===== ARRAYER ===== */
+/* ===== DATA ===== */
 let stations = [];
+
+let receivers = [];
 
 let receiverMarkers = [];
 
@@ -364,8 +384,12 @@ let stationMarkers = [];
 
 let dxLines = [];
 
+let receiverVisibility = {};
+
 /* ===== LADDA ===== */
 loadReceivers();
+
+createReceiverFilters();
 
 loadStations();
 
@@ -379,13 +403,19 @@ function loadReceivers(){
         return;
     }
 
-    const receivers =
+    receivers =
     JSON.parse(saved);
 
     const select =
-    document.getElementById("receiverSelect");
+    document.getElementById(
+        "receiverSelect"
+    );
 
     receivers.forEach(receiver => {
+
+        receiverVisibility[
+            receiver.id
+        ] = true;
 
         const option =
         document.createElement("option");
@@ -402,19 +432,71 @@ function loadReceivers(){
 
 }
 
+/* ===== FILTER ===== */
+function createReceiverFilters(){
+
+    const container =
+    document.getElementById(
+        "receiverFilters"
+    );
+
+    container.innerHTML = "";
+
+    receivers.forEach(receiver => {
+
+        const label =
+        document.createElement("label");
+
+        label.innerHTML = `
+
+        <input
+        type="checkbox"
+        checked
+        onchange="toggleReceiver('${receiver.id}')">
+
+        <span style="
+        color:${receiver.color};
+        font-weight:bold;
+        ">
+
+        ${receiver.name}
+
+        </span>
+
+        `;
+
+        container.appendChild(label);
+
+    });
+
+}
+
+/* ===== TOGGLE RX ===== */
+function toggleReceiver(receiverId){
+
+    receiverVisibility[
+        receiverId
+    ] =
+    !receiverVisibility[
+        receiverId
+    ];
+
+    redrawMap();
+
+}
+
 /* ===== AUTOFYLL ===== */
 function autoFillStation(){
 
-    /* ===== HÄMTA ===== */
     const input =
-    document.getElementById("station")
+    document.getElementById(
+        "station"
+    )
     .value
     .toLowerCase();
 
-    /* ===== LOOP ===== */
     stationDatabase.forEach(station => {
 
-        /* ===== MATCH ===== */
         if(
             station.name
             .toLowerCase()
@@ -423,14 +505,19 @@ function autoFillStation(){
             input.length > 2
         ){
 
-            /* ===== FYLL ===== */
-            document.getElementById("country").value =
+            document.getElementById(
+                "country"
+            ).value =
             station.country;
 
-            document.getElementById("lat").value =
+            document.getElementById(
+                "lat"
+            ).value =
             station.lat;
 
-            document.getElementById("lng").value =
+            document.getElementById(
+                "lng"
+            ).value =
             station.lng;
 
         }
@@ -443,25 +530,37 @@ function autoFillStation(){
 function addStation(){
 
     const station =
-    document.getElementById("station").value;
+    document.getElementById(
+        "station"
+    ).value;
 
     const frequency =
-    document.getElementById("frequency").value;
+    document.getElementById(
+        "frequency"
+    ).value;
 
     const country =
-    document.getElementById("country").value;
+    document.getElementById(
+        "country"
+    ).value;
 
     const receiverId =
-    document.getElementById("receiverSelect").value;
+    document.getElementById(
+        "receiverSelect"
+    ).value;
 
     const lat =
     parseFloat(
-        document.getElementById("lat").value
+        document.getElementById(
+            "lat"
+        ).value
     );
 
     const lng =
     parseFloat(
-        document.getElementById("lng").value
+        document.getElementById(
+            "lng"
+        ).value
     );
 
     if(
@@ -476,47 +575,11 @@ function addStation(){
         return;
     }
 
-    const saved =
-    localStorage.getItem("dxReceivers");
-
-    const receivers =
-    JSON.parse(saved);
-
     const receiver =
     receivers.find(
         r => r.id == receiverId
     );
 
-    /* ===== MARKÖR ===== */
-    const marker =
-    L.marker([lat,lng]).addTo(map);
-
-    marker.bindPopup(
-        `
-        <b>${station}</b><br>
-        ${frequency}<br>
-        ${country}<br>
-        RX: ${receiver.name}
-        `
-    );
-
-    stationMarkers.push(marker);
-
-    /* ===== LINJE ===== */
-    const line =
-    L.polyline(
-    [
-        [receiver.lat, receiver.lng],
-        [lat, lng]
-    ],
-    {
-        color:receiver.color,
-        weight:2
-    }).addTo(map);
-
-    dxLines.push(line);
-
-    /* ===== DATA ===== */
     const stationData = {
 
         station:station,
@@ -544,71 +607,105 @@ function addStation(){
         JSON.stringify(stations)
     );
 
+    redrawMap();
+
     clearForm();
 
 }
 
-/* ===== LADDA STATIONER ===== */
+/* ===== LADDA ===== */
 function loadStations(){
 
     const saved =
     localStorage.getItem("dxStations");
 
-    const rxSaved =
-    localStorage.getItem("dxReceivers");
-
-    if(!rxSaved){
-        return;
-    }
-
-    const receivers =
-    JSON.parse(rxSaved);
-
-    /* ===== RX ===== */
-    receivers.forEach(receiver => {
-
-        const rxMarker =
-        L.circleMarker(
-        [
-            receiver.lat,
-            receiver.lng
-        ],
-        {
-            radius:8,
-            color:receiver.color,
-            fillColor:receiver.color,
-            fillOpacity:1,
-            weight:2
-        })
-        .addTo(map)
-
-        .bindPopup(
-            `
-            <b>${receiver.name}</b><br>
-            ${receiver.type}<br>
-            ${receiver.country}
-            `
-        );
-
-        receiverMarkers.push(rxMarker);
-
-    });
-
-    /* ===== STATIONER ===== */
     if(saved){
 
         stations =
         JSON.parse(saved);
 
-        stations.forEach(station => {
+    }
+
+    redrawMap();
+
+}
+
+/* ===== RITA OM ===== */
+function redrawMap(){
+
+    receiverMarkers.forEach(
+        marker => map.removeLayer(marker)
+    );
+
+    stationMarkers.forEach(
+        marker => map.removeLayer(marker)
+    );
+
+    dxLines.forEach(
+        line => map.removeLayer(line)
+    );
+
+    receiverMarkers = [];
+
+    stationMarkers = [];
+
+    dxLines = [];
+
+    /* ===== VISA RX ===== */
+    receivers.forEach(receiver => {
+
+        if(
+            receiverVisibility[
+                receiver.id
+            ]
+        ){
+
+            const rxMarker =
+            L.circleMarker(
+            [
+                receiver.lat,
+                receiver.lng
+            ],
+            {
+                radius:8,
+                color:receiver.color,
+                fillColor:receiver.color,
+                fillOpacity:1,
+                weight:2
+            })
+            .addTo(map)
+
+            .bindPopup(
+                `
+                <b>${receiver.name}</b><br>
+                ${receiver.type}<br>
+                ${receiver.country}
+                `
+            );
+
+            receiverMarkers.push(rxMarker);
+
+        }
+
+    });
+
+    /* ===== VISA STATIONER ===== */
+    stations.forEach(station => {
+
+        if(
+            receiverVisibility[
+                station.receiverId
+            ]
+        ){
 
             const marker =
             L.marker([
                 station.lat,
                 station.lng
-            ]).addTo(map);
+            ])
+            .addTo(map)
 
-            marker.bindPopup(
+            .bindPopup(
                 `
                 <b>${station.station}</b><br>
                 ${station.frequency}<br>
@@ -621,7 +718,8 @@ function loadStations(){
 
             const receiver =
             receivers.find(
-                r => r.id == station.receiverId
+                r => r.id ==
+                station.receiverId
             );
 
             if(receiver){
@@ -629,21 +727,28 @@ function loadStations(){
                 const line =
                 L.polyline(
                 [
-                    [receiver.lat, receiver.lng],
-                    [station.lat, station.lng]
+                    [
+                        receiver.lat,
+                        receiver.lng
+                    ],
+                    [
+                        station.lat,
+                        station.lng
+                    ]
                 ],
                 {
                     color:receiver.color,
                     weight:2
-                }).addTo(map);
+                })
+                .addTo(map);
 
                 dxLines.push(line);
 
             }
 
-        });
+        }
 
-    }
+    });
 
 }
 
@@ -713,17 +818,29 @@ function toggleLines(){
 /* ===== TÖM ===== */
 function clearForm(){
 
-    document.getElementById("station").value = "";
+    document.getElementById(
+        "station"
+    ).value = "";
 
-    document.getElementById("frequency").value = "";
+    document.getElementById(
+        "frequency"
+    ).value = "";
 
-    document.getElementById("country").value = "";
+    document.getElementById(
+        "country"
+    ).value = "";
 
-    document.getElementById("receiverSelect").value = "";
+    document.getElementById(
+        "receiverSelect"
+    ).value = "";
 
-    document.getElementById("lat").value = "";
+    document.getElementById(
+        "lat"
+    ).value = "";
 
-    document.getElementById("lng").value = "";
+    document.getElementById(
+        "lng"
+    ).value = "";
 
 }
 
