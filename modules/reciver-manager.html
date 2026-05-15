@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+
+<!-- ===== TECKENUPPSÄTTNING ===== -->
+<meta charset="UTF-8">
+
+<!-- ===== MOBIL ===== -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ===== TITEL ===== -->
+<title>DX-OS Receiver Manager</title>
+
+<style>
+
+/* ===== GRUND ===== */
+*{
+    box-sizing:border-box;
+}
+
+/* ===== BODY ===== */
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#05070b;
+    color:#ffffff;
+}
+
+/* ===== HEADER ===== */
+header{
+    background:#0b1220;
+    padding:25px;
+    text-align:center;
+    border-bottom:2px solid #1f2937;
+}
+
+/* ===== RUBRIK ===== */
+header h1{
+    margin:0;
+    color:#eab308;
+    font-size:32px;
+}
+
+/* ===== TEXT ===== */
+header p{
+    margin-top:10px;
+    color:#cbd5e1;
+}
+
+/* ===== WRAPPER ===== */
+.wrapper{
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
+
+/* ===== FORM ===== */
+.form-box{
+    background:#0b1220;
+    padding:20px;
+    border-radius:15px;
+    border:1px solid #1f2937;
+    margin-bottom:25px;
+}
+
+/* ===== GRID ===== */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+}
+
+/* ===== INPUT ===== */
+input,
+select{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#111827;
+    color:#ffffff;
+    font-size:16px;
+}
+
+/* ===== BUTTON ===== */
+button{
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#eab308;
+    color:#000000;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* ===== HOVER ===== */
+button:hover{
+    opacity:0.9;
+}
+
+/* ===== LISTA ===== */
+.receiver-list{
+    display:grid;
+    gap:15px;
+}
+
+/* ===== KORT ===== */
+.receiver-card{
+    background:#0b1220;
+    border:1px solid #1f2937;
+    border-left:8px solid #eab308;
+    border-radius:15px;
+    padding:20px;
+}
+
+/* ===== RUBRIK ===== */
+.receiver-card h2{
+    margin-top:0;
+}
+
+/* ===== TEXT ===== */
+.receiver-card p{
+    margin:6px 0;
+    color:#cbd5e1;
+}
+
+/* ===== KNAPP RAD ===== */
+.button-row{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+/* ===== RADERA ===== */
+.delete-btn{
+    background:#dc2626;
+    color:#ffffff;
+}
+
+/* ===== INFO ===== */
+.info{
+    text-align:center;
+    color:#94a3b8;
+    margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+
+<h1>Receiver Manager</h1>
+
+<p>
+Hantera mottagare för DX-OS och DX-kartan.
+</p>
+
+</header>
+
+<!-- ===== WRAPPER ===== -->
+<div class="wrapper">
+
+<!-- ===== FORM ===== -->
+<div class="form-box">
+
+<div class="form-grid">
+
+<!-- ===== NAMN ===== -->
+<input
+type="text"
+id="receiverName"
+placeholder="Mottagarnamn">
+
+<!-- ===== TYP ===== -->
+<select id="receiverType">
+
+<option value="">
+Välj mottagartyp
+</option>
+
+<option value="KiwiSDR">
+KiwiSDR
+</option>
+
+<option value="WebSDR">
+WebSDR
+</option>
+
+<option value="SDR++">
+SDR++
+</option>
+
+<option value="Egen mottagare">
+Egen mottagare
+</option>
+
+</select>
+
+<!-- ===== LAND ===== -->
+<input
+type="text"
+id="receiverCountry"
+placeholder="Land">
+
+<!-- ===== LAT ===== -->
+<input
+type="number"
+id="receiverLat"
+placeholder="Latitud">
+
+<!-- ===== LNG ===== -->
+<input
+type="number"
+id="receiverLng"
+placeholder="Longitud">
+
+<!-- ===== FÄRG ===== -->
+<input
+type="color"
+id="receiverColor"
+value="#eab308">
+
+<!-- ===== KNAPP ===== -->
+<button onclick="saveReceiver()">
+
+Spara mottagare
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ===== LISTA ===== -->
+<div
+class="receiver-list"
+id="receiverList">
+
+</div>
+
+<!-- ===== INFO ===== -->
+<div class="info">
+
+Alla mottagare sparas lokalt i browsern.
+
+</div>
+
+</div>
+
+<script>
+
+/* ===== ARRAY ===== */
+let receivers = [];
+
+/* ===== LADDA ===== */
+loadReceivers();
+
+/* ===== SPARA ===== */
+function saveReceiver(){
+
+    /* ===== HÄMTA FÄLT ===== */
+    const name =
+    document.getElementById("receiverName").value;
+
+    const type =
+    document.getElementById("receiverType").value;
+
+    const country =
+    document.getElementById("receiverCountry").value;
+
+    const lat =
+    parseFloat(
+        document.getElementById("receiverLat").value
+    );
+
+    const lng =
+    parseFloat(
+        document.getElementById("receiverLng").value
+    );
+
+    const color =
+    document.getElementById("receiverColor").value;
+
+    /* ===== KONTROLL ===== */
+    if(
+        !name ||
+        !type ||
+        !country ||
+        isNaN(lat) ||
+        isNaN(lng)
+    ){
+        alert("Fyll i alla fält.");
+        return;
+    }
+
+    /* ===== OBJEKT ===== */
+    const receiver = {
+
+        id:Date.now(),
+
+        name:name,
+
+        type:type,
+
+        country:country,
+
+        lat:lat,
+
+        lng:lng,
+
+        color:color
+
+    };
+
+    /* ===== LÄGG TILL ===== */
+    receivers.push(receiver);
+
+    /* ===== SPARA ===== */
+    localStorage.setItem(
+        "dxReceivers",
+        JSON.stringify(receivers)
+    );
+
+    /* ===== RENDERA ===== */
+    renderReceivers();
+
+    /* ===== TÖM ===== */
+    clearForm();
+
+}
+
+/* ===== LADDA ===== */
+function loadReceivers(){
+
+    /* ===== HÄMTA ===== */
+    const saved =
+    localStorage.getItem("dxReceivers");
+
+    /* ===== FINNS ===== */
+    if(saved){
+
+        receivers =
+        JSON.parse(saved);
+
+    }
+
+    /* ===== VISA ===== */
+    renderReceivers();
+
+}
+
+/* ===== VISA ===== */
+function renderReceivers(){
+
+    /* ===== LISTA ===== */
+    const list =
+    document.getElementById("receiverList");
+
+    /* ===== TÖM ===== */
+    list.innerHTML = "";
+
+    /* ===== LOOP ===== */
+    receivers.forEach(receiver => {
+
+        /* ===== KORT ===== */
+        const card =
+        document.createElement("div");
+
+        /* ===== KLASS ===== */
+        card.className =
+        "receiver-card";
+
+        /* ===== FÄRG ===== */
+        card.style.borderLeftColor =
+        receiver.color;
+
+        /* ===== HTML ===== */
+        card.innerHTML = `
+
+        <h2>
+
+        ${receiver.name}
+
+        </h2>
+
+        <p>
+
+        Typ:
+        ${receiver.type}
+
+        </p>
+
+        <p>
+
+        Land:
+        ${receiver.country}
+
+        </p>
+
+        <p>
+
+        Lat:
+        ${receiver.lat}
+
+        </p>
+
+        <p>
+
+        Lng:
+        ${receiver.lng}
+
+        </p>
+
+        <div class="button-row">
+
+        <button
+        class="delete-btn"
+        onclick="deleteReceiver(${receiver.id})">
+
+        Radera
+
+        </button>
+
+        </div>
+
+        `;
+
+        /* ===== LÄGG TILL ===== */
+        list.appendChild(card);
+
+    });
+
+}
+
+/* ===== RADERA ===== */
+function deleteReceiver(id){
+
+    /* ===== FILTER ===== */
+    receivers =
+    receivers.filter(
+        receiver => receiver.id !== id
+    );
+
+    /* ===== SPARA ===== */
+    localStorage.setItem(
+        "dxReceivers",
+        JSON.stringify(receivers)
+    );
+
+    /* ===== VISA ===== */
+    renderReceivers();
+
+}
+
+/* ===== TÖM FORM ===== */
+function clearForm(){
+
+    document.getElementById("receiverName").value = "";
+
+    document.getElementById("receiverType").value = "";
+
+    document.getElementById("receiverCountry").value = "";
+
+    document.getElementById("receiverLat").value = "";
+
+    document.getElementById("receiverLng").value = "";
+
+}
+
+</script>
+
+</body>
+</html>
