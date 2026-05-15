@@ -27,8 +27,8 @@ body{
 header{
     background:#0b1220;
     padding:30px 20px;
-    border-bottom:2px solid #1f2937;
     text-align:center;
+    border-bottom:2px solid #1f2937;
 }
 
 /* ===== RUBRIK ===== */
@@ -52,12 +52,12 @@ header p{
     padding:20px;
 }
 
-/* ===== TOPBAR ===== */
-.topbar{
+/* ===== TOP GRID ===== */
+.top-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:20px;
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
 /* ===== PANEL ===== */
@@ -68,16 +68,15 @@ header p{
     padding:20px;
 }
 
-/* ===== PANEL RUBRIK ===== */
+/* ===== RUBRIK ===== */
 .panel h2{
     margin-top:0;
     color:#eab308;
-    font-size:22px;
 }
 
 /* ===== UTC ===== */
 #utcClock{
-    font-size:32px;
+    font-size:34px;
     font-weight:bold;
     margin-top:10px;
 }
@@ -88,7 +87,7 @@ header p{
     color:#94a3b8;
 }
 
-/* ===== GRID ===== */
+/* ===== DASHBOARD ===== */
 .dashboard{
     display:grid;
     grid-template-columns:2fr 1fr;
@@ -109,15 +108,15 @@ header p{
     gap:20px;
 }
 
-/* ===== KNAPPGRID ===== */
-.button-grid{
+/* ===== MODULGRID ===== */
+.module-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:15px;
 }
 
-/* ===== KNAPP ===== */
-.button-grid button{
+/* ===== MODULKNAPP ===== */
+.module-button{
     width:100%;
     padding:18px;
     border:none;
@@ -131,7 +130,7 @@ header p{
 }
 
 /* ===== HOVER ===== */
-.button-grid button:hover{
+.module-button:hover{
     background:#facc15;
 }
 
@@ -193,7 +192,7 @@ header p{
     border-left:4px solid #eab308;
 }
 
-/* ===== TEXT ===== */
+/* ===== LOGGTEXT ===== */
 .log-entry p{
     margin:0;
     color:#cbd5e1;
@@ -206,13 +205,27 @@ header p{
     color:#94a3b8;
 }
 
-/* ===== AI PANEL ===== */
+/* ===== AI BOX ===== */
 .ai-box{
     background:#1f2937;
-    border-radius:14px;
     padding:15px;
+    border-radius:12px;
     line-height:1.7;
     color:#cbd5e1;
+}
+
+/* ===== BAND ===== */
+.band-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+/* ===== BANDRAD ===== */
+.band-item{
+    background:#1f2937;
+    padding:12px;
+    border-radius:12px;
 }
 
 /* ===== FOOTER ===== */
@@ -245,7 +258,7 @@ footer{
 <h1>DX-OS Operations Center</h1>
 
 <p>
-Centralt kontrollrum för SDR, DX, signalanalys och AI-system.
+Centralt kontrollrum för SDR, DX, CW, signalanalys och AI.
 </p>
 
 </header>
@@ -253,8 +266,8 @@ Centralt kontrollrum för SDR, DX, signalanalys och AI-system.
 <!-- ===== WRAPPER ===== -->
 <div class="wrapper">
 
-<!-- ===== TOPBAR ===== -->
-<div class="topbar">
+<!-- ===== TOP GRID ===== -->
+<div class="top-grid">
 
 <!-- ===== UTC ===== -->
 <div class="panel">
@@ -279,18 +292,24 @@ Loading...
 <div class="status-list">
 
 <div class="status-item">
-<span>Receiver Hub</span>
-<div class="status online">ONLINE</div>
+<span>Operations Center</span>
+<div class="status online">
+ONLINE
+</div>
 </div>
 
 <div class="status-item">
-<span>Live Radio</span>
-<div class="status online">ONLINE</div>
+<span>Receiver Hub</span>
+<div class="status online">
+ONLINE
+</div>
 </div>
 
 <div class="status-item">
 <span>AI Analysis</span>
-<div class="status testing">TEST</div>
+<div class="status testing">
+TEST
+</div>
 </div>
 
 </div>
@@ -302,13 +321,29 @@ Loading...
 
 <h2>Band Activity</h2>
 
-<p>
-HF: Aktiv<br>
-MW: Medel<br>
-SW: Hög aktivitet<br>
-VHF: Normal<br>
-UHF: Låg aktivitet
-</p>
+<div class="band-list">
+
+<div class="band-item">
+HF • Hög aktivitet
+</div>
+
+<div class="band-item">
+MW • Medel aktivitet
+</div>
+
+<div class="band-item">
+SW • Aktiv
+</div>
+
+<div class="band-item">
+VHF • Normal
+</div>
+
+<div class="band-item">
+UHF • Låg aktivitet
+</div>
+
+</div>
 
 </div>
 
@@ -320,42 +355,74 @@ UHF: Låg aktivitet
 <!-- ===== VÄNSTER ===== -->
 <div class="left-column">
 
-<!-- ===== SNABBKNAPPAR ===== -->
+<!-- ===== MODULER ===== -->
 <div class="panel">
 
-<h2>Quick Access</h2>
+<h2>DX-OS Modules</h2>
 
-<div class="button-grid">
+<div class="module-grid">
 
-<button onclick="location.href='live-radio.html'">
+<button
+class="module-button"
+onclick="location.href='live-radio.html'"
+>
 Live Radio
 </button>
 
-<button onclick="location.href='receiver-hub.html'">
+<button
+class="module-button"
+onclick="location.href='receiver-hub.html'"
+>
 Receiver Hub
 </button>
 
-<button onclick="location.href='logcenter.html'">
+<button
+class="module-button"
+onclick="location.href='logcenter.html'"
+>
 Logcenter
 </button>
 
-<button onclick="location.href='morse.html'">
-Morse
+<button
+class="module-button"
+onclick="location.href='morse.html'"
+>
+Morse Trainer
 </button>
 
-<button onclick="location.href='dx-timeline.html'">
-Timeline
+<button
+class="module-button"
+onclick="location.href='cw-converter.html'"
+>
+CW Converter
 </button>
 
-<button onclick="window.open('http://websdr.ewi.utwente.nl:8901/','_blank')">
+<button
+class="module-button"
+onclick="location.href='dx-timeline.html'"
+>
+DX Timeline
+</button>
+
+<button
+class="module-button"
+onclick="window.open('http://websdr.ewi.utwente.nl:8901/','_blank')"
+>
 Open Twente
 </button>
 
-</div>
+<button
+class="module-button"
+onclick="location.href='dx-map.html'"
+>
+DX Map
+</button>
 
 </div>
 
-<!-- ===== SENASTE AKTIVITET ===== -->
+</div>
+
+<!-- ===== AKTIVITET ===== -->
 <div class="panel">
 
 <h2>Recent Activity</h2>
@@ -389,11 +456,23 @@ UTC 18:45
 <div class="log-entry">
 
 <p>
-Morse module loaded.
+CW Converter loaded.
 </p>
 
 <div class="log-time">
 UTC 18:51
+</div>
+
+</div>
+
+<div class="log-entry">
+
+<p>
+Morse module ready.
+</p>
+
+<div class="log-time">
+UTC 18:54
 </div>
 
 </div>
@@ -414,21 +493,23 @@ UTC 18:51
 
 <div class="ai-box">
 
-AI-system redo för framtida analys av:
+AI-system för framtida analys av:
 
 <ul>
 
 <li>Station identifiering</li>
 
-<li>Språkigenkänning</li>
-
-<li>Signalanalys</li>
+<li>CW/Morse avkodning</li>
 
 <li>Frekvensdetektion</li>
 
-<li>CW/Morse avkodning</li>
+<li>Signalanalys</li>
+
+<li>Språkigenkänning</li>
 
 <li>Utility-signaler</li>
+
+<li>Automatisk loggning</li>
 
 </ul>
 
@@ -444,23 +525,38 @@ AI-system redo för framtida analys av:
 <div class="status-list">
 
 <div class="status-item">
-<span>Operations Center</span>
-<div class="status online">ONLINE</div>
+<span>Live Radio</span>
+<div class="status online">
+ONLINE
 </div>
-
-<div class="status-item">
-<span>Timeline</span>
-<div class="status online">ONLINE</div>
 </div>
 
 <div class="status-item">
 <span>Receiver Hub</span>
-<div class="status online">ONLINE</div>
+<div class="status online">
+ONLINE
+</div>
+</div>
+
+<div class="status-item">
+<span>Morse Trainer</span>
+<div class="status testing">
+TEST
+</div>
+</div>
+
+<div class="status-item">
+<span>CW Converter</span>
+<div class="status testing">
+TEST
+</div>
 </div>
 
 <div class="status-item">
 <span>DX Map</span>
-<div class="status planned">PLANERAD</div>
+<div class="status planned">
+PLANERAD
+</div>
 </div>
 
 </div>
@@ -476,24 +572,24 @@ AI-system redo för framtida analys av:
 <!-- ===== FOOTER ===== -->
 <footer>
 
-DX-OS Operations Center • SDR • DX • AI • Signal Intelligence
+DX-OS Operations Center • SDR • DX • CW • AI • Signal Intelligence
 
 </footer>
 
 <script>
 
-/* ===== UTC KLOCKA ===== */
+/* ===== UTC ===== */
 function updateUTCClock(){
 
     /* ===== DATUM ===== */
     const now =
     new Date();
 
-    /* ===== TID ===== */
+    /* ===== UTC TID ===== */
     const utcTime =
     now.toUTCString().split(" ")[4];
 
-    /* ===== DATUMTEXT ===== */
+    /* ===== UTC DATUM ===== */
     const utcDate =
     now.toUTCString();
 
@@ -509,14 +605,13 @@ function updateUTCClock(){
 
 }
 
-/* ===== UPPDATERA ===== */
-setInterval(updateUTCClock,1000);
-
 /* ===== START ===== */
 updateUTCClock();
+
+/* ===== LOOP ===== */
+setInterval(updateUTCClock,1000);
 
 </script>
 
 </body>
-
 </html>
