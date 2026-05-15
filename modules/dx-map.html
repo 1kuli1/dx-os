@@ -54,7 +54,7 @@ header p{
     color:#cbd5e1;
 }
 
-/* ===== KARTA ===== */
+/* ===== KARTWRAPPER ===== */
 .map-wrapper{
     width:100%;
     height:70vh;
@@ -81,24 +81,23 @@ header p{
     box-shadow:0 0 15px rgba(0,0,0,0.5);
 }
 
-/* ===== PANEL RUBRIK ===== */
+/* ===== RUBRIK ===== */
 .control-panel h2{
     margin-top:0;
     color:#eab308;
     font-size:18px;
 }
 
-/* ===== CHECKBOX ===== */
+/* ===== LABEL ===== */
 .control-panel label{
     display:flex;
     align-items:center;
     gap:10px;
     margin-bottom:12px;
     color:#cbd5e1;
-    cursor:pointer;
 }
 
-/* ===== PANEL TEXT ===== */
+/* ===== PANELTEXT ===== */
 .panel-text{
     margin-top:15px;
     font-size:13px;
@@ -177,7 +176,7 @@ DX-karta med mottagare, stationer och DX-paths.
 
 </header>
 
-<!-- ===== KARTA ===== -->
+<!-- ===== KARTWRAPPER ===== -->
 <div class="map-wrapper">
 
 <!-- ===== KONTROLLPANEL ===== -->
@@ -227,7 +226,7 @@ Visa DX-linjer
 
 <div class="panel-text">
 
-Du kan slå av/på olika lager på kartan.
+Du kan slå av och på olika kartlager.
 
 </div>
 
@@ -247,7 +246,8 @@ Du kan slå av/på olika lager på kartan.
 <input
 type="text"
 id="station"
-placeholder="Stationsnamn">
+placeholder="Stationsnamn"
+oninput="autoFillStation()">
 
 <!-- ===== FREKVENS ===== -->
 <input
@@ -293,7 +293,7 @@ Lägg till station
 
 <div class="info">
 
-Mottagare hämtas automatiskt från Receiver Manager.
+Stationer kan autofyllas från stationsdatabasen.
 
 </div>
 
@@ -303,6 +303,46 @@ Mottagare hämtas automatiskt från Receiver Manager.
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
+
+/* ===== STATIONSDATABAS ===== */
+const stationDatabase = [
+
+{
+    name:"Radio Romania",
+    country:"Rumänien",
+    lat:44.43,
+    lng:26.10
+},
+
+{
+    name:"Radio Caroline",
+    country:"England",
+    lat:51.50,
+    lng:0.12
+},
+
+{
+    name:"SER",
+    country:"Spanien",
+    lat:40.41,
+    lng:-3.70
+},
+
+{
+    name:"BBC",
+    country:"England",
+    lat:51.50,
+    lng:-0.12
+},
+
+{
+    name:"RNE",
+    country:"Spanien",
+    lat:40.41,
+    lng:-3.70
+}
+
+];
 
 /* ===== KARTA ===== */
 const map =
@@ -362,6 +402,43 @@ function loadReceivers(){
 
 }
 
+/* ===== AUTOFYLL ===== */
+function autoFillStation(){
+
+    /* ===== HÄMTA ===== */
+    const input =
+    document.getElementById("station")
+    .value
+    .toLowerCase();
+
+    /* ===== LOOP ===== */
+    stationDatabase.forEach(station => {
+
+        /* ===== MATCH ===== */
+        if(
+            station.name
+            .toLowerCase()
+            .includes(input)
+            &&
+            input.length > 2
+        ){
+
+            /* ===== FYLL ===== */
+            document.getElementById("country").value =
+            station.country;
+
+            document.getElementById("lat").value =
+            station.lat;
+
+            document.getElementById("lng").value =
+            station.lng;
+
+        }
+
+    });
+
+}
+
 /* ===== LÄGG TILL ===== */
 function addStation(){
 
@@ -410,7 +487,7 @@ function addStation(){
         r => r.id == receiverId
     );
 
-    /* ===== STATION ===== */
+    /* ===== MARKÖR ===== */
     const marker =
     L.marker([lat,lng]).addTo(map);
 
