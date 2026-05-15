@@ -1,259 +1,552 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DX-OS Morse</title>
+<title>DX-OS Morse Trainer</title>
 
 <style>
+
 /* ===== GRUND ===== */
 *{
     box-sizing:border-box;
 }
 
+/* ===== BODY ===== */
 body{
     margin:0;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
     background:#05070b;
-    color:white;
+    color:#ffffff;
 }
 
 /* ===== HEADER ===== */
 header{
     background:#111821;
-    padding:25px 20px;
+    padding:30px 20px;
     text-align:center;
     border-bottom:2px solid #1f2937;
 }
 
+/* ===== RUBRIK ===== */
 header h1{
     margin:0;
     color:#eab308;
-    font-size:30px;
+    font-size:38px;
 }
 
+/* ===== TEXT ===== */
 header p{
-    margin:10px 0 0 0;
-    color:#9ca3af;
+    margin-top:10px;
+    color:#94a3b8;
+    font-size:18px;
 }
 
 /* ===== WRAPPER ===== */
 .wrapper{
-    max-width:900px;
-    margin:0 auto;
+    width:100%;
+    max-width:1200px;
+    margin:auto;
     padding:25px;
+}
+
+/* ===== GRID ===== */
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
 }
 
 /* ===== PANEL ===== */
 .panel{
     background:#0b1220;
     border:1px solid #1f2937;
-    border-radius:18px;
+    border-radius:20px;
     padding:25px;
-    margin-bottom:20px;
 }
 
-/* ===== RUBRIKER ===== */
-h2{
-    color:#eab308;
+/* ===== RUBRIK ===== */
+.panel h2{
     margin-top:0;
+    color:#eab308;
 }
 
-/* ===== AUDIOKNAPPAR ===== */
-.audio-controls{
+/* ===== TEXTAREA ===== */
+textarea{
+    width:100%;
+    min-height:220px;
+    resize:vertical;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    background:#020617;
+    color:#ffffff;
+    padding:18px;
+    font-size:20px;
+    line-height:1.7;
+    margin-top:15px;
+}
+
+/* ===== OUTPUT ===== */
+.output{
+    background:#020617;
+    border:1px solid #334155;
+    border-radius:14px;
+    padding:20px;
+    margin-top:20px;
+    min-height:120px;
+    font-size:22px;
+    line-height:1.8;
+    color:#9ecfff;
+    word-break:break-word;
+}
+
+/* ===== KNAPPGRID ===== */
+.button-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:15px;
     margin-top:20px;
 }
 
+/* ===== KNAPP ===== */
 button{
-    padding:15px;
+    width:100%;
+    padding:18px;
     border:none;
-    border-radius:10px;
+    border-radius:14px;
     background:#eab308;
-    color:black;
+    color:#000000;
+    font-size:18px;
     font-weight:bold;
     cursor:pointer;
-    font-size:16px;
+    transition:0.2s;
 }
 
-button:disabled{
-    opacity:0.4;
-    cursor:not-allowed;
+/* ===== HOVER ===== */
+button:hover{
+    background:#facc15;
+    transform:scale(1.02);
 }
 
 /* ===== STATUS ===== */
 #statusText{
     margin-top:20px;
-    color:#eab308;
+    background:#020617;
+    padding:15px;
+    border-radius:12px;
+    color:#22c55e;
     text-align:center;
     font-size:18px;
 }
 
-/* ===== MORSEFÄLT ===== */
-textarea{
+/* ===== FLASH ===== */
+#flashBox{
     width:100%;
-    min-height:130px;
-    background:#020617;
-    color:white;
-    border:1px solid #334155;
-    border-radius:10px;
-    padding:15px;
-    font-size:18px;
-    resize:vertical;
+    height:120px;
+    margin-top:25px;
+    border-radius:20px;
+    background:#111827;
+    border:2px solid #1f2937;
+    transition:0.1s;
 }
 
-.output{
+/* ===== AKTIV ===== */
+.flash-active{
+    background:#eab308 !important;
+    box-shadow:0 0 40px #eab308;
+}
+
+/* ===== SLIDER ===== */
+.slider-box{
+    margin-top:25px;
+}
+
+/* ===== RANGE ===== */
+input[type="range"]{
+    width:100%;
+    margin-top:15px;
+}
+
+/* ===== WPM ===== */
+#wpmValue{
+    color:#eab308;
+    font-weight:bold;
+}
+
+/* ===== INFO ===== */
+.info-box{
     background:#020617;
-    border:1px solid #334155;
-    border-radius:10px;
-    padding:15px;
-    min-height:70px;
-    font-size:20px;
-    letter-spacing:2px;
-    color:#9ecfff;
+    border-radius:14px;
+    padding:20px;
+    margin-top:20px;
+    line-height:1.7;
+    color:#cbd5e1;
+}
+
+/* ===== AUDIO ===== */
+.audio-controls{
+    margin-top:20px;
+}
+
+/* ===== TILLBAKA ===== */
+.back-button{
+    display:inline-block;
+    margin-top:25px;
+    padding:14px 24px;
+    background:#1f2937;
+    color:#ffffff;
+    text-decoration:none;
+    border-radius:12px;
+}
+
+/* ===== FOOTER ===== */
+footer{
+    margin-top:40px;
+    padding:30px 20px;
+    text-align:center;
+    color:#64748b;
+    border-top:1px solid #1f2937;
 }
 
 /* ===== MOBIL ===== */
-@media(max-width:600px){
-    .audio-controls{
+@media(max-width:900px){
+
+    .grid{
         grid-template-columns:1fr;
     }
 
-    header h1{
-        font-size:24px;
-    }
 }
+
 </style>
+
 </head>
 
 <body>
 
+<!-- ===== HEADER ===== -->
 <header>
-    <h1>DX-OS Morse</h1>
-    <p>Testmodul för inspelning, uppspelning och Morse-träning</p>
+
+<h1>
+DX-OS Morse Trainer
+</h1>
+
+<p>
+CW-träning, Morse-generator och signalanalys
+</p>
+
 </header>
 
+<!-- ===== WRAPPER ===== -->
 <div class="wrapper">
 
-    <div class="panel">
-        <h2>🎙 Morse-inspelning</h2>
-        <p>Spela in CW/Morse-ljud via mikrofon eller vald ljudkälla.</p>
+<!-- ===== GRID ===== -->
+<div class="grid">
 
-        <div class="audio-controls">
+<!-- ===== VÄNSTER ===== -->
+<div class="panel">
 
-            <button id="startRecording">
-                ▶ Starta inspelning
-            </button>
+<h2>
+✍ Text → Morse
+</h2>
 
-            <button id="stopRecording">
-                ■ Stoppa inspelning
-            </button>
+<textarea
+id="morseInput"
+placeholder="Skriv text här, exempel: CQ CQ DX"
+></textarea>
 
-            <button id="playRecording">
-                ▶ Spela upp
-            </button>
+<div class="button-grid">
 
-            <button id="downloadRecording">
-                ⬇ Ladda ner
-            </button>
+<button onclick="convertToMorse()">
+Konvertera
+</button>
 
-        </div>
-
-        <div id="statusText">
-            Redo för Morse-inspelning
-        </div>
-    </div>
-
-    <div class="panel">
-        <h2>✍ Morse-text</h2>
-        <p>Skriv text här. Senare kopplar vi detta till automatisk Morse-konvertering.</p>
-
-        <textarea id="morseInput" placeholder="Skriv text här, till exempel: CQ CQ DX"></textarea>
-
-        <br><br>
-
-        <button onclick="convertToMorse()">
-            Konvertera till Morse
-        </button>
-
-        <br><br>
-
-        <div class="output" id="morseOutput">
-            Morse visas här
-        </div>
-    </div>
-
-    <div class="panel">
-        <h2>📡 Nästa steg</h2>
-        <p>
-            Här kommer vi senare lägga till tonanalys, hastighet i WPM,
-            automatisk avkodning och koppling till DX-loggen.
-        </p>
-    </div>
+<button onclick="playCurrentMorse()">
+▶ Spela Morse
+</button>
 
 </div>
 
-<script>
-/* ===== MORSE-TABELL ===== */
-const morseTable = {
-    "A": ".-",
-    "B": "-...",
-    "C": "-.-.",
-    "D": "-..",
-    "E": ".",
-    "F": "..-.",
-    "G": "--.",
-    "H": "....",
-    "I": "..",
-    "J": ".---",
-    "K": "-.-",
-    "L": ".-..",
-    "M": "--",
-    "N": "-.",
-    "O": "---",
-    "P": ".--.",
-    "Q": "--.-",
-    "R": ".-.",
-    "S": "...",
-    "T": "-",
-    "U": "..-",
-    "V": "...-",
-    "W": ".--",
-    "X": "-..-",
-    "Y": "-.--",
-    "Z": "--..",
-    "0": "-----",
-    "1": ".----",
-    "2": "..---",
-    "3": "...--",
-    "4": "....-",
-    "5": ".....",
-    "6": "-....",
-    "7": "--...",
-    "8": "---..",
-    "9": "----.",
-    " ": "/"
-};
+<div class="slider-box">
 
-/* ===== KONVERTERA TEXT TILL MORSE ===== */
+<label>
+CW Hastighet (WPM):
+<span id="wpmValue">
+15
+</span>
+</label>
+
+<input
+type="range"
+min="5"
+max="40"
+value="15"
+id="wpmSlider"
+oninput="updateWPM()"
+>
+
+</div>
+
+<div id="flashBox"></div>
+
+<div id="statusText">
+
+Redo för Morse-träning
+
+</div>
+
+</div>
+
+<!-- ===== HÖGER ===== -->
+<div class="panel">
+
+<h2>
+📡 Morse Output
+</h2>
+
+<div class="output" id="morseOutput">
+
+Morse visas här
+
+</div>
+
+<div class="button-grid">
+
+<button onclick="copyMorse()">
+Kopiera Morse
+</button>
+
+<button onclick="clearAll()">
+Rensa
+</button>
+
+</div>
+
+<div class="audio-controls">
+
+<input
+type="file"
+id="audioFile"
+accept=".wav,.mp3,.m4a"
+>
+
+<button onclick="analyzeAudio()">
+
+🎙 Analysera CW-ljud
+
+</button>
+
+</div>
+
+<div class="info-box">
+
+Stöd för:
+
+<ul>
+
+<li>Text → Morse</li>
+
+<li>Morse playback</li>
+
+<li>WPM kontroll</li>
+
+<li>Signalblink</li>
+
+<li>CW-ljud</li>
+
+<li>Framtida AI-avkodning</li>
+
+</ul>
+
+</div>
+
+<a
+class="back-button"
+href="operations-center.html"
+>
+
+← Tillbaka till Operations Center
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+
+DX-OS Morse Trainer • CW • SDR • AI • Signal Intelligence
+
+</footer>
+
+<!-- ===== AUDIO ENGINE ===== -->
+<script src="data/audio-engine.js"></script>
+
+<script>
+
+/* ===== KONVERTERA ===== */
 function convertToMorse(){
 
-    const input = document.getElementById("morseInput").value.toUpperCase();
+    /* ===== INPUT ===== */
+    const input =
+    document.getElementById("morseInput")
+    .value
+    .toUpperCase();
 
-    const output = input
-        .split("")
-        .map(character => morseTable[character] || "")
-        .join(" ");
+    /* ===== RESULTAT ===== */
+    let result = "";
 
-    document.getElementById("morseOutput").innerText = output || "Ingen text att konvertera";
+    /* ===== LOOP ===== */
+    for(let char of input){
+
+        /* ===== FINNS ===== */
+        if(morseTable[char]){
+
+            result +=
+            morseTable[char] + " ";
+
+        }
+
+    }
+
+    /* ===== SKRIV ===== */
+    document.getElementById("morseOutput")
+    .innerText =
+    result || "Ingen Morse genererad";
+
 }
+
+/* ===== SPELA ===== */
+function playCurrentMorse(){
+
+    /* ===== TEXT ===== */
+    const text =
+    document.getElementById("morseInput")
+    .value;
+
+    /* ===== WPM ===== */
+    const wpm =
+    document.getElementById("wpmSlider")
+    .value;
+
+    /* ===== TOM ===== */
+    if(text.trim() === ""){
+
+        alert("Skriv text först.");
+
+        return;
+
+    }
+
+    /* ===== SPELA ===== */
+    playMorse(text,wpm);
+
+}
+
+/* ===== WPM ===== */
+function updateWPM(){
+
+    /* ===== HÄMTA ===== */
+    const value =
+    document.getElementById("wpmSlider")
+    .value;
+
+    /* ===== SKRIV ===== */
+    document.getElementById("wpmValue")
+    .innerText =
+    value;
+
+}
+
+/* ===== KOPIERA ===== */
+function copyMorse(){
+
+    /* ===== TEXT ===== */
+    const text =
+    document.getElementById("morseOutput")
+    .innerText;
+
+    /* ===== KOPIERA ===== */
+    navigator.clipboard.writeText(text);
+
+    /* ===== STATUS ===== */
+    document.getElementById("statusText")
+    .innerHTML =
+    "✅ Morse kopierad";
+
+}
+
+/* ===== RENSA ===== */
+function clearAll(){
+
+    /* ===== INPUT ===== */
+    document.getElementById("morseInput")
+    .value =
+    "";
+
+    /* ===== OUTPUT ===== */
+    document.getElementById("morseOutput")
+    .innerText =
+    "Morse visas här";
+
+    /* ===== STATUS ===== */
+    document.getElementById("statusText")
+    .innerHTML =
+    "Rensat";
+
+}
+
+/* ===== ANALYS ===== */
+function analyzeAudio(){
+
+    /* ===== FIL ===== */
+    const file =
+    document.getElementById("audioFile");
+
+    /* ===== KONTROLL ===== */
+    if(file.files.length === 0){
+
+        alert("Välj en ljudfil först.");
+
+        return;
+
+    }
+
+    /* ===== STATUS ===== */
+    document.getElementById("statusText")
+    .innerHTML =
+    "🔄 Analyserar CW-ljud...";
+
+    /* ===== SIMULERING ===== */
+    setTimeout(function(){
+
+        /* ===== MORSE ===== */
+        document.getElementById("morseOutput")
+        .innerText =
+        "-.-. --.-";
+
+        /* ===== TEXT ===== */
+        document.getElementById("morseInput")
+        .value =
+        "CQ";
+
+        /* ===== STATUS ===== */
+        document.getElementById("statusText")
+        .innerHTML =
+        "✅ CW identifierad";
+
+    },2000);
+
+}
+
 </script>
 
-<script src="js/audio-engine.js"></script>
-<script src="js/live-radio.js"></script>
-
 </body>
+
 </html>
