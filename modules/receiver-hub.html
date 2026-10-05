@@ -246,17 +246,16 @@ Central mottagarhub för WebSDR, KiwiSDR, OpenWebRX och framtida DX-OS nätverk.
 
 <button onclick="filterReceivers('all')">Alla</button>
 
-<button onclick="filterReceivers('hf')">HF</button>
-
+<button onclick="filterReceivers('lw')">LW / NDB</button>
 <button onclick="filterReceivers('mw')">MW</button>
-
+<button onclick="filterReceivers('hf')">SW / HF</button>
 <button onclick="filterReceivers('fm')">FM</button>
-
+<button onclick="filterReceivers('amateur')">Amatörradio</button>
+<button onclick="filterReceivers('utility')">Utility / digitalt</button>
 <button onclick="filterReceivers('vhf')">VHF</button>
-
+<button onclick="filterReceivers('airband')">Flygradio</button>
+<button onclick="filterReceivers('satellite')">Satellit</button>
 <button onclick="filterReceivers('uhf')">UHF</button>
-
-<button onclick="filterReceivers('airband')">Airband</button>
 
 </div>
 
@@ -276,9 +275,9 @@ onkeyup="searchReceivers()"
 <div class="grid" id="receiverGrid">
 
 <!-- ===== TWENTE ===== -->
-<div class="receiver-card hf">
+<div class="receiver-card lw mw hf amateur utility">
 
-<h2>Twente WebSDR</h2>
+<h2>Twente WebSDR – Enschede</h2>
 
 <p>
 Klassisk WebSDR för HF, kortvåg, mellanvåg och amatörradio.
@@ -319,19 +318,19 @@ onclick="alert('Favorit sparad')"
 </div>
 
 <!-- ===== KIWI ===== -->
-<div class="receiver-card hf">
+<div class="receiver-card lw mw hf amateur utility">
 
-<h2>KiwiSDR Europe</h2>
+<h2>KiwiSDR – Jönköping</h2>
 
 <p>
-Publik KiwiSDR med bred täckning för DX och utility-signaler.
+Svensk KiwiSDR med 0–30 MHz för LW, MW, kortvåg, amatörradio och utility.
 </p>
 
 <div class="info">
 
-<div><strong>Land:</strong> Europa</div>
+<div><strong>Land:</strong> Sverige – Jönköping</div>
 
-<div><strong>Band:</strong> HF</div>
+<div><strong>Band:</strong> 0–30 MHz</div>
 
 <div><strong>Typ:</strong> KiwiSDR</div>
 
@@ -345,7 +344,7 @@ LIMITED USERS
 
 <button
 class="open-btn"
-onclick="window.open('https://rx.linkfanel.net/','_blank')"
+onclick="window.open('http://sdr.cqnet.org:8073/','_blank')"
 >
 Öppna
 </button>
@@ -359,6 +358,55 @@ onclick="alert('Favorit sparad')"
 
 </div>
 
+</div>
+
+<!-- ===== VERIFIERADE MOTTAGARE ===== -->
+<div class="receiver-card lw mw hf amateur utility">
+<h2>KiwiSDR – Kungberget</h2>
+<p>Svensk 0–30 MHz-mottagare för långvåg, NDB, mellanvåg, kortvåg, amatörradio och utility.</p>
+<div class="info"><div><strong>Land:</strong> Sverige – Kungberget</div><div><strong>Band:</strong> 0–30 MHz</div><div><strong>Typ:</strong> KiwiSDR</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('http://webrx.sk3gk.se:8074/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card lw mw hf amateur utility">
+<h2>KiwiSDR – Kotka</h2>
+<p>Eagle 3 i Finland. 0–30 MHz och användbar för nordisk DX, MW, SW, amatörradio och utility.</p>
+<div class="info"><div><strong>Land:</strong> Finland – Kotka</div><div><strong>Band:</strong> 0–30 MHz</div><div><strong>Typ:</strong> KiwiSDR 2</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('http://eagle3.psokotka.com:8076/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card lw mw hf amateur utility">
+<h2>KiwiSDR – Esbjerg</h2>
+<p>Dansk 0–30 MHz-mottagare, bra geografiskt komplement för nordisk och europeisk DX.</p>
+<div class="info"><div><strong>Land:</strong> Danmark – Esbjerg</div><div><strong>Band:</strong> 0–30 MHz</div><div><strong>Typ:</strong> KiwiSDR 2</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('http://21086.proxy.kiwisdr.com/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card lw mw hf amateur utility">
+<h2>KiwiSDR – Friesland</h2>
+<p>Nederländsk 0–30 MHz-mottagare för europeisk MW/SW, amatörradio och utility.</p>
+<div class="info"><div><strong>Land:</strong> Nederländerna – Friesland</div><div><strong>Band:</strong> 0–30 MHz</div><div><strong>Typ:</strong> KiwiSDR</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('http://81.172.193.108:8073/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card lw hf amateur vhf uhf satellite">
+<h2>TU Graz WebSDR – Österrike</h2>
+<p>Flera riktiga mottagare för långvåg, kortvåg, 6 m, 2 m, 70 cm och QO-100 satellit.</p>
+<div class="info"><div><strong>Land:</strong> Österrike – Graz</div><div><strong>Band:</strong> LW / HF / 6m / 2m / 70cm / QO-100</div><div><strong>Typ:</strong> WebSDR / OpenWebRX</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://websdr.iks.tugraz.at/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card hf amateur utility">
+<h2>KFS WebSDR – Kalifornien</h2>
+<p>Riktig WebSDR med flera HF-band och antenner riktade mot olika delar av världen.</p>
+<div class="info"><div><strong>Land:</strong> USA – Kalifornien</div><div><strong>Band:</strong> HF / amatörradio / utility</div><div><strong>Typ:</strong> WebSDR + KiwiSDR</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://www.kfsdr.org/home','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
 </div>
 
 <!-- ===== OPENWEBRX ===== -->
@@ -414,7 +462,7 @@ onclick="alert('Favorit sparad')"
 </div>
 
 <!-- ===== AIRBAND ===== -->
-<div class="receiver-card airband vhf">
+<div class="receiver-card airband vhf utility">
 
 <h2>Airband Monitor</h2>
 
