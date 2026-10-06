@@ -255,8 +255,8 @@ Central mottagarhub för WebSDR, KiwiSDR, OpenWebRX och framtida DX-OS nätverk.
 <button onclick="filterReceivers('vhf')">VHF</button>
 <button onclick="filterReceivers('air-simple')">✈ Air – Enkel</button>
 <button onclick="filterReceivers('airband')">✈ Air – Avancerad SDR</button>
-<button onclick="filterReceivers('sat-simple')">🛰 Satellit – Enkel</button>
-<button onclick="filterReceivers('satellite')">🛰 Satellit – Avancerad SDR</button>
+<button onclick="filterReceivers('sat-simple')">🛰 Satellit – Enkel (börja här)</button>
+<button onclick="filterReceivers('satellite')">🛰 Satellit – Avancerad</button>
 <button onclick="filterReceivers('uhf')">UHF</button>
 <button onclick="filterReceivers('uber')">📻 UberSDR</button>
 
@@ -645,14 +645,13 @@ onclick="alert('Favorit sparad')"
 </div>
 
 <!-- ===== SATELLIT AVANCERAD ===== -->
-<div class="receiver-card satellite vhf uhf amateur">
-<h2>🔵 Avancerad – TU Graz QO-100</h2>
-<p>WebSDR för QO-100:s smalbandstransponder. Waterfall, SSB/CW och direkt inställning i webbläsaren.</p>
-<div class="info"><div><strong>Land:</strong> Österrike – Graz</div><div><strong>Satellit:</strong> QO-100</div><div><strong>Typ:</strong> WebSDR</div></div>
+<div class="receiver-card satellite amateur utility">
+<h2>🔵 Avancerad – Goonhilly QO-100 WebSDR</h2>
+<p>BATC/Goonhilly WebSDR för QO-100. Waterfall och direkt lyssning på satellitens smalbandstransponder.</p>
+<div class="info"><div><strong>Land:</strong> Storbritannien – Goonhilly</div><div><strong>Satellit:</strong> QO-100</div><div><strong>Typ:</strong> WebSDR</div></div>
 <div class="status online">PUBLIK</div>
-<div class="actions"><button class="open-btn" onclick="window.open('https://websdr.iks.tugraz.at/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://eshail.batc.org.uk/nb/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
 </div>
-
 <div class="receiver-card satellite vhf uhf utility">
 <h2>🔵 Avancerad – SatNOGS SM0TGU</h2>
 <p>Svensk VHF/UHF-markstation med RTL-SDR. Använd observationerna för att analysera verkliga satellitsignaler och pass.</p>
