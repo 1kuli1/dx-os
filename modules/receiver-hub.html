@@ -884,10 +884,19 @@ function filterReceivers(type){
 function searchReceivers(){
 
     /* ===== INPUT ===== */
-    const input =
+    let input =
     document.getElementById("searchInput")
     .value
-    .toLowerCase();
+    .toLowerCase()
+    .trim();
+
+    /* Vanliga alternativa stavningar / felskrivningar */
+    const aliases = {
+        "turnholt":"turnhout",
+        "turnhold":"turnhout",
+        "turnhoutt":"turnhout"
+    };
+    if(aliases[input]) input = aliases[input];
 
     /* ===== KORT ===== */
     const cards =
