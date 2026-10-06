@@ -493,7 +493,7 @@ onclick="alert('Favorit sparad')"
 <div class="actions"><button class="open-btn" onclick="window.open('https://tef-tuner.pd2pw.nl/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
 </div>
 
-<div class="receiver-card fm vhf">
+<div class="receiver-card fm vhf" data-search="turnhout turnholt turnhold belgien belgium fmdx fm-dx">
 <h2>FM-DX – Turnhout</h2>
 <p>TEF Headless-mottagare med takantenn, RDS och direkt webbstyrning.</p>
 <div class="info"><div><strong>Land:</strong> Belgien – Turnhout</div><div><strong>Band:</strong> FM</div><div><strong>Typ:</strong> FM-DX Webserver / TEF668x</div></div>
@@ -883,42 +883,25 @@ function filterReceivers(type){
 /* ===== SÖK ===== */
 function searchReceivers(){
 
-    /* ===== INPUT ===== */
-    let input =
-    document.getElementById("searchInput")
-    .value
-    .toLowerCase()
-    .trim();
+    let input = document.getElementById("searchInput").value
+        .toLowerCase()
+        .trim()
+        .replace(/turnholt/g,"turnhout")
+        .replace(/turnhold/g,"turnhout")
+        .replace(/turnhoutt/g,"turnhout");
 
-    /* Vanliga alternativa stavningar / felskrivningar */
-    const aliases = {
-        "turnholt":"turnhout",
-        "turnhold":"turnhout",
-        "turnhoutt":"turnhout"
-    };
-    if(aliases[input]) input = aliases[input];
+    const cards = document.querySelectorAll(".receiver-card");
 
-    /* ===== KORT ===== */
-    const cards =
-    document.querySelectorAll(".receiver-card");
-
-    /* ===== LOOP ===== */
     cards.forEach(card => {
+        const text = (
+            card.innerText + " " +
+            (card.dataset.search || "")
+        ).toLowerCase()
+         .replace(/turnholt/g,"turnhout")
+         .replace(/turnhold/g,"turnhout")
+         .replace(/turnhoutt/g,"turnhout");
 
-        /* ===== TEXT ===== */
-        const text =
-        card.innerText.toLowerCase();
-
-        /* ===== MATCH ===== */
-        if(text.includes(input)){
-            card.style.display = "block";
-        }
-
-        /* ===== DÖLJ ===== */
-        else{
-            card.style.display = "none";
-        }
-
+        card.style.display = text.includes(input) ? "block" : "none";
     });
 
 }
