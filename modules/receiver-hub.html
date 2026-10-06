@@ -292,9 +292,9 @@ Central mottagarhub för WebSDR, KiwiSDR, OpenWebRX och framtida DX-OS nätverk.
 <button onclick="filterReceivers('airband')">✈ Air – Avancerad SDR</button>
 <button onclick="filterReceivers('sat-simple')">🛰 Satellit – Enkel (börja här)</button>
 <button onclick="filterReceivers('satellite')">🛰 Satellit – Avancerad</button>
-<button onclick="filterReceivers('uhf-easy')">📡 UHF – Enkel</button>
-<button onclick="filterReceivers('uhf-advanced')">📡 UHF – Avancerad SDR</button>
-<button onclick="filterReceivers('uber')">📻 UberSDR</button>
+<button onclick="openReceiverCategory('uhf-easy','http://sdr.websdrmaasbree.nl:8908/')">📡 UHF – Enkel</button>
+<button onclick="openReceiverCategory('uhf-advanced','http://vhfsdr.gb0snb.com:8074/')">📡 UHF – Avancerad SDR</button>
+<button onclick="openReceiverCategory('uber','https://n2epe.tunnel.ubersdr.org/')">📻 UberSDR</button>
 
 </div>
 
@@ -806,7 +806,7 @@ onclick="alert('Favorit sparad')"
 <p>WebSDR vid Kelvedon Hatch med både filtrerad 432–434 MHz och bred 430–440 MHz 70 cm-mottagning.</p>
 <div class="info"><div><strong>Land:</strong> Storbritannien – Essex</div><div><strong>Band:</strong> 430–440 MHz</div><div><strong>Typ:</strong> WebSDR</div></div>
 <div class="status online">PUBLIK</div>
-<div class="actions"><button class="open-btn" onclick="window.open('https://www.gb0snb.com/sdr/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+<div class="actions"><button class="open-btn" onclick="window.open('http://vhfsdr.gb0snb.com:8074/','_blank')">Öppna direkt</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
 </div>
 
 <div class="receiver-card uhf-advanced">
@@ -837,6 +837,14 @@ DX-OS Receiver Hub • SDR • DX • AI • Signal Intelligence
 </footer>
 
 <script>
+
+/* ===== DIREKTÖPPNING FÖR UHF / UBERSDR ===== */
+function openReceiverCategory(type,url){
+    filterReceivers(type);
+    const input=document.getElementById("searchInput");
+    if(input) input.value="";
+    window.open(url,"_blank","noopener");
+}
 
 /* ===== FILTER ===== */
 function filterReceivers(type){
