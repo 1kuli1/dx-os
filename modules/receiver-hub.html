@@ -255,7 +255,8 @@ Central mottagarhub för WebSDR, KiwiSDR, OpenWebRX och framtida DX-OS nätverk.
 <button onclick="filterReceivers('vhf')">VHF</button>
 <button onclick="filterReceivers('air-simple')">✈ Air – Enkel</button>
 <button onclick="filterReceivers('airband')">✈ Air – Avancerad SDR</button>
-<button onclick="filterReceivers('satellite')">Satellit</button>
+<button onclick="filterReceivers('sat-simple')">🛰 Satellit – Enkel</button>
+<button onclick="filterReceivers('satellite')">🛰 Satellit – Avancerad SDR</button>
 <button onclick="filterReceivers('uhf')">UHF</button>
 
 </div>
@@ -607,6 +608,80 @@ onclick="alert('Favorit sparad')"
 <div class="info"><div><strong>Land:</strong> Storbritannien</div><div><strong>Band:</strong> Airband 134,978–137,019 MHz</div><div><strong>Typ:</strong> OpenWebRX+</div></div>
 <div class="status online">PUBLIK</div>
 <div class="actions"><button class="open-btn" onclick="window.open('https://www.ambientscape.com/websdr','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<!-- ===== SATELLIT ENKEL ===== -->
+<div class="receiver-card sat-simple">
+<h2>🟢 Enkel – SatNOGS observationer</h2>
+<p>Lyssna på redan mottagna satellitpass från markstationer runt hela världen. Bra för att börja utan att själv ställa in en SDR.</p>
+<div class="info"><div><strong>Område:</strong> Världen</div><div><strong>Satelliter:</strong> NOAA / CubeSat / amatörsatelliter m.fl.</div><div><strong>Nivå:</strong> Enkel – börja här</div></div>
+<div class="status online">LYSSNA & UTFORSKA</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://network.satnogs.org/observations/','_blank')">Öppna observationer</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card sat-simple">
+<h2>🟢 Enkel – SM0TGU Sverige</h2>
+<p>Svensk SatNOGS-markstation i Sollentuna för VHF/UHF-satelliter. Visar mottagna pass, frekvenser och resultat.</p>
+<div class="info"><div><strong>Land:</strong> Sverige – Sollentuna</div><div><strong>Band:</strong> VHF / UHF</div><div><strong>Nivå:</strong> Enkel</div></div>
+<div class="status online">SATNOGS</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://network.satnogs.org/stations/858/','_blank')">Öppna station</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card sat-simple">
+<h2>🟢 Enkel – QO-100 information & WebSDR</h2>
+<p>AMSAT-SM:s svenska sida om QO-100 med länkar till webbmottagare. Bra introduktion till att lyssna på en geostationär amatörradiosatellit.</p>
+<div class="info"><div><strong>Språk:</strong> Svenska</div><div><strong>Satellit:</strong> QO-100</div><div><strong>Nivå:</strong> Enkel</div></div>
+<div class="status online">BÖRJA HÄR</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://www.amsat.se/2018/10/27/qo-100/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card sat-simple">
+<h2>🗺️ Enkel – SatNOGS stationskarta</h2>
+<p>Karta över markstationer i SatNOGS globala nät. Välj en station och se vilka satelliter den tar emot.</p>
+<div class="info"><div><strong>Område:</strong> Världen</div><div><strong>Typ:</strong> Satellit-markstationskarta</div><div><strong>Nivå:</strong> Enkel</div></div>
+<div class="status online">KARTA</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://network.satnogs.org/stations/','_blank')">Öppna karta</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<!-- ===== SATELLIT AVANCERAD ===== -->
+<div class="receiver-card satellite vhf uhf amateur">
+<h2>🔵 Avancerad – TU Graz QO-100</h2>
+<p>WebSDR för QO-100:s smalbandstransponder. Waterfall, SSB/CW och direkt inställning i webbläsaren.</p>
+<div class="info"><div><strong>Land:</strong> Österrike – Graz</div><div><strong>Satellit:</strong> QO-100</div><div><strong>Typ:</strong> WebSDR</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://websdr.iks.tugraz.at/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card satellite vhf uhf utility">
+<h2>🔵 Avancerad – SatNOGS SM0TGU</h2>
+<p>Svensk VHF/UHF-markstation med RTL-SDR. Använd observationerna för att analysera verkliga satellitsignaler och pass.</p>
+<div class="info"><div><strong>Land:</strong> Sverige – Sollentuna</div><div><strong>Band:</strong> VHF / UHF</div><div><strong>Typ:</strong> SatNOGS / RTL-SDR</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://network.satnogs.org/stations/858/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card satellite vhf uhf utility">
+<h2>🔵 Avancerad – CGBSAT-UHF</h2>
+<p>Mycket aktiv SatNOGS UHF-markstation i Nederländerna med tiotusentals satellitobservationer.</p>
+<div class="info"><div><strong>Land:</strong> Nederländerna</div><div><strong>Band:</strong> UHF</div><div><strong>Typ:</strong> SatNOGS / RTL-SDR</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://network.satnogs.org/stations/40/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card satellite utility">
+<h2>🔵 Avancerad – QO-100 DATV</h2>
+<p>AMSAT-DL:s vägledning till QO-100 wideband/DATV och realtidsspektrum för digital satellit-TV.</p>
+<div class="info"><div><strong>Satellit:</strong> QO-100</div><div><strong>Mode:</strong> DVB-S2 / DATV</div><div><strong>Nivå:</strong> Avancerad</div></div>
+<div class="status online">SPEKTRUM</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://amsat-dl.org/en/qo-100-datv-reception/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card satellite vhf uhf utility">
+<h2>🗺️ Avancerad – SatNOGS nätverk</h2>
+<p>Global karta och katalog över satellitmarkstationer. Filtrera stationer och undersök antenner, frekvenser, framtida pass och observationer.</p>
+<div class="info"><div><strong>Område:</strong> Världen</div><div><strong>Band:</strong> VHF / UHF / L / S m.fl.</div><div><strong>Typ:</strong> Markstationsnät</div></div>
+<div class="status online">KARTA / KATALOG</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://network.satnogs.org/stations/','_blank')">Öppna nätverket</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
 </div>
 
 <!-- ===== UHF ===== -->
