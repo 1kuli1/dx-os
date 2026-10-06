@@ -292,7 +292,8 @@ Central mottagarhub för WebSDR, KiwiSDR, OpenWebRX och framtida DX-OS nätverk.
 <button onclick="filterReceivers('airband')">✈ Air – Avancerad SDR</button>
 <button onclick="filterReceivers('sat-simple')">🛰 Satellit – Enkel (börja här)</button>
 <button onclick="filterReceivers('satellite')">🛰 Satellit – Avancerad</button>
-<button onclick="filterReceivers('uhf')">UHF</button>
+<button onclick="filterReceivers('uhf-easy')">📡 UHF – Enkel</button>
+<button onclick="filterReceivers('uhf-advanced')">📡 UHF – Avancerad SDR</button>
 <button onclick="filterReceivers('uber')">📻 UberSDR</button>
 
 </div>
@@ -740,47 +741,54 @@ onclick="alert('Favorit sparad')"
 <div class="info"><div><strong>Område:</strong> Världen</div><div><strong>Funktion:</strong> Sök bästa mottagare efter frekvens/SNR</div><div><strong>Typ:</strong> UberSDR</div></div><div class="status online">SÖKVERKTYG</div>
 <div class="actions"><button class="open-btn" onclick="window.open('https://instances.ubersdr.org/signalfinder.html','_blank')">Hitta mottagare</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div></div>
 
-<!-- ===== UHF ===== -->
-<div class="receiver-card uhf">
+<!-- ===== UHF – TVÅ NIVÅER ===== -->
 
-<h2>UHF Signal Monitor</h2>
-
-<p>
-Specialmottagare för UHF och experimentella radiosignaler.
-</p>
-
-<div class="info">
-
-<div><strong>Land:</strong> Internationell</div>
-
-<div><strong>Band:</strong> UHF</div>
-
-<div><strong>Typ:</strong> SDR</div>
-
+<div class="receiver-card uhf-easy">
+<h2>🟢 Enkel – WebSDR Maasbree 70 cm</h2>
+<p>70 cm-mottagare i Nederländerna. Bra start för vanlig FM-trafik på UHF; bandet är uppdelat i 430–435 och 436–440 MHz.</p>
+<div class="info"><div><strong>Land:</strong> Nederländerna – Maasbree</div><div><strong>Band:</strong> 430–440 MHz</div><div><strong>Nivå:</strong> Enkel</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://websdr-maasbree.jouwweb.nl/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
 </div>
 
-<div class="status offline">
-OFFLINE
+<div class="receiver-card uhf-easy">
+<h2>🟢 Enkel – Goonhilly 70 cm</h2>
+<p>Klassisk WebSDR från Goonhilly med 70 cm. Lämplig när du vill börja lyssna direkt utan OpenWebRX.</p>
+<div class="info"><div><strong>Land:</strong> Storbritannien – Cornwall</div><div><strong>Band:</strong> 70 cm / UHF</div><div><strong>Nivå:</strong> Enkel</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://eshail.batc.org.uk/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
 </div>
 
-<div class="actions">
-
-<button
-class="open-btn"
-onclick="window.open('https://www.receiverbook.de/','_blank')"
->
-Öppna
-</button>
-
-<button
-class="favorite-btn"
-onclick="alert('Favorit sparad')"
->
-★ Favorit
-</button>
-
+<div class="receiver-card uhf-easy">
+<h2>🗺️ Enkel – UHF/WebSDR-katalog</h2>
+<p>Receiverbook-katalog för att hitta fler publika mottagare när du vill prova en annan plats.</p>
+<div class="info"><div><strong>Område:</strong> Världen</div><div><strong>Band:</strong> VHF / UHF</div><div><strong>Typ:</strong> Mottagarkatalog</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://www.receiverbook.de/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
 </div>
 
+<div class="receiver-card uhf-advanced">
+<h2>🔵 Avancerad – GB0SNB 70 cm</h2>
+<p>WebSDR vid Kelvedon Hatch med både filtrerad 432–434 MHz och bred 430–440 MHz 70 cm-mottagning.</p>
+<div class="info"><div><strong>Land:</strong> Storbritannien – Essex</div><div><strong>Band:</strong> 430–440 MHz</div><div><strong>Typ:</strong> WebSDR</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://www.gb0snb.com/sdr/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card uhf-advanced">
+<h2>🔵 Avancerad – Maasbree 70 cm</h2>
+<p>Två SDRPlay RSP1A-system för 430–435 och 436–440 MHz. Den övre delen är särskilt uppbyggd för satellitmottagning.</p>
+<div class="info"><div><strong>Land:</strong> Nederländerna – Maasbree</div><div><strong>Band:</strong> 430–440 MHz</div><div><strong>Typ:</strong> WebSDR / SDRPlay</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://websdr-maasbree.jouwweb.nl/','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
+</div>
+
+<div class="receiver-card uhf-advanced">
+<h2>🗺️ Avancerad – WebSDR-katalog</h2>
+<p>Katalog för att leta efter ytterligare WebSDR-mottagare med 70 cm och andra UHF-band.</p>
+<div class="info"><div><strong>Område:</strong> Världen</div><div><strong>Band:</strong> UHF</div><div><strong>Typ:</strong> Mottagarkatalog</div></div>
+<div class="status online">PUBLIK</div>
+<div class="actions"><button class="open-btn" onclick="window.open('https://www.receiverbook.de/?type=websdr','_blank')">Öppna</button><button class="favorite-btn" onclick="alert('Favorit sparad')">★ Favorit</button></div>
 </div>
 
 </div>
