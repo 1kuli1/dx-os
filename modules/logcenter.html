@@ -302,7 +302,8 @@ button:hover{
         <h2>Logglista</h2>
 
         <!-- Här visas loggar -->
-        <div id="loggLista"></div>
+        <div id="dxosStorageError" role="alert" style="padding:12px;border:2px solid #f59e0b;margin:12px 0" hidden></div>
+<div id="loggLista"></div>
 
     </div>
 
@@ -355,8 +356,18 @@ function hamtaUTC(){
 }
 function sattBand(band){document.getElementById("frekvens").value=band+" ";}
 function dxosRead(key){
-  try{const x=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(x)?x:[];}
-  catch(e){return [];}
+  // Fail closed. Tidigare återgav korrupt lagring [] och migrering skrev över originalet.
+  const raw=localStorage.getItem(key);
+  if(raw===null)return [];
+  let data;
+  try{data=JSON.parse(raw);}catch(e){throw new Error('Lagringen '+key+' är skadad. Ingenting får skrivas över.');}
+  if(!Array.isArray(data)||!data.every(v=>v&&typeof v==='object'&&!Array.isArray(v)))
+    throw new Error('Lagringen '+key+' har fel format. Ingenting får skrivas över.');
+  return data;
+}
+function dxosShowError(e){
+  const status=document.getElementById('dxosStorageError');
+  if(status){status.hidden=false;status.textContent='VARNING: '+e.message+' Ta en säkerhetskopia och återställ loggboken innan du loggar mer.';}
 }
 function dxosHash(text){
   let h=2166136261;
@@ -378,9 +389,10 @@ function dxosFromLegacy(v,ordinal){
   };
 }
 function dxosMigrate(){
+  // Kontrollera ALLTID målfilen först, även om det inte finns äldre poster.
+  const data=dxosRead(DXOS_MAIN_KEY);
   const old=dxosRead(DXOS_OLD_KEY);
   if(!old.length)return;
-  const data=dxosRead(DXOS_MAIN_KEY);
   const ids=new Set(data.map(l=>l._id));
   const occurrences=new Map();let added=0;
   for(const v of old){
@@ -403,18 +415,21 @@ function dxosRecord(){
     band:"",rx:"DX-OS",verifyStatus:"Preliminär"};
 }
 function sparaLogg(){
-  dxosMigrate();
-  const item=dxosRecord();
-  if(!item.station && !item.freq){alert("Ange station eller frekvens.");return;}
   try{
+    dxosMigrate();
+    const item=dxosRecord();
+    if(!item.station && !item.freq){alert("Ange station eller frekvens.");return;}
     const data=dxosRead(DXOS_MAIN_KEY);data.unshift(item);
     localStorage.setItem(DXOS_MAIN_KEY,JSON.stringify(data));
     visaLoggar();alert("Sparad i den gemensamma lokala DX-loggboken. Drive-synk är säkerhetspausad.");
-  }catch(e){alert("Kunde inte spara. Exportera en backup via DX Start och kontrollera lagringen.");}
+  }catch(e){dxosShowError(e);alert("Ingen logg sparades: "+e.message);}
 }
 function visaLoggar(){
-  const lista=document.getElementById("loggLista");lista.textContent="";
-  for(const logg of dxosRead(DXOS_MAIN_KEY).filter(l=>!l._deletedAt)){
+  const lista=document.getElementById("loggLista");
+  let records;
+  try{records=dxosRead(DXOS_MAIN_KEY);}catch(e){dxosShowError(e);return;}
+  lista.textContent="";
+  for(const logg of records.filter(l=>!l._deletedAt)){
     const card=document.createElement("div");card.className="logg-kort";
     const title=document.createElement("h3");title.textContent=String(logg.freq||"")+ (logg.station?" – "+logg.station:"");
     card.appendChild(title);
@@ -426,7 +441,7 @@ function visaLoggar(){
     lista.appendChild(card);
   }
 }
-try{dxosMigrate();}catch(e){console.warn("Kunde inte importera äldre DX-OS-loggar",e);}
+try{dxosMigrate();}catch(e){dxosShowError(e);console.warn("Äldre loggar importerades inte:",e);}
 visaLoggar();
 
 </script>
