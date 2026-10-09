@@ -414,14 +414,14 @@ function dxosRecord(){
     signal:value("signal"),mode:value("mode"),notes:value("notering"),
     band:"",rx:"DX-OS",verifyStatus:"Preliminär"};
 }
-function sparaLogg(){
+async function sparaLogg(){
   try{
-    dxosMigrate();
+    await dxosWithLock(()=>{dxosMigrate();
     const item=dxosRecord();
-    if(!item.station && !item.freq){alert("Ange station eller frekvens.");return;}
+    if(!item.station && !item.freq)throw Error("Ange station eller frekvens.");
     const data=dxosRead(DXOS_MAIN_KEY);data.unshift(item);
     localStorage.setItem(DXOS_MAIN_KEY,JSON.stringify(data));
-    visaLoggar();alert("Sparad i den gemensamma lokala DX-loggboken. Drive-synk är säkerhetspausad.");
+    });visaLoggar();alert("Sparad i den gemensamma lokala DX-loggboken. Drive-synk är säkerhetspausad.");
   }catch(e){dxosShowError(e);alert("Ingen logg sparades: "+e.message);}
 }
 function visaLoggar(){
@@ -441,8 +441,8 @@ function visaLoggar(){
     lista.appendChild(card);
   }
 }
-try{dxosMigrate();}catch(e){dxosShowError(e);console.warn("Äldre loggar importerades inte:",e);}
-visaLoggar();
+async function dxosWithLock(fn){if(!navigator.locks?.request)throw Error('Uppdatera webbläsaren för säker loggning.');return navigator.locks.request('dxLogs-write',fn);}
+dxosWithLock(()=>dxosMigrate()).then(visaLoggar).catch(e=>{dxosShowError(e);visaLoggar()});
 
 </script>
 
