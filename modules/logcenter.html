@@ -347,139 +347,86 @@ button:hover{
 
 <script>
 
-/* =========================
-   HÄMTA UTC-TID
-========================= */
-
-/* Funktion som hämtar aktuell UTC tid */
+"use strict";
+const DXOS_MAIN_KEY="dxLogs", DXOS_OLD_KEY="dxloggar";
 function hamtaUTC(){
-
-    /* Skapar nytt datumobjekt */
-    const nu = new Date();
-
-    /* Konverterar till UTC-sträng */
-    const utc = nu.toISOString().replace("T"," ").substring(0,16) + " UTC";
-
-    /* Skriver ut i fältet */
-    document.getElementById("utcTid").value = utc;
-
+  const d=new Date().toISOString();
+  document.getElementById("utcTid").value=d.slice(0,10)+" "+d.slice(11,16)+" UTC";
 }
-
-/* =========================
-   SÄTT BAND
-========================= */
-
-/* Funktion för snabbval */
-function sattBand(band){
-
-    /* Skriver band i frekvensfältet */
-    document.getElementById("frekvens").value = band + " ";
-
+function sattBand(band){document.getElementById("frekvens").value=band+" ";}
+function dxosRead(key){
+  try{const x=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(x)?x:[];}
+  catch(e){return [];}
 }
-
-/* =========================
-   SPARA LOGG
-========================= */
-
-/* Funktion för att spara logg */
+function dxosHash(text){
+  let h=2166136261;
+  for(const ch of String(text)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}
+  return(h>>>0).toString(36);
+}
+function dxosFromLegacy(v,ordinal){
+  const stamp=String(v.utc||"");
+  const m=stamp.match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2})/);
+  return {
+    _id:"dxos-legacy-"+dxosHash(JSON.stringify(v))+"-"+ordinal,
+    _updatedAt:"1970-01-01T00:00:00.000Z",
+    _source:"DX-OS tidigare loggbok", saved:"",date:m?m[1]:"",
+    time:m?m[2]:"",freq:String(v.frekvens||""),band:"",
+    station:String(v.station||""),country:String(v.land||""),
+    signal:String(v.signal||""),mode:String(v.mode||""),
+    notes:String(v.notering||""),verifyStatus:"Preliminär",
+    rx:"DX-OS"
+  };
+}
+function dxosMigrate(){
+  const old=dxosRead(DXOS_OLD_KEY);
+  if(!old.length)return;
+  const data=dxosRead(DXOS_MAIN_KEY);
+  const ids=new Set(data.map(l=>l._id));
+  const occurrences=new Map();let added=0;
+  for(const v of old){
+    const key=JSON.stringify(v),n=occurrences.get(key)||0;occurrences.set(key,n+1);
+    const item=dxosFromLegacy(v,n);
+    if(ids.has(item._id))continue;
+    data.push(item);ids.add(item._id);added++;
+  }
+  if(added)localStorage.setItem(DXOS_MAIN_KEY,JSON.stringify(data));
+  // Originalet "dxloggar" ligger kvar som orörd säkerhetskopia.
+}
+function dxosRecord(){
+  const value=id=>document.getElementById(id).value.trim();
+  const stamp=value("utcTid"),m=stamp.match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2})/);
+  const now=new Date().toISOString();
+  return {_id:"dxos-"+Date.now()+"-"+Math.random().toString(36).slice(2),
+    _updatedAt:now,saved:now,date:m?m[1]:now.slice(0,10),time:m?m[2]:now.slice(11,16),
+    freq:value("frekvens"),station:value("station"),country:value("land"),
+    signal:value("signal"),mode:value("mode"),notes:value("notering"),
+    band:"",rx:"DX-OS",verifyStatus:"Preliminär"};
+}
 function sparaLogg(){
-
-    /* Skapar loggobjekt */
-    const logg = {
-
-        /* Hämtar UTC tid */
-        utc:document.getElementById("utcTid").value,
-
-        /* Hämtar frekvens */
-        frekvens:document.getElementById("frekvens").value,
-
-        /* Hämtar station */
-        station:document.getElementById("station").value,
-
-        /* Hämtar land */
-        land:document.getElementById("land").value,
-
-        /* Hämtar signal */
-        signal:document.getElementById("signal").value,
-
-        /* Hämtar mode */
-        mode:document.getElementById("mode").value,
-
-        /* Hämtar notering */
-        notering:document.getElementById("notering").value
-
-    };
-
-    /* Hämtar gamla loggar */
-    let loggar = JSON.parse(localStorage.getItem("dxloggar")) || [];
-
-    /* Lägger till ny logg */
-    loggar.unshift(logg);
-
-    /* Sparar tillbaka */
-    localStorage.setItem("dxloggar",JSON.stringify(loggar));
-
-    /* Uppdaterar logglistan */
-    visaLoggar();
-
+  dxosMigrate();
+  const item=dxosRecord();
+  if(!item.station && !item.freq){alert("Ange station eller frekvens.");return;}
+  try{
+    const data=dxosRead(DXOS_MAIN_KEY);data.unshift(item);
+    localStorage.setItem(DXOS_MAIN_KEY,JSON.stringify(data));
+    visaLoggar();alert("Sparad i den gemensamma lokala DX-loggboken. Drive-synk är säkerhetspausad.");
+  }catch(e){alert("Kunde inte spara. Exportera en backup via DX Start och kontrollera lagringen.");}
 }
-
-/* =========================
-   VISA LOGGAR
-========================= */
-
-/* Funktion som visar loggar */
 function visaLoggar(){
-
-    /* Hämtar sparade loggar */
-    let loggar = JSON.parse(localStorage.getItem("dxloggar")) || [];
-
-    /* Hämtar loggcontainer */
-    const lista = document.getElementById("loggLista");
-
-    /* Tömmer tidigare innehåll */
-    lista.innerHTML = "";
-
-    /* Loopar igenom alla loggar */
-    loggar.forEach(logg => {
-
-        /* Skapar kort */
-        const kort = document.createElement("div");
-
-        /* Ger css-klass */
-        kort.className = "logg-kort";
-
-        /* Bygger innehåll */
-        kort.innerHTML = `
-
-            <h3>${logg.frekvens}</h3>
-
-            <p><strong>UTC:</strong> ${logg.utc}</p>
-
-            <p><strong>Station:</strong> ${logg.station}</p>
-
-            <p><strong>Land:</strong> ${logg.land}</p>
-
-            <p><strong>Signal:</strong> ${logg.signal}</p>
-
-            <p><strong>Mode:</strong> ${logg.mode}</p>
-
-            <p>${logg.notering}</p>
-
-        `;
-
-        /* Lägger till kort */
-        lista.appendChild(kort);
-
-    });
-
+  const lista=document.getElementById("loggLista");lista.textContent="";
+  for(const logg of dxosRead(DXOS_MAIN_KEY).filter(l=>!l._deletedAt)){
+    const card=document.createElement("div");card.className="logg-kort";
+    const title=document.createElement("h3");title.textContent=String(logg.freq||"")+ (logg.station?" – "+logg.station:"");
+    card.appendChild(title);
+    for(const [heading,value] of [["UTC",[logg.date,logg.time].filter(Boolean).join(" ")],["Land",logg.country],["Signal",logg.signal],["Mode",logg.mode],["Mottagare",logg.rx],["Anteckning",logg.notes||logg.content]]){
+      if(!value)continue;
+      const p=document.createElement("p"),strong=document.createElement("strong");
+      strong.textContent=heading+": ";p.append(strong,document.createTextNode(String(value)));card.appendChild(p);
+    }
+    lista.appendChild(card);
+  }
 }
-
-/* =========================
-   START
-========================= */
-
-/* Visar loggar direkt vid start */
+try{dxosMigrate();}catch(e){console.warn("Kunde inte importera äldre DX-OS-loggar",e);}
 visaLoggar();
 
 </script>
